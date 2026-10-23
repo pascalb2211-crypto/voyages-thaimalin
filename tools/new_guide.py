@@ -212,6 +212,10 @@ def main():
         im = Image.open(fp).convert('RGB')
         if im.width > 1024: im = im.resize((1024, int(im.height * 1024 / im.width)), Image.LANCZOS)
         im.save(os.path.join(out, 'images/page%d.webp' % i), 'WEBP', quality=82, method=6)
+        if i == first:
+            os.makedirs(os.path.join(ROOT, 'covers'), exist_ok=True)
+            th = im.resize((400, int(im.height * 400 / im.width)), Image.LANCZOS)
+            th.save(os.path.join(ROOT, 'covers', '%s.webp' % cfg['slug']), 'WEBP', quality=80, method=6)
         open(os.path.join(out, 'page%d.html' % i), 'w', encoding='utf-8').write(page_html(cfg, i, total, first, p['title'], p.get('links'), toc, name))
     open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write('<!DOCTYPE html>\n<html lang="fr"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="0; url=page1.html"><title>%s</title></head><body><p><a href="page1.html">%s</a></p></body></html>\n' % (escape(name), escape(name)))
     json.dump({"id": "./", "name": "%s — Thaï Malin" % name, "short_name": name, "start_url": "./index.html", "scope": "./", "display": "standalone", "orientation": "portrait",

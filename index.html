@@ -31,6 +31,12 @@ input,select{display:block;width:100%;margin-top:5px;padding:12px 10px;border-ra
 .guide b.e{font-size:32px;font-weight:400}.guide .t{flex:1;font-weight:800;font-size:16px;line-height:1.25}.guide small{display:block;font-weight:600;opacity:.88;font-size:12.5px;margin-top:3px}
 .guide .st{font-size:12px;font-weight:800;background:#00000040;border-radius:20px;padding:6px 10px;white-space:nowrap}
 .guide.locked{opacity:.88}
+.mg{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.mg a{display:block;text-decoration:none;color:#fff;border-radius:14px;overflow:hidden;background:#242a33;border:1px solid #ffffff1a}
+.mg img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#1a1d24}
+.mg span{display:block;padding:10px 10px 12px;font-weight:800;font-size:14px;line-height:1.25}.mg span small{display:block;font-weight:700;color:#7fd8a6;font-size:12px;margin-top:3px}
+.gthumb{width:44px;height:66px;border-radius:8px;object-fit:cover;flex:0 0 auto;box-shadow:0 2px 8px #0006}
+
 .btn{display:inline-block;padding:12px 16px;border-radius:12px;border:0;background:linear-gradient(135deg,#d35400,#f0955a);color:#fff;font:800 15px 'Segoe UI',Arial,sans-serif;text-decoration:none;cursor:pointer}
 nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;background:#0d1117f2;border-top:1px solid #ffffff1f;padding:6px 4px max(8px,env(safe-area-inset-bottom));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 nav button{flex:1;border:0;background:none;color:#cfd6dd;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;font:600 11px/1.1 'Segoe UI',Arial,sans-serif;cursor:pointer}
@@ -83,12 +89,13 @@ nav button{font-size:10px;padding:6px 1px}
 <main>
 <section class="view on" id="v-home">
  <div class="inst" id="inst"><b>📲 Installer l’appli<small>Sur ton écran d’accueil, utilisable hors-ligne</small></b><button id="instBtn">Installer</button></div>
+ <div class="card" id="myGuides"><h2>📚 Mes guides</h2><div class="mg" id="mgGrid"></div><div id="mgEmpty" class="sub" style="display:none">Aucun guide débloqué sur cet appareil pour le moment.</div><div style="margin-top:12px"><button class="btn alt" data-go="guides">Tous les guides / ajouter un code</button></div></div>
  <div class="card" id="status"></div>
  <div class="card" id="todayPlan" style="display:none"><h2>🗓️ Au programme aujourd’hui</h2><div id="todayPlanList"></div><div style="margin-top:12px"><button class="btn alt" data-go="plan">Voir mon programme</button></div></div>
  <div class="card" id="nextCard" style="display:none"><h2>🔔 Prochain rappel</h2><div id="nextTxt"></div><div style="margin-top:12px"><button class="btn alt" data-go="flight">Voir tous mes rappels</button></div></div>
  <div class="card"><h2>📆 Mon séjour</h2><div class="row"><div><label for="dep">Départ</label><input type="date" id="dep"></div><div><label for="ret">Retour</label><input type="date" id="ret"></div></div></div>
  <div class="card"><h2>☑️ Ma préparation</h2><div class="sub" id="chkTxt"></div><div class="bar"><i id="chkBar" style="width:0"></i></div><div style="margin-top:12px"><button class="btn" data-go="check">Ouvrir la checklist</button></div></div>
- <div class="card"><h2>📚 Mes guides</h2><div class="sub" id="guideTxt"></div><div style="margin-top:12px"><button class="btn" data-go="guides">Voir mes guides</button></div></div>
+ <div class="sub" id="guideTxt" style="display:none"></div>
 </section>
 <section class="view" id="v-plan">
  <div class="card"><h2>🗓️ Mon programme</h2><div id="planHint" class="sub"></div>
@@ -96,7 +103,7 @@ nav button{font-size:10px;padding:6px 1px}
   <div id="planList"></div>
   <div id="planAdd" style="margin-top:14px;border-top:1px solid #ffffff1a;padding-top:14px">
    <div class="row"><div style="flex:0 0 110px"><label for="pTime">Heure</label><input type="time" id="pTime"></div><div><label for="pTitle">Activité</label><input id="pTitle" placeholder="ex. Grand Palais"></div></div>
-   <div style="margin-top:10px"><label for="pPlace">Lieu / adresse (pour Maps)</label><input id="pPlace" placeholder="ex. Wat Phra Kaew, Bangkok"></div>
+   <div style="margin-top:10px"><label for="pPlace">Lieu (nom + ville, ou lien Google Maps collé)</label><input id="pPlace" placeholder="ex. Wat Phra Kaew, Bangkok"><a id="pFind" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:#f0955a;text-decoration:none">🔎 Chercher sur Google Maps</a><div class="note" style="margin:4px 0 0">Astuce : dans Maps, touche Partager, copie le lien et colle-le ici.</div></div>
    <div style="margin-top:10px"><label for="pNote">Note (réservation, prix…)</label><input id="pNote" placeholder="optionnel"></div>
    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="pSave">➕ Ajouter à ce jour</button><button class="btn alt" id="pCancel" style="display:none">Annuler</button></div>
   </div>
@@ -181,19 +188,20 @@ applyGate();
 /* ===== Guides (adresse = dépôt GitHub Pages ; clé = mémoire du déverrouillage de chaque guide, partagée car même compte GitHub) ===== */
 var SALES='https://thaimalin.fr';   /* page de vente par défaut */
 var GUIDES=[];
-function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {e:g.emoji,t:g.title,d:g.desc,c:g.color,u:open?('guides/'+g.slug+'/'):(g.sales||SALES),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
+function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {slug:g.slug,e:g.emoji,t:g.title,d:g.desc,c:g.color,u:open?('guides/'+g.slug+'/'):(g.sales||SALES),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
 function loadGuides(){return fetch('guides.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){GUIDES=mapGuides(d.guides);try{localStorage.setItem('tm-hub-guides-cache',JSON.stringify(d.guides))}catch(e){}}).catch(function(){try{GUIDES=mapGuides(JSON.parse(localStorage.getItem('tm-hub-guides-cache')||'[]'))}catch(e){GUIDES=[]}}).then(function(){renderGuides()})}
 function owned(g){return !!g.key&&(norm(ls(g.key))===norm(expected(g.pre))||recent(g.key))}
 function renderGuides(){
  var l=document.getElementById('guideList');l.innerHTML='';var n=0;
  GUIDES.forEach(function(g){var o=owned(g);if(o)n++;
   var a=document.createElement('a');a.className='guide'+(o?'':' locked');a.href=g.u;a.style.background=g.c;if(!o&&g.key||!g.key){a.target='_blank';a.rel='noopener'}
-  a.innerHTML='<b class="e">'+g.e+'</b><span class="t">'+g.t+'<small>'+g.d+'</small></span><span class="st">'+(o?'✓ Ouvrir':g.key?'🔒 Ouvrir / acheter':g.soon?'Bientôt':'Découvrir')+'</span>';
+  a.innerHTML=(g.key?'<img class="gthumb" src="covers/'+g.slug+'.webp" alt="" onerror="var b=document.createElement(\'b\');b.className=\'e\';b.textContent=this.dataset.e;this.replaceWith(b)" data-e="'+g.e+'">':'<b class="e">'+g.e+'</b>')+'<span class="t">'+g.t+'<small>'+g.d+'</small></span><span class="st">'+(o?'✓ Ouvrir':g.key?'🔒 Ouvrir / acheter':g.soon?'Bientôt':'Découvrir')+'</span>';
   l.appendChild(a)});
  var add=document.createElement('div');add.className='card';add.innerHTML='<h2>🔑 Ajouter un code d’accès</h2><p class="sub" style="margin:0 0 10px">Tu as acheté un autre guide ? Saisis son code ici : il s’ouvre directement, sans autre mot de passe.</p><div class="row"><input id="newCode" placeholder="Code reçu par email" autocomplete="off"><button class="btn" id="newCodeGo" style="flex:0 0 auto">Valider</button></div><p class="note" id="newCodeMsg"></p>';
  l.appendChild(add);
  add.querySelector('#newCodeGo').onclick=function(){var r=tryCode(add.querySelector('#newCode').value);if(r){renderGuides()}else add.querySelector('#newCodeMsg').textContent='Code incorrect ou expiré. Vérifie ton email.'};
  var p=document.createElement('p');p.className='note';p.textContent='Un guide dont tu as saisi le code s’ouvre directement.';l.appendChild(p);
+ var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" alt="" loading="lazy"><span>'+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'grid':'none'}
  document.getElementById('guideTxt').textContent=n?(n+' guide'+(n>1?'s':'')+' débloqué'+(n>1?'s':'')+' sur cet appareil.'):'Aucun guide débloqué sur cet appareil pour le moment.';
 }
 
@@ -247,7 +255,7 @@ document.getElementById('rate').oninput=function(){var v=parseFloat(this.value);
 var AIRLINES=[
  ['Air Austral',24,'https://www.air-austral.com','rubrique « Enregistrement en ligne »'],
  ['Air France',30,'https://wwws.airfrance.fr/check-in','page d’enregistrement'],
- ['Corsair',24,'https://www.flycorsair.com','rubrique « Enregistrement »'],
+ ['Corsair',48,'https://www.flycorsair.com','rubrique « Enregistrement »'],
  ['Emirates',48,'https://www.emirates.com/fr/french/manage-booking/online-check-in/','page d’enregistrement'],
  ['Qatar Airways',48,'https://www.qatarairways.com/fr-fr/online-check-in.html','page d’enregistrement'],
  ['Turkish Airlines',24,'https://www.turkishairlines.com/fr-fr/flights/manage-booking/web-check-in/','page d’enregistrement'],
@@ -375,7 +383,8 @@ function planDays(){
  return Object.keys(set).sort();
 }
 function sortItems(a){return a.slice().sort(function(x,y){return (x.time||'99:99')<(y.time||'99:99')?-1:(x.time||'99:99')>(y.time||'99:99')?1:0})}
-function mapsUrl(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+document.getElementById('pFind').addEventListener('click',function(e){var q=(document.getElementById('pPlace').value||document.getElementById('pTitle').value||'').trim();if(!q){e.preventDefault();document.getElementById('pPlace').focus();return}this.href=mapsUrl(q)});
+function mapsUrl(q){q=(q||'').trim();if(/^https?:\/\//i.test(q))return q;return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
 function renderPlan(){
  var days=planDays(),pl=PL(),td=iso(new Date()),hint=document.getElementById('planHint'),chips=document.getElementById('planDays'),list=document.getElementById('planList');
  chips.innerHTML='';list.innerHTML='';

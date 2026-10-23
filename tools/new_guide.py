@@ -99,6 +99,7 @@ def page_html(cfg, n, total, first, title, links, toc, name):
     attrs += ['data-toc="%s"' % escape(toc), 'data-weather="%s"' % escape(cfg.get('weather', '')) if cfg.get('weather') else '',
               'data-first="%d"' % first, 'data-total="%d"' % total, 'data-name="%s"' % escape(name), 'data-slug="%s"' % cfg['slug'],
               'data-country="%s"' % escape(cfg.get('country', ''))]
+    if n == first: attrs.append('data-banner="1"')
     attrs = ' '.join(a for a in attrs if a)
     return """<!DOCTYPE html>
 <html lang="fr">

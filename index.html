@@ -123,6 +123,22 @@ details.opt[open] summary::after{content:'▴'}details.opt .inner{padding:0 0 16
 .chip{padding:10px 14px;border-radius:14px}
 /* Vol */
 .sec h3{font-size:15px}.sec{margin-top:20px;padding-top:18px}
+
+.urgh{font-size:16px;margin:0 0 10px;color:#ff8a65}
+.urg{border:1.5px solid #f0955a;background:#f0955a14;border-radius:16px;padding:14px;margin-bottom:12px}
+.urg .w{font-size:12px;font-weight:800;color:#f0955a}.urg .tt{font-weight:800;font-size:17px;margin-top:3px}.urg .dd{opacity:.85;font-size:14px;margin-top:5px;line-height:1.5}
+.urg a.lk{display:inline-block;margin-top:10px;padding:11px 14px;border-radius:12px;background:#ffffff1a;border:1px solid #ffffff2a;color:#fff;text-decoration:none;font-weight:700;font-size:14px}
+.urg a.lk.pr{background:linear-gradient(135deg,#d35400,#f0955a);border:0}
+.okb{display:block;width:100%;margin-top:12px;padding:13px;border-radius:12px;border:1px solid #1fa66b;background:#1fa66b22;color:#7fd8a6;font:800 15px 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.okb.sm{width:auto;display:inline-block;padding:8px 12px;font-size:13px;margin-top:10px}
+.ev.fait{opacity:.7}.ev.fait:before{background:#1fa66b}
+
+.tlh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:22px 0 6px;padding:10px 14px;border-radius:14px;background:#f0955a1f;border:1px solid #f0955a55}
+.tlh:first-child{margin-top:6px}.tlh b{font-size:16px}.tlh small{opacity:.8;font-size:12.5px;font-weight:700;text-align:right}
+.tlh.ret{background:#4aa3ff1f;border-color:#4aa3ff66}.tlh.leg{background:#a78bfa1f;border-color:#a78bfa66}
+.tl.ret .ev.next:before{background:#4aa3ff}.tl.leg .ev.next:before{background:#a78bfa}
+label.btn{opacity:1;font-size:16px;margin:0}
+#status{text-align:center;padding:24px 18px}#status .big{font-size:34px}#status .sub{font-size:15px;margin-top:8px}
 </style></head><body>
 <div id="gate"><div class="box"><div style="font-size:40px">🧭</div><h2>Mon voyage — Thaï Malin</h2>
 <p>Réservé aux acheteurs. Entre le mot de passe reçu par email après ton achat.</p>
@@ -169,7 +185,7 @@ details.opt[open] summary::after{content:'▴'}details.opt .inner{padding:0 0 16
  <div class="card"><h2>📄 Mes documents</h2>
   <p class="sub" style="margin:0 0 12px">Billets, réservations, assurance, visa… Ils restent <b>sur ce téléphone</b> et s’ouvrent sans internet.</p>
   <div class="fld"><label for="dCat">Catégorie</label><select id="dCat"></select></div><div class="fld"><label for="dName">Nom (optionnel)</label><input id="dName" placeholder="ex. Billet Paris–Bangkok" autocomplete="off"></div>
-  <div style="margin-top:12px"><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Ajouter un document<input id="dFile" type="file" accept="application/pdf,image/*" multiple style="display:none"></label></div>
+  <div class="fld"><label class="btn full" style="cursor:pointer">📷 Photographier / scanner<input id="dCam" type="file" accept="image/*" capture="environment" style="display:none"></label></div><div class="fld"><label class="btn alt full" style="cursor:pointer">📁 Choisir un fichier ou une photo<input id="dFile" type="file" accept="application/pdf,image/*" multiple style="display:none"></label></div><p class="note" id="scanTip" style="margin-top:10px">💡 Pour numériser un billet ou un passeport en PDF, scanne-le avec l’appareil photo de ton téléphone, puis ajoute-le ici.</p>
   <p class="warn" id="dWarn">🔒 Ces fichiers sont enregistrés uniquement sur cet appareil : ils ne sont envoyés nulle part et ne passent pas par Thaï Malin. Si tu changes de téléphone ou effaces les données du navigateur, ils sont perdus : garde aussi une copie ailleurs. Quiconque ouvre ton téléphone déverrouillé peut les voir : évite d’y mettre ton passeport si tu n’y tiens pas.</p>
   <div class="note" id="dInfo"></div></div>
  <div id="dList"></div>
@@ -195,7 +211,7 @@ details.opt[open] summary::after{content:'▴'}details.opt .inner{padding:0 0 16
     <div class="fld"><button class="btn full" id="lAdd">Ajouter ce vol</button></div></div></details></div>
   <p class="warn">Les délais d’enregistrement et les formalités sont indicatifs : ils varient selon la compagnie et changent. Vérifie toujours l’email de ta compagnie et les sites officiels.</p>
  </div>
- <div class="card" id="tlCard" style="display:none"><h2>🔔 Mes rappels</h2><div class="tl" id="tl"></div>
+ <div class="card" id="tlCard" style="display:none"><h2>🔔 Mes rappels</h2><div id="urgent"></div><div id="tl"></div>
   <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="icsBtn">📅 Ajouter à mon calendrier</button></div>
   <p class="note">Le calendrier de ton téléphone sonnera aux bons moments, même sans internet. Les rappels sont enregistrés avec une alarme.</p></div>
 </section>
@@ -322,7 +338,7 @@ var AIRLINES=[
 var DESTS=[
  ['Thaïlande','tdac'],['Vietnam','evisa','https://evisa.gov.vn'],['Laos','evisa','https://laoevisa.gov.la'],['Cambodge','evisa','https://www.evisa.gov.kh']
 ];
-function F(){try{return JSON.parse(ls('tm-hub-flight')||'{}')}catch(e){return {}}}
+function F(){try{var o=JSON.parse(ls('tm-hub-flight')||'{}');['fNum','fRetNum'].forEach(function(k){if(o[k])o[k]=String(o[k]).toUpperCase()});return o}catch(e){return {}}}
 function saveF(o){lset('tm-hub-flight',JSON.stringify(o))}
 var FID=['fAir','fNum','fDest','fDep','fFrom','fRet','fRetNum','fHours','fUrl'];
 function initFlight(){
@@ -347,7 +363,7 @@ function events(){
  ev.push({t:at(30*24),ti:'Vérifier passeport et visa',d:'Passeport valable au moins 6 mois après ton retour, avec des pages libres. Vérifie les conditions d’entrée pour '+D[0]+'.',l:[['Conseils aux voyageurs (France Diplomatie)','https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/']]});
  if(D[1]==='evisa')ev.push({t:at(14*24),ti:'e-visa '+D[0]+' : à demander',d:'Si ton séjour demande un e-visa, fais la demande sur le site officiel, avec une marge de quelques jours pour le traitement. Vérifie d’abord si tu en as besoin.',l:[['Site officiel e-visa '+D[0],D[2],1]]});
  ev.push({t:at(7*24),ti:'Assurance voyage et eSIM',d:'Souscris ton assurance et prépare ta connexion internet avant de partir.',l:[['Ouvrir Mon voyage › Checklist',null,0,'check']]});
- if(D[1]==='tdac')ev.push({t:at(72),ti:'TDAC (carte d’arrivée Thaïlande)',d:'À remplir en ligne avant d’entrer en Thaïlande, dans les 3 jours avant l’arrivée. Gratuit sur le site officiel : ne passe pas par un site payant.',l:[['Site officiel TDAC','https://tdac.immigration.go.th',1]]});
+ if(D[1]==='tdac')ev.push({t:new Date(dep.getFullYear(),dep.getMonth(),dep.getDate()-2,9,0),ti:'TDAC (carte d’arrivée Thaïlande)',d:'Obligatoire pour entrer en Thaïlande. Le formulaire ouvre 3 jours avant ton arrivée. Gratuit sur le site officiel : ne passe pas par un site payant. Si le site refuse ta date, c’est trop tôt : réessaie le lendemain.',l:[['Site officiel TDAC','https://tdac.immigration.go.th',1]]});
  ev.push({t:at(hrs),ti:'Enregistrement en ligne ouvert',d:'Ouvre généralement environ '+hrs+' h avant le décollage ('+A[0]+'). Confirme le délai dans l’email de la compagnie.'+(A[3]?' Sur son site : '+A[3]+'.':''),l:url?[['Enregistrement '+A[0],url,1]]:[]});
  ev.push({t:at(3),ti:'Direction l’aéroport',d:'Arrive environ 3 h avant un vol international. Passeport, visa ou TDAC, carte d’embarquement et assurance sur toi.',l:[]});
  ev.push({t:dep,ti:'Décollage — '+vol,d:(f.fFrom?'Départ de '+f.fFrom+'. ':'')+'Bon voyage !',l:[]});
@@ -357,18 +373,37 @@ function events(){
  LG().forEach(function(g){var gd=new Date(g.dep);if(isNaN(gd))return;var GA=AIRLINES[g.air],gh=GA[0]==='Autre compagnie'?24:GA[1],gl=GA[2],lab=(g.num?g.num+' · ':'')+GA[0]+(g.where?' ('+g.where+')':'');
   ev.push({t:new Date(gd.getTime()-gh*3600000),ti:'Enregistrement en ligne : '+lab,d:'Ouvre généralement environ '+gh+' h avant le décollage. Confirme le délai dans l’email de la compagnie.',l:gl?[['Enregistrement '+GA[0],gl,1]]:[]});
   ev.push({t:gd,ti:'Vol : '+lab,d:'Arrive à l’aéroport environ 2 h avant un vol intérieur (3 h si international).',l:[]})});
- ev.sort(function(a,b){return a.t-b.t});return ev;
+ ev.forEach(function(e){e.g=/retour/i.test(e.ti)?'ret':(/^(Enregistrement en ligne : |Vol : )/.test(e.ti)?'leg':'go')});ev.sort(function(a,b){return a.t-b.t});return ev;
 }
+function DONE(){try{return JSON.parse(ls('tm-hub-done')||'{}')}catch(e){return {}}}
+function setDone(k,v){var o=DONE();if(v)o[k]=1;else delete o[k];lset('tm-hub-done',JSON.stringify(o))}
+function isTodo(e,dep){return e.t<dep&&/^(Vérifier|e-visa|Assurance|TDAC|Enregistrement en ligne)/.test(e.ti)}
+function evHtml(e){var h='<div class="tt">'+e.ti+'</div><div class="dd">'+e.d+'</div>';
+ e.l.forEach(function(k){if(k[3])h+='<a class="lk" href="#" data-go="'+k[3]+'">'+k[0]+'</a>';else h+='<a class="lk'+(k[2]?' pr':'')+'" target="_blank" rel="noopener" href="'+k[1]+'">'+k[0]+' ↗</a>'});return h}
 function renderFlight(){
- var ev=events(),card=document.getElementById('tlCard'),tl=document.getElementById('tl');
- card.style.display=ev.length?'block':'none';tl.innerHTML='';
- var now=new Date(),nxt=ev.filter(function(e){return e.t>=now})[0];
- ev.forEach(function(e){var past=e.t<now,div=document.createElement('div');div.className='ev'+(past?' past':'')+(e===nxt?' next':'');
-  var h='<div class="w">'+fmt(e.t)+(past?' · ✓ passé':'')+'</div><div class="tt">'+e.ti+'</div><div class="dd">'+e.d+'</div>';
-  e.l.forEach(function(k){if(k[3])h+='<a class="lk" href="#" data-go="'+k[3]+'">'+k[0]+'</a>';else h+='<a class="lk'+(k[2]?' pr':'')+'" target="_blank" rel="noopener" href="'+k[1]+'">'+k[0]+' ↗</a>'});
-  div.innerHTML=h;tl.appendChild(div)});
+ var ev=events(),card=document.getElementById('tlCard'),tl=document.getElementById('tl'),ur=document.getElementById('urgent');
+ card.style.display=ev.length?'block':'none';tl.innerHTML='';ur.innerHTML='';
+ var now=new Date(),f=F(),dep=f.fDep?new Date(f.fDep):null,done=DONE();
+ ev.forEach(function(e){e.todo=!!dep&&isTodo(e,dep);e.done=!!done[e.ti];e.urgent=e.todo&&!e.done&&e.t<now&&now<dep});
+ var urg=ev.filter(function(e){return e.urgent});urg.sort(function(x,y){return (/TDAC|e-visa/.test(y.ti)?1:0)-(/TDAC|e-visa/.test(x.ti)?1:0)});
+ var nxt=ev.filter(function(e){return e.t>=now&&!e.done})[0];
+ if(urg.length){ur.innerHTML='<h3 class="urgh">⚠️ À faire maintenant</h3>';
+  urg.forEach(function(e){var d=document.createElement('div');d.className='urg';d.innerHTML='<div class="w">Prévu le '+fmt(e.t)+'</div>'+evHtml(e)+'<button class="okb" type="button">✓ C’est fait</button>';
+   d.querySelector('.okb').onclick=function(){setDone(e.ti,1);renderFlight();0};ur.appendChild(d)})}
+ var G=[['go','🛫 Aller','go'],['leg','🔀 Escales et vols intérieurs','leg'],['ret','🛬 Retour','ret']];
+ G.forEach(function(g){var items=ev.filter(function(e){return e.g===g[0]&&!e.urgent});if(!items.length)return;
+  var sub=g[0]==='go'?(dep?(f.fNum?f.fNum+' · ':'')+fmt(dep):''):g[0]==='ret'&&f.fRet?((f.fRetNum?f.fRetNum+' · ':'')+fmt(new Date(f.fRet))):'';
+  var hd=document.createElement('div');hd.className='tlh '+g[2];hd.innerHTML='<b>'+g[1]+'</b>'+(sub?'<small>'+sub+'</small>':'');tl.appendChild(hd);
+  var blk=document.createElement('div');blk.className='tl '+g[2];tl.appendChild(blk);
+  items.forEach(function(e){var past=e.t<now,div=document.createElement('div');
+   div.className='ev'+(e.done?' fait':(past?' past':''))+(e===nxt?' next':'');
+   var lab=e.done?' · ✓ fait':(past?' · passé':'');
+   div.innerHTML='<div class="w">'+fmt(e.t)+lab+'</div>'+evHtml(e);
+   if(e.todo){var bt=document.createElement('button');bt.type='button';bt.className='okb sm';bt.textContent=e.done?'↺ Pas encore fait':'✓ C’est fait';bt.onclick=function(){setDone(e.ti,!e.done);renderFlight()};div.appendChild(bt)}
+   blk.appendChild(div)})});
  var nc=document.getElementById('nextCard');
- if(nxt){nc.style.display='block';document.getElementById('nextTxt').innerHTML='<div class="w" style="color:#f0955a;font-size:12px;font-weight:800">'+fmt(nxt.t)+'</div><div class="big" style="font-size:19px;margin-top:2px">'+nxt.ti+'</div><div class="sub">'+nxt.d+'</div>'}else nc.style.display='none';
+ var top=urg[0]||nxt;
+ if(top){nc.style.display='block';document.getElementById('nextTxt').innerHTML=(urg[0]?'<div class="w" style="color:#ff8a65;font-size:13px;font-weight:800">⚠️ À faire maintenant'+(urg.length>1?' ('+urg.length+')':'')+'</div>':'<div class="w" style="color:#f0955a;font-size:12px;font-weight:800">'+fmt(top.t)+'</div>')+'<div class="big" style="font-size:19px;margin-top:2px">'+top.ti+'</div><div class="sub">'+top.d+'</div>'}else nc.style.display='none';
 }
 function icsEsc(t){return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
 function icsDate(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00'}
@@ -395,11 +430,14 @@ function tx(mode,fn){return db().then(function(d){return new Promise(function(re
 function allDocs(){return tx('readonly',function(s){return s.getAll()})}
 function sizeTxt(n){return n>1048576?(n/1048576).toFixed(1)+' Mo':Math.max(1,Math.round(n/1024))+' Ko'}
 function initDocs(){var s=document.getElementById('dCat');DCATS.forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];s.appendChild(o)});
- document.getElementById('dFile').onchange=function(){var fs=[].slice.call(this.files),inp=this,nm=document.getElementById('dName').value.trim(),cat=s.value,jobs=[];
+ (function(){var t=document.getElementById('scanTip');if(!t)return;var ua=navigator.userAgent||'';var ios=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ if(ios)t.innerHTML='💡 Sur iPhone, « Choisir un fichier » propose aussi <b>« Scanner des documents »</b> (gratuit, intégré) : parfait pour numériser un billet ou un passeport en PDF, même sur plusieurs pages.';
+ else if(/android/i.test(ua))t.innerHTML='💡 Pour un PDF de plusieurs pages, scanne avec <b>Google Drive</b> (bouton ＋, puis « Numériser », gratuit), puis choisis le fichier ici avec « Choisir un fichier ».'})();
+var onDocs=function(){var fs=[].slice.call(this.files),inp=this,nm=document.getElementById('dName').value.trim(),cat=s.value,jobs=[];
   fs.forEach(function(f,i){if(f.size>25*1048576){alert('« '+f.name+' » dépasse 25 Mo : fichier non ajouté.');return}
    jobs.push(tx('readwrite',function(st){return st.add({name:(nm&&fs.length===1?nm:(nm?nm+' '+(i+1):f.name.replace(/\.[^.]+$/,''))),cat:cat,type:f.type,size:f.size,added:Date.now(),blob:f})}))});
   Promise.all(jobs).then(function(){inp.value='';document.getElementById('dName').value='';renderDocs();
-   if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){})}).catch(function(){alert('Impossible d’enregistrer ce document (espace insuffisant ou stockage bloqué par le navigateur).')})};
+   if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){})}).catch(function(){alert('Impossible d’enregistrer ce document (espace insuffisant ou stockage bloqué par le navigateur).')})};document.getElementById('dFile').onchange=onDocs;document.getElementById('dCam').onchange=onDocs;
  document.getElementById('vClose').onclick=closeViewer;renderDocs()}
 function renderDocs(){
  allDocs().then(function(ds){var l=document.getElementById('dList');l.innerHTML='';

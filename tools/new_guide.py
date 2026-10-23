@@ -229,7 +229,7 @@ def main():
     make_icons(out, cfg)
     gj = os.path.join(ROOT, 'guides.json'); data = json.load(open(gj, encoding='utf-8'))
     entry = {"slug": cfg['slug'], "type": cfg.get('type', 'theme'), "emoji": cfg['emoji'], "title": name, "desc": cfg['desc'], "color": cfg['color'],
-             "prefix": cfg['prefix'], "key": cfg['key'], "sales": cfg.get('sales', 'https://thaimalin.fr')}
+             "prefix": cfg['prefix'], "key": cfg['key'], "sales": cfg.get('sales', 'https://thaimalin.fr'), "country": cfg.get('country', '')}
     data['guides'] = [g for g in data['guides'] if g['slug'] != cfg['slug']] + [entry]
     json.dump(data, open(gj, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
     print("OK : guides/%s créé (%d pages). Code d'accès du mois : %s-MM-AAAA (ex. %s-10-2026)" % (cfg['slug'], total, cfg['prefix'], cfg['prefix']))

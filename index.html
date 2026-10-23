@@ -139,6 +139,8 @@ details.opt[open] summary::after{content:'▴'}details.opt .inner{padding:0 0 16
 .tl.ret .ev.next:before{background:#4aa3ff}.tl.leg .ev.next:before{background:#a78bfa}
 label.btn{opacity:1;font-size:16px;margin:0}
 #status{text-align:center;padding:24px 18px}#status .big{font-size:34px}#status .sub{font-size:15px;margin-top:8px}
+.gsec{font-size:15px;margin:22px 2px 10px;opacity:.9}.gsec:first-child{margin-top:6px}
+.gtag{display:block;font-style:normal;font-size:11.5px;font-weight:800;letter-spacing:.3px;opacity:.9;margin-bottom:4px;text-transform:uppercase}
 </style></head><body>
 <div id="gate"><div class="box"><div style="font-size:40px">🧭</div><h2>Mon voyage — Thaï Malin</h2>
 <p>Réservé aux acheteurs. Entre le mot de passe reçu par email après ton achat.</p>
@@ -259,20 +261,25 @@ applyGate();
 /* ===== Guides (adresse = dépôt GitHub Pages ; clé = mémoire du déverrouillage de chaque guide, partagée car même compte GitHub) ===== */
 var SALES='https://thaimalin.fr';   /* page de vente par défaut */
 var GUIDES=[];
-function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {slug:g.slug,e:g.emoji,t:g.title,d:g.desc,c:g.color,u:open?('guides/'+g.slug+'/'):(g.sales||SALES),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
+function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {slug:g.slug,ext:g.url||'',type:g.type||'destination',country:g.country||'',e:g.emoji,t:g.title,d:g.desc,c:g.color,u:g.url?g.url:(open?('guides/'+g.slug+'/'):(g.sales||SALES)),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
 function loadGuides(){return fetch('guides.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){GUIDES=mapGuides(d.guides);try{localStorage.setItem('tm-hub-guides-cache',JSON.stringify(d.guides))}catch(e){}}).catch(function(){try{GUIDES=mapGuides(JSON.parse(localStorage.getItem('tm-hub-guides-cache')||'[]'))}catch(e){GUIDES=[]}}).then(function(){renderGuides()})}
 function owned(g){return !!g.key&&(norm(ls(g.key))===norm(expected(g.pre))||recent(g.key))}
+function guideCard(g){var o=owned(g);
+  var a=document.createElement('a');a.className='guide'+(o||g.ext?'':' locked');a.href=g.u;a.style.background=g.c;if(g.ext||!o&&g.key||!g.key){a.target='_blank';a.rel='noopener'}
+  var tag=g.type==='theme'&&g.country?'<span class="gtag">📍 '+g.country+' · thème</span>':'';
+  a.innerHTML=(g.key?'<img class="gthumb" src="covers/'+g.slug+'.webp" alt="" onerror="var b=document.createElement(\'b\');b.className=\'e\';b.textContent=this.dataset.e;this.replaceWith(b)" data-e="'+g.e+'">':'<b class="e">'+g.e+'</b>')+'<span class="t">'+tag+g.t+'<small>'+g.d+'</small></span><span class="st">'+(g.ext?'Ouvrir ↗':o?'✓ Ouvrir':g.key?'🔒 Ouvrir / acheter':g.soon?'Bientôt':'Découvrir')+'</span>';
+  return a}
 function renderGuides(){
- var l=document.getElementById('guideList');l.innerHTML='';var n=0;
- GUIDES.forEach(function(g){var o=owned(g);if(o)n++;
-  var a=document.createElement('a');a.className='guide'+(o?'':' locked');a.href=g.u;a.style.background=g.c;if(!o&&g.key||!g.key){a.target='_blank';a.rel='noopener'}
-  a.innerHTML=(g.key?'<img class="gthumb" src="covers/'+g.slug+'.webp" alt="" onerror="var b=document.createElement(\'b\');b.className=\'e\';b.textContent=this.dataset.e;this.replaceWith(b)" data-e="'+g.e+'">':'<b class="e">'+g.e+'</b>')+'<span class="t">'+g.t+'<small>'+g.d+'</small></span><span class="st">'+(o?'✓ Ouvrir':g.key?'🔒 Ouvrir / acheter':g.soon?'Bientôt':'Découvrir')+'</span>';
-  l.appendChild(a)});
+ var l=document.getElementById('guideList');l.innerHTML='';var n=0;GUIDES.forEach(function(g){if(owned(g))n++});
+ [['🌏 Les guides pays',function(g){return !g.soon&&g.type!=='theme'&&!g.ext}],['🏝️ Les guides par thème',function(g){return !g.soon&&g.type==='theme'}],['👑 Le guide premium',function(g){return !g.soon&&!!g.ext}],['✨ Bientôt',function(g){return g.soon}]].forEach(function(sec){
+  var list=GUIDES.filter(sec[1]);if(!list.length)return;
+  var h=document.createElement('h3');h.className='gsec';h.textContent=sec[0];l.appendChild(h);
+  list.forEach(function(g){l.appendChild(guideCard(g))})});
  var add=document.createElement('div');add.className='card';add.innerHTML='<h2>🔑 Ajouter un code d’accès</h2><p class="sub" style="margin:0 0 10px">Tu as acheté un autre guide ? Saisis son code ici : il s’ouvre directement, sans autre mot de passe.</p><div class="row"><input id="newCode" placeholder="Code reçu par email" autocomplete="off"><button class="btn" id="newCodeGo" style="flex:0 0 auto">Valider</button></div><p class="note" id="newCodeMsg"></p>';
  l.appendChild(add);
  add.querySelector('#newCodeGo').onclick=function(){var r=tryCode(add.querySelector('#newCode').value);if(r){renderGuides()}else add.querySelector('#newCodeMsg').textContent='Code incorrect ou expiré. Vérifie ton email.'};
  var p=document.createElement('p');p.className='note';p.textContent='Un guide dont tu as saisi le code s’ouvre directement.';l.appendChild(p);
- var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" alt="" loading="lazy"><span>'+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
+ var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" alt="" loading="lazy"><span>'+(g.type==='theme'&&g.country?'<em class="gtag">📍 '+g.country+' · thème</em>':'')+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
  document.getElementById('guideTxt').textContent=n?(n+' guide'+(n>1?'s':'')+' débloqué'+(n>1?'s':'')+' sur cet appareil.'):'Aucun guide débloqué sur cet appareil pour le moment.';
 }
 

@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b1f5c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Plages">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>Mini-guide Les plus belles plages de Thaïlande | Thaï Malin</title>
+<style>
+  :root{--nuit:#0b1f5c;--nuit2:#13307f;--or:#f2b632;--or2:#ffd96b;--creme:#fff8e6;--bar:84px}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#06123a;color:#fff;font-family:"Trebuchet MS",system-ui,sans-serif;-webkit-text-size-adjust:100%}
+  body.locked #reader,body.locked #bar{display:none}
+  body:not(.locked) #gate{display:none}
+
+  /* ===== Accès ===== */
+  #gate{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 20%,#13307f,#06123a 70%)}
+  .gcard{width:min(92vw,420px);background:var(--creme);color:var(--nuit);border:3px solid var(--or);border-radius:22px;padding:26px 22px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+  .gcard h1{margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:26px;color:var(--nuit2)}
+  .gcard p{margin:0 0 16px;font-size:15px;line-height:1.45}
+  .gcard input{width:100%;padding:14px;border:2px solid #c8cde6;border-radius:12px;font-size:17px;text-align:center;letter-spacing:.04em;text-transform:uppercase;min-height:48px}
+  .gcard input:focus{outline:3px solid var(--or);border-color:var(--or)}
+  .err{min-height:22px;margin:8px 0;color:#b3261e;font-size:14px}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;color:#3a2600;background:linear-gradient(#ffe08a,var(--or));border-radius:999px;padding:.8em 1.6em;box-shadow:0 3px 0 #b8860b,0 6px 14px rgba(0,0,0,.3);min-height:48px;font-size:16px;text-decoration:none;display:inline-block}
+  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 #b8860b}
+  .btn:focus-visible{outline:3px solid var(--nuit2)}
+  .gcard a.buy{display:block;margin-top:14px;color:var(--nuit2);font-size:14px}
+
+  /* ===== Lecteur ===== */
+  #reader{padding-bottom:calc(var(--bar) + 20px)}
+  .pg.cur{display:block}.pg.mp.cur{display:flex}
+  #pnav{display:flex;gap:10px;width:min(100vw,760px);margin:12px auto 0;padding:0 12px}
+  #pnav button{flex:1;min-height:52px;border:2px solid var(--or);border-radius:14px;background:rgba(11,31,92,.9);color:#fff;font:inherit;font-weight:700;font-size:14px;cursor:pointer;padding:6px 10px;line-height:1.2}
+  #pnav button small{display:block;font-weight:400;color:var(--or2);font-size:12px}
+  #pnav button[hidden]{display:none}
+  .pg{display:none;position:relative;width:min(100vw,760px);margin:0 auto;aspect-ratio:1024/1536;container-type:inline-size;background:#0b1f5c;scroll-margin-top:0}
+  .pg img{display:block;width:100%;height:100%;cursor:zoom-in}
+  .pg a.hot{position:absolute;display:block;border-radius:999px}
+  .pg a.hot:focus-visible,.pg button.hot:focus-visible{outline:3px solid var(--or2)}
+  .pg button.hot{position:absolute;display:block;border:0;background:transparent;cursor:pointer;border-radius:12px;padding:0}
+
+  /* ===== Barre ===== */
+  #bar{position:fixed;left:0;right:0;bottom:0;height:var(--bar);background:rgba(6,18,58,.97);backdrop-filter:blur(8px);border-top:2px solid var(--or);display:flex;flex-direction:column;z-index:20;padding-bottom:env(safe-area-inset-bottom)}
+  #bar .prog{height:3px;background:rgba(255,255,255,.15)}#bar .prog i{display:block;height:100%;width:0;background:var(--or2);transition:width .25s}
+  #bar .ttl{text-align:center;font-size:12.5px;color:var(--or2);padding:5px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #bar .btns{flex:1;display:flex;align-items:stretch;justify-content:space-between;gap:2px;padding:0 4px 4px}
+  #bar button{appearance:none;border:0;background:transparent;color:#fff;font:inherit;cursor:pointer;border-radius:12px;flex:1;min-width:36px;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+  #bar button span{font-size:19px;line-height:1}#bar button small{font-size:9.5px;color:#cfd8ff;font-weight:600}
+  #bar #prev,#bar #next{flex:.7;font-size:30px;font-weight:700;color:var(--or2);line-height:1}
+  #bar #prev[disabled],#bar #next[disabled]{opacity:.25}
+  #bar #fav span{color:var(--or2);font-size:22px}
+  #pdfEnd{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--bar) + 14px);z-index:19;width:calc(100% - 32px);max-width:420px;padding:15px;border:0;border-radius:14px;background:linear-gradient(#ffe08a,var(--or));color:#3a2600;font-weight:800;font-size:16px;font-family:inherit;box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:pointer}
+  #bar .som{background:linear-gradient(#ffe08a,var(--or));color:#3a2600}#bar .som small{color:#3a2600}
+  #bar button:focus-visible{outline:3px solid var(--or2)}
+  .toc h3{margin:12px 0 4px;font-size:14px;color:#44507a;text-transform:uppercase;letter-spacing:.06em}
+  .toc li.sep{list-style:none}
+
+  #hint{position:fixed;left:50%;top:14px;transform:translate(-50%,-20px);background:rgba(11,31,92,.95);color:#fff;border:2px solid var(--or);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:700;z-index:30;opacity:0;pointer-events:none;transition:.4s;white-space:nowrap}
+  #hint.on{opacity:1;transform:translate(-50%,0)}
+  #ibanner{position:fixed;left:10px;right:10px;bottom:calc(var(--bar) + 10px);z-index:25;max-width:520px;margin:0 auto;background:rgba(11,31,92,.97);border:2px solid var(--or);border-radius:16px;padding:10px 12px;display:none;align-items:center;gap:10px;color:#fff;font-size:14px;line-height:1.3;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+  #ibanner.on{display:flex}#ibanner p{margin:0;flex:1;min-width:0}#ibanner b{color:var(--or2);display:block}
+  #ibanner .btn{min-height:40px;padding:.4em 1em;font-size:14px;flex:none}#ibanner .x{background:none;border:0;color:#cfd8ff;font-size:22px;cursor:pointer;padding:4px 8px;flex:none}
+  /* ===== Impression / PDF ===== */
+  @page{size:A4;margin:0}
+  @media print{
+    html,body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    #bar,#pnav,dialog,#gate,.gate{display:none!important}
+    #reader{padding:0!important}
+    .pg{display:block!important;width:198mm!important;height:297mm!important;margin:0 auto!important;break-after:page;page-break-after:always;overflow:hidden}
+    .pg img{width:100%!important;height:100%!important;cursor:default}
+    .pg.mp{display:flex!important;height:297mm!important}
+    .pg.mp .mbody{padding:6px 10px;margin:0 4px}
+    .pg.mp img.dec{width:100%!important;height:auto!important}
+    .pg.mp .mgrid{gap:6px;grid-template-columns:repeat(3,1fr)}
+    .pg.mp #mref{display:none}
+    .pg.mp .mc .fc,.pg.mp .mc ul{font-size:11px}
+    .pg.mp .mc{padding:8px 8px 6px}
+    .mc::before,.mc::after{display:block}
+  }
+  /* ===== Fenêtres ===== */
+  dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%;color:var(--nuit)}
+  dialog::backdrop{background:rgba(3,10,40,.85);backdrop-filter:blur(4px)}
+  .card{position:relative;margin:auto;top:50%;transform:translateY(-50%);width:min(92vw,520px);background:var(--creme);border:3px solid var(--or);border-radius:22px;padding:22px 20px 20px;box-shadow:0 20px 60px rgba(0,0,0,.6);max-height:90vh;overflow:auto}
+  .card h2{margin:0 0 10px;font-family:Georgia,serif;font-style:italic;color:var(--nuit2);font-size:25px}
+  .card .sub{margin:0 0 14px;font-size:14px;color:#44507a}
+  .toc{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+  .toc button{width:100%;text-align:left;padding:12px 14px;min-height:46px;border:2px solid #c8cde6;border-radius:12px;background:#fff;font:inherit;font-size:15px;color:var(--nuit);cursor:pointer;display:flex;gap:12px;align-items:center}
+  .toc button:hover,.toc button:focus-visible{border-color:var(--or);background:#fff4d1;outline:none}
+  .toc b{display:block;min-width:10px;height:10px;border-radius:50%;background:var(--or)}
+  .toc .star{margin-left:auto;color:#d99a14;font-size:18px}
+  .row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:14px}
+  .link{background:none;border:0;color:var(--nuit2);text-decoration:underline;cursor:pointer;font:inherit;min-height:44px;padding:0 6px}
+  .choice a{display:block;margin:10px 0;text-align:center}
+
+  /* Quiz */
+  .dots{display:flex;gap:6px;margin-bottom:14px}.dots i{flex:1;height:8px;border-radius:99px;background:#d9dcec}.dots i.on{background:var(--or)}
+  .q{font-size:19px;font-weight:700;margin:0 0 12px;line-height:1.3}
+  .opts{display:grid;gap:10px;margin:0 0 6px;padding:0;border:0}
+  .opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #c8cde6;border-radius:14px;background:#fff;cursor:pointer;font-size:16px;min-height:48px}
+  .opt input{position:absolute;opacity:0}
+  .opt b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e6e9f7;color:var(--nuit2);flex:none}
+  .opt:has(input:checked){border-color:var(--or);background:#fff4d1}.opt:has(input:checked) b{background:var(--or);color:#3a2600}
+  .opt:has(input:focus-visible){outline:3px solid var(--nuit2)}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+  .res{text-align:center}.res .score{font-size:46px;font-weight:800;color:var(--nuit2);margin:6px 0}.res p{margin:0 0 14px;line-height:1.4}
+  .hide{display:none!important}
+
+  /* Voile cadenas du quiz */
+  .lock{position:absolute;left:37.8%;top:28.7%;width:61%;height:45%;border-radius:14px;backdrop-filter:blur(14px) saturate(.8);-webkit-backdrop-filter:blur(14px) saturate(.8);background:linear-gradient(160deg,rgba(11,31,92,.78),rgba(19,48,127,.7));border:2px solid var(--or);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:max(8px,1.6cqw);text-align:center;color:#fff;padding:2cqw;transition:opacity .9s ease,transform .9s ease,visibility .9s}
+  .lock svg{width:clamp(44px,12cqw,92px);height:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
+  .lock h3{margin:0;font-size:clamp(15px,3cqw,24px);color:var(--or2);font-family:Georgia,serif;font-style:italic}
+  .lock p{margin:0;font-size:clamp(12px,2cqw,16px);line-height:1.35;max-width:32ch}
+  .pg.unlocked .lock{opacity:0;transform:scale(1.04);visibility:hidden;pointer-events:none}
+  .pg:not(.unlocked) a.beach{pointer-events:none}
+
+
+  /* ===== Météo en direct ===== */
+  .pg.mp{aspect-ratio:auto;container-type:normal;background:#001c49;flex-direction:column}
+  .pg.mp .dec{width:100%;height:auto;cursor:default;display:block}
+  .pg.mp .fallback{padding:18px 14px 6px;text-align:center;border-bottom:3px solid var(--or)}
+  .pg.mp .fallback .brand{font-size:30px;font-weight:800;letter-spacing:.06em}.pg.mp .fallback .brand b{color:var(--or2)}
+  .pg.mp .fallback .tag{font-size:12px;color:#cfd8ff}
+  .mbody{padding:16px 14px 18px;flex:1;border-left:3px solid var(--or);border-right:3px solid var(--or);margin:0 8px}
+  .mp h2.sr{position:absolute;left:-9999px}.mp h2{margin:0;font-family:Georgia,serif;font-style:italic;font-size:clamp(24px,6.2vw,34px);color:#fff}
+  .mp h2 span{color:var(--or2)}
+  .mp .mhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:4px}
+  .mp .msub{margin:2px 0 14px;font-size:13px;color:#cfd8ff}
+  .mp .btn{min-height:44px;padding:.5em 1.1em;font-size:14px}
+  .mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media (max-width:360px){.mgrid{grid-template-columns:1fr}}
+  .mc{background:rgba(255,248,230,.97);color:var(--nuit);border:2px solid var(--or);border-radius:16px;padding:12px 12px 10px;min-width:0}
+  .mc h3{margin:0;font-size:16px;color:var(--nuit2);font-family:Georgia,serif}
+  .mc .reg{font-size:11px;color:#5b6690;margin-bottom:6px}
+  .mc .now{display:flex;align-items:center;gap:8px}
+  .mc .ic{font-size:34px;line-height:1}
+  .mc .tp{font-size:30px;font-weight:800;color:var(--nuit)}
+  .mc .cond{font-size:13px;color:#33406e;margin:2px 0 6px}
+  .mc ul{list-style:none;margin:0;padding:0;font-size:12.5px;color:#33406e;display:grid;gap:2px}
+  .mc .fc{display:flex;gap:4px;margin-top:8px;padding-top:7px;border-top:1px dashed #c8cde6}
+  .mc .fc div{flex:1;text-align:center;font-size:11px;color:#5b6690}
+  .mc .fc b{display:block;font-size:18px;font-weight:400}
+  .mc .fc em{font-style:normal;font-weight:700;color:var(--nuit)}
+
+  .mc{position:relative;isolation:isolate;overflow:hidden;background:var(--g,#0b3550);color:#fff;border-color:var(--or)}
+  .mc::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--bg) center/cover no-repeat}
+  .mc::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,18,55,.45),rgba(0,18,55,.72))}
+  .mc h3,.mc .tp,.mc .fc em{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+  .mc .reg,.mc .cond,.mc ul,.mc .fc div{color:#eef2ff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+  .mc .fc{border-top-color:rgba(255,255,255,.35)}
+  .mc.m-clair{--g:linear-gradient(#1e90ff,#38c6e8)}.mc.m-nuageux{--g:linear-gradient(#6f8fb3,#a9bdd1)}.mc.m-pluie{--g:linear-gradient(#4a5a70,#6e7f93)}
+  .mc.m-orage{--g:linear-gradient(#2b2f45,#55506b)}.mc.m-aube{--g:linear-gradient(#f4a259,#e8788f)}.mc.m-couchant{--g:linear-gradient(#e8833a,#7a3f8f)}.mc.m-nuit{--g:linear-gradient(#050d2e,#1a2a62)}
+  .inst{margin:10px 0 4px;text-align:center}.inst .btn{width:100%}.inst .sub{margin:8px 0 0}
+  #offl{font-size:12.5px;margin:8px 0 0;text-align:center}
+  .mnote{margin:12px 2px 0;font-size:12px;color:#cfd8ff;line-height:1.4}
+  .mstate{padding:18px 6px;text-align:center;color:#cfd8ff;font-size:14px;grid-column:1/-1}
+
+  /* Zoom */
+  #zoom{background:#000}
+  #zoom .scroller{position:fixed;inset:0;overflow:auto;-webkit-overflow-scrolling:touch}
+  #zoom img{display:block;width:230%;max-width:none;height:auto}
+  #zoom .x{position:fixed;top:12px;right:12px;z-index:2;width:48px;height:48px;border-radius:50%;border:2px solid var(--or);background:rgba(6,18,58,.9);color:#fff;font-size:22px;cursor:pointer}
+  @media (min-width:900px){#zoom img{width:150%}}
+  @media (prefers-reduced-motion:reduce){.lock{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body class="locked">
+
+<!-- ===== Accès par mot de passe ===== -->
+<main id="gate">
+  <form class="gcard" id="gform" autocomplete="off">
+    <h1>Mini-guide Plages</h1>
+    <p>Entre le mot de passe reçu par email après ton achat pour ouvrir le guide.</p>
+    <label for="pw" class="sr" style="position:absolute;left:-9999px">Mot de passe</label>
+    <input id="pw" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="Mot de passe" aria-describedby="err">
+    <div class="err" id="err" role="alert"></div>
+    <button class="btn" type="submit">Ouvrir le guide</button>
+    <a class="buy" href="https://www.thaimalin.fr/mini-guides" rel="noopener">Pas encore le guide ? Découvrir les mini-guides</a>
+  </form>
+</main>
+
+<!-- ===== Guide ===== -->
+<div id="reader" aria-label="Mini-guide Les plus belles plages de Thaïlande"></div>
+
+<nav id="bar" aria-label="Navigation du guide">
+  <div class="prog"><i id="progI"></i></div>
+  <div class="ttl" id="cnt" aria-live="polite"></div>
+  <div class="btns">
+    <button id="prev" aria-label="Page précédente">‹</button>
+    <button id="btnHome" aria-label="Aller à la couverture"><span>🏠</span><small>Accueil</small></button>
+    <button class="som" id="btnToc" aria-haspopup="dialog"><span>☰</span><small>Sommaire</small></button>
+    <button id="btnMeteo" aria-label="Météo en direct"><span>⛅</span><small>Météo</small></button>
+    <button id="btnResa" aria-label="Mon centre de réservation"><span>🧳</span><small>Réserver</small></button>
+    <button id="btnHub" aria-label="Mon voyage : vol, documents, programme"><span>🧭</span><small>Mon voyage</small></button>
+    <button id="fav" aria-label="Ajouter cette page aux favoris" aria-pressed="false"><span>☆</span><small>Favori</small></button>
+    <button id="next" aria-label="Page suivante">›</button>
+  </div>
+</nav>
+
+<button id="pdfEnd" type="button" style="display:none">📥 Enregistrer mon guide en PDF</button>
+<div id="ibanner" role="region" aria-label="Installer l'appli"><p><b>Installe le guide</b><span id="ibtxt">Accès direct et hors ligne, comme une appli.</span></p><button class="btn" id="ibgo" type="button">Installer</button><button class="x" id="ibx" type="button" aria-label="Fermer">✕</button></div>
+<dialog id="dToc" aria-labelledby="tTitle"><div class="card">
+  <h2 id="tTitle">Sommaire</h2>
+  <div class="inst" style="display:none"><button class="btn" id="btnPrint" type="button">🖨️ Imprimer / PDF</button></div>
+  <div id="inst" class="inst" hidden>
+    <button class="btn" id="btnInstall" type="button">📲 Installer l'appli</button>
+    <p class="sub" id="instHelp" hidden></p>
+  </div><ul class="toc" id="toc"></ul>
+  <p class="sub" id="offl">Mode hors ligne : disponible une fois le guide ouvert en ligne une première fois.</p>
+  <div class="row"><span></span><button class="link" data-close>Fermer</button></div>
+</div></dialog>
+
+<dialog id="dChoix" aria-labelledby="cTitle"><div class="card choice">
+  <h2 id="cTitle">Où veux-tu réserver ?</h2>
+  <a class="btn" id="cb" target="_blank" rel="noopener sponsored">Hôtels Booking.com</a>
+  <a class="btn" id="ca" target="_blank" rel="noopener sponsored">Hôtels Agoda</a>
+  <div class="row"><span></span><button class="link" data-close>Fermer</button></div>
+</div></dialog>
+
+<dialog id="dQuiz" aria-labelledby="qt"><div class="card">
+  <h2 id="qt">Quiz plages secrètes</h2>
+  <p class="sub" id="qsub">4 bonnes réponses sur 5 pour débloquer les plages.</p>
+  <div id="quiz">
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <p class="q" id="qtext" aria-live="polite"></p>
+    <fieldset class="opts" id="opts"></fieldset>
+    <div class="row"><button class="link" data-close>Fermer</button><button class="btn" id="qnext" disabled>Suivant</button></div>
+  </div>
+  <div class="res hide" id="res">
+    <div class="score" id="score"></div><p id="msg"></p>
+    <button class="btn" id="again">Réessayer</button>
+    <button class="btn hide" id="go">Voir les plages</button>
+  </div>
+</div></dialog>
+
+<dialog id="zoom" aria-label="Page agrandie"><button class="x" data-close aria-label="Fermer">✕</button><div class="scroller"><img alt=""></div></dialog>
+
+<script>
+/* ================= RÉGLAGES ================= */
+const PREFIX="PLAGES";                       // mot de passe : PLAGES-MM-AAAA (mois en cours)
+const KEY="tm-mg-plages-unlocked";
+const SITE="https://www.thaimalin.fr";
+const MG=SITE+"/mini-guides";
+const CR=SITE+"/centre-de-reservation-thai-malin/";
+const D=SITE+"/destinations/";
+const PASS_QUIZ=4;
+
+const PAGES=[
+ "Couverture","Comment utiliser ce mini-guide","Andaman ou golfe : quelle côte pour toi ?","Les différents types de plages",
+ "Phuket et Phi Phi","Phi Phi en détail","Krabi et Railay","Koh Lanta","Koh Samui","Koh Phangan","Koh Tao","Koh Lipe",
+ "Koh Yao Noi","Autres îles à découvrir","Snorkeling et plongée","Météo des plages","Météo en direct","Transports","Où dormir par zone",
+ "Budget et conseils pratiques","Quiz : les plages secrètes","Mon centre de réservation","Merci et à bientôt"
+];
+
+/* Zones cliquables : [x1,y1,x2,y2] en pixels de l'image 1024x1536. "" = pas encore reliée. */
+const LINKS={
+  19:[ // Où dormir par zone : 9 boutons "Voir les hébergements"
+   [66,603,322,633,D+"phuket","Phuket : voir les hébergements"],[414,603,662,633,D+"krabi","Krabi : voir les hébergements"],[744,603,988,633,CR+"hotels-booking-thailande","Phi Phi : voir les hébergements"],
+   [66,874,322,904,D+"koh-lanta","Koh Lanta : voir les hébergements"],[414,874,662,904,D+"koh-samui","Koh Samui : voir les hébergements"],[744,874,988,904,D+"koh-samui/koh-phangan","Koh Phangan : voir les hébergements"],
+   [66,1149,322,1179,D+"koh-samui/koh-tao","Koh Tao : voir les hébergements"],[414,1149,662,1179,CR+"hotels-booking-thailande","Koh Lipe : voir les hébergements"],[744,1149,988,1179,CR+"hotels-booking-thailande","Koh Yao Noi : voir les hébergements"]
+  ],
+  22:[
+   [33,608,303,663,CR+"vols-reunion-thailande","Réserver mes vols"],
+   [535,608,805,663,"#choix","Réserver mon hébergement"],
+   [33,915,303,970,CR+"transports-12go-thailande","Réserver mes ferries et transferts"],
+   [535,915,805,970,CR+"activites-klook-thailande","Réserver mes excursions"],
+   [35,1207,305,1262,CR+"assurance-voyage-thailande","Choisir mon assurance voyage"],
+   [537,1207,807,1262,SITE+"/preparer-mon-voyage/internet-esim-en-thailande","Acheter mon eSIM"],
+   [322,1390,703,1458,SITE,"Retour sur thaimalin.fr"]
+  ],
+  23:[
+   [38,1004,254,1042,MG,"Mini-guide Thaïlande"],[291,1004,503,1042,MG,"Mini-guide Vietnam"],
+   [538,1004,752,1042,MG,"Mini-guide Cambodge"],[785,1004,998,1042,MG,"Mini-guide Laos"],
+   [322,1360,703,1428,SITE,"Retour sur thaimalin.fr"]
+  ]
+};
+/* Quiz (page 20) : liens "Voir la plage" dans l'ordre des 9 cartes */
+const BEACH_COLS=[488,697,907], BEACH_ROWS=[640,867,1105];
+const BEACHES=[
+ ["Ao Sane","https://www.google.com/maps/search/?api=1&query=Ao+Sane+Beach+Phuket"],
+ ["Tonsai","https://www.google.com/maps/search/?api=1&query=Tonsai+Beach+Krabi"],
+ ["Laem Tong","https://www.google.com/maps/search/?api=1&query=Laem+Tong+Beach+Koh+Phi+Phi"],
+ ["Haad Tien","https://www.google.com/maps/search/?api=1&query=Haad+Tien+Koh+Phangan"],
+ ["Haad Yao","https://www.google.com/maps/search/?api=1&query=Haad+Yao+Koh+Phangan"],
+ ["Ao Leuk","https://www.google.com/maps/search/?api=1&query=Ao+Leuk+Koh+Tao"],
+ ["Bottle Beach","https://www.google.com/maps/search/?api=1&query=Bottle+Beach+Koh+Phangan"],
+ ["Koh Ngai","https://www.google.com/maps/search/?api=1&query=Koh+Ngai+Trang"],
+ ["Ao Tapao","https://www.google.com/maps/search/?api=1&query=Ao+Tapao+Koh+Kood"]
+];
+const QUESTIONS=[
+ {q:"Quelle côte est la plus agréable de mai à septembre ?",o:["Côte d'Andaman","Golfe de Thaïlande","Côte Est"],a:1},
+ {q:"Quelle île est réputée pour ses eaux turquoise et ses plages préservées, tout près de la Malaisie ?",o:["Koh Samui","Koh Lipe","Pattaya"],a:1},
+ {q:"Quelle est la meilleure période pour les plages de l'Andaman ?",o:["Mai à octobre","Novembre à avril","Toute l'année"],a:1},
+ {q:"Sur quelle île passe-t-on son brevet de plongée à prix abordable ?",o:["Koh Tao","Koh Samui","Phuket"],a:0},
+ {q:"Quel moyen de transport est indispensable pour rejoindre la plupart des îles ?",o:["Le train","Le scooter","Le bateau"],a:2}
+];
+/* ============================================ */
+
+const $=s=>document.querySelector(s);
+const store={get(){try{return localStorage.getItem(KEY)}catch(e){return null}},set(v){try{localStorage.setItem(KEY,v)}catch(e){}}};
+const pad=n=>String(n).padStart(2,"0");
+const pct=(v,t)=>(v/t*100)+"%";
+
+/* ---- Accès ---- */
+const VALID_DAYS=120;
+const norm=t=>String(t||"").toLowerCase().replace(/[\s-]/g,"");
+function expected(back){const d=new Date(),m=new Date(d.getFullYear(),d.getMonth()-(back||0),1);return `${PREFIX}-${pad(m.getMonth()+1)}-${m.getFullYear()}`}
+function tsGet(){try{return parseInt(localStorage.getItem(KEY+"-ts")||"0",10)}catch(e){return 0}}
+function tsSet(){try{localStorage.setItem(KEY+"-ts",String(Date.now()))}catch(e){}}
+function isUnlocked(){const v=store.get();if(!v)return false;
+  if(norm(v)===norm(expected(0))||norm(v)===norm(expected(1)))return true;
+  if(v==="1"&&!tsGet())tsSet();
+  const ts=tsGet();return !!ts&&Date.now()-ts<VALID_DAYS*86400000}
+function open_(){document.body.classList.remove("locked");if(!built)build()}
+$("#gform").addEventListener("submit",e=>{
+  e.preventDefault();
+  const v=$("#pw").value.trim().toUpperCase();
+  if(norm(v)===norm(expected(0))||norm(v)===norm(expected(1))){store.set(v);tsSet();$("#err").textContent="";open_()}
+  else $("#err").textContent="Mot de passe incorrect. Vérifie l'email reçu après ton achat.";
+});
+
+/* ---- Construction du lecteur ---- */
+let built=false;
+function build(){
+  built=true;
+  const R=$("#reader");
+  PAGES.forEach((t,i)=>{
+    const n=i+1;
+    if(n===17){const m=meteoPage();R.appendChild(m);meteoInit(m);return}
+    const s=document.createElement("section");
+    s.className="pg";s.id="p"+n;s.dataset.n=n;s.setAttribute("aria-label",`Page ${n} : ${t}`);
+    const img=document.createElement("img");
+    img.src=`pages/p${pad(n)}.webp`;img.alt=`Page ${n} : ${t}`;img.width=1024;img.height=1536;
+    if(n>2)img.loading="lazy";
+    img.addEventListener("click",e=>{const r=img.getBoundingClientRect();const fx=(e.clientX-r.left)/r.width,fy=(e.clientY-r.top)/r.height;const z=zoneAt(n,fx*1024,fy*1536);z?zoomZone(img.src,img.alt,z):zoomOn(img.src,img.alt,fx,fy)});
+    s.appendChild(img);
+    (LINKS[n]||[]).forEach(([x1,y1,x2,y2,href,label])=>{
+      let a;
+      if(href==="#choix"){a=document.createElement("button");a.type="button";a.addEventListener("click",()=>$("#dChoix").showModal())}
+      else{a=document.createElement("a");a.href=href;a.target="_blank";a.rel="noopener"+(href.includes(SITE)?"":" sponsored")}
+      a.className="hot";a.setAttribute("aria-label",label);
+      a.style.cssText=`left:${pct(x1,1024)};top:${pct(y1,1536)};width:${pct(x2-x1,1024)};height:${pct(y2-y1,1536)}`;
+      s.appendChild(a);
+    });
+    if(n===21)quizPage(s);
+    R.appendChild(s);
+  });
+  const pn=document.createElement("div");pn.id="pnav";pn.innerHTML='<button type="button"></button><button type="button"></button>';
+  pn.children[0].addEventListener("click",()=>go(cur-1));pn.children[1].addEventListener("click",()=>go(cur+1));R.appendChild(pn);
+  const h=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1]);
+  let start=1;
+  if(h>=1&&h<=PAGES.length)start=h;
+  else{const last=parseInt((()=>{try{return localStorage.getItem(KEY+"-page")}catch(e){return 1}})());if(last>1&&last<=PAGES.length)start=last}
+  go(start);
+}
+
+/* ---- Page quiz ---- */
+function quizPage(s){
+  BEACHES.forEach(([name,href],k)=>{
+    const a=document.createElement("a");a.className="hot beach";a.href=href;a.target="_blank";a.rel="noopener";
+    a.setAttribute("aria-label","Voir la plage : "+name);
+    a.style.cssText=`left:${pct(BEACH_COLS[k%3]-85,1024)};top:${pct(BEACH_ROWS[Math.floor(k/3)]-17,1536)};width:${pct(170,1024)};height:${pct(34,1536)}`;
+    s.appendChild(a);
+  });
+  const hit=document.createElement("button");hit.type="button";hit.className="hot";hit.setAttribute("aria-label","Jouer au quiz");
+  hit.style.cssText="left:1.4%;top:27.5%;width:35.4%;height:46.5%";hit.addEventListener("click",startQuiz);s.appendChild(hit);
+  const l=document.createElement("div");l.className="lock";l.setAttribute("role","group");l.setAttribute("aria-label","Plages secrètes verrouillées");
+  l.innerHTML=`<svg viewBox="0 0 64 80" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#d99a14"/></linearGradient></defs><path d="M16 36V24a16 16 0 0 1 32 0v12" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round"/><rect x="6" y="34" width="52" height="40" rx="9" fill="url(#g)" stroke="#9a6a05" stroke-width="2"/><circle cx="32" cy="52" r="6" fill="#5a3a00"/><rect x="29.5" y="54" width="5" height="12" rx="2.5" fill="#5a3a00"/></svg><h3>9 plages secrètes</h3><p>Réponds correctement au quiz pour débloquer nos adresses cachées.</p>`;
+  const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="Débloquer avec le quiz";b.addEventListener("click",startQuiz);l.appendChild(b);s.appendChild(l);
+  try{if(localStorage.getItem("tm_plages_ok")==="1")s.classList.add("unlocked")}catch(e){}
+}
+let qi=0,score=0,pick=null;
+function qrender(){
+  const Q=QUESTIONS[qi];
+  $("#dots").innerHTML=QUESTIONS.map((_,k)=>`<i class="${k<=qi?"on":""}"></i>`).join("");
+  $("#qtext").textContent=`${qi+1}/${QUESTIONS.length} · ${Q.q}`;
+  const f=$("#opts");f.innerHTML="";
+  Q.o.forEach((t,k)=>{const l=document.createElement("label");l.className="opt";l.innerHTML=`<input type="radio" name="o" value="${k}"><b>${"ABC"[k]}</b><span></span>`;l.querySelector("span").textContent=t;l.querySelector("input").addEventListener("change",()=>{pick=k;$("#qnext").disabled=false});f.appendChild(l)});
+  pick=null;$("#qnext").disabled=true;$("#qnext").textContent=qi===QUESTIONS.length-1?"Valider":"Suivant";
+}
+function startQuiz(){qi=0;score=0;$("#quiz").classList.remove("hide");$("#res").classList.add("hide");$("#qsub").classList.remove("hide");qrender();$("#dQuiz").showModal()}
+$("#qnext").addEventListener("click",()=>{
+  if(pick===QUESTIONS[qi].a)score++;
+  if(qi<QUESTIONS.length-1){qi++;qrender();return}
+  $("#quiz").classList.add("hide");$("#qsub").classList.add("hide");$("#res").classList.remove("hide");
+  $("#score").textContent=`${score} / ${QUESTIONS.length}`;
+  const ok=score>=PASS_QUIZ;
+  $("#msg").textContent=ok?"Bravo, les plages secrètes sont débloquées !":"Presque ! Relis le guide et retente ta chance.";
+  $("#again").classList.toggle("hide",ok);$("#go").classList.toggle("hide",!ok);
+  if(ok){try{localStorage.setItem("tm_plages_ok","1")}catch(e){}$("#p21").classList.add("unlocked")}
+});
+$("#again").addEventListener("click",startQuiz);
+$("#go").addEventListener("click",()=>$("#dQuiz").close());
+
+const ZONES={"2":[[21,500,264,885],[271,500,514,885],[517,500,764,885],[771,500,1014,885],[21,950,471,1457],[693,1257,1007,1485]],"3":[[31,357,503,1128],[517,357,1003,1128],[53,1121,857,1221],[24,1257,655,1500]],"4":[[11,400,503,743],[517,400,1014,743],[11,754,503,1093],[517,754,1014,1093],[11,1100,503,1442],[517,1100,1014,1442]],"5":[[24,421,410,1021],[417,428,695,664],[417,664,695,857],[417,857,695,1028],[703,421,1003,1007],[24,1021,446,1385],[453,1021,717,1392],[724,1021,1010,1392]],"6":[[21,414,414,1021],[426,414,754,1021],[761,417,1007,685],[761,693,1007,893],[761,897,1007,1114],[21,1040,750,1264],[21,1264,414,1507],[421,1268,750,1507]],"7":[[31,414,417,1064],[431,414,745,1064],[753,414,1003,650],[753,657,1003,835],[753,843,1003,1092],[31,1064,446,1421],[453,1064,724,1421],[731,1100,1003,1414]],"8":[[20,400,425,1055],[430,400,755,1060],[760,405,1010,670],[760,675,1010,850],[760,852,1010,1130],[20,1062,445,1405],[450,1062,728,1405],[733,1135,1010,1405]],"9":[[21,414,421,1064],[428,414,757,1064],[764,414,1007,721],[764,725,1007,903],[764,907,1007,1164],[21,1064,450,1414],[457,1064,743,1428],[745,1164,1007,1428]],"10":[[31,414,417,1064],[431,414,745,1064],[760,414,1010,714],[760,718,1010,900],[760,907,1010,1128],[31,1064,453,1421],[460,1064,731,1421],[738,1135,1010,1421]],"11":[[21,414,421,1050],[428,414,757,1050],[764,414,1007,707],[764,714,1007,893],[764,900,1007,1171],[21,1057,450,1414],[457,1064,735,1435],[743,1171,1007,1435]],"12":[[15,380,420,1000],[413,380,735,1000],[740,375,1015,690],[745,692,1015,855],[748,858,1015,1130],[15,1000,435,1330],[440,1000,725,1375],[730,1132,1015,1405]],"13":[[17,414,381,1050],[388,414,717,1050],[731,414,1010,757],[731,764,1010,907],[731,907,1010,1171],[24,1057,431,1421],[438,1057,731,1421],[738,1171,1010,1435]],"14":[[15,385,398,1215],[405,385,720,1215],[725,385,1015,785],[728,790,1015,955],[728,958,1015,1225],[15,1215,435,1420],[440,1215,720,1480],[728,1230,1015,1450]],"15":[[15,405,385,1115],[388,405,722,1075],[727,350,1015,815],[727,815,1015,1040],[727,1045,1015,1385],[15,1115,455,1360],[470,1070,722,1395]],"16":[[15,395,410,1060],[15,1065,360,1365],[415,398,1010,578],[415,583,1010,762],[415,768,1010,940],[415,945,1010,1115],[688,1125,1010,1415],[365,1115,685,1400]],"18":[[14,397,350,728],[14,731,350,1021],[14,1025,350,1407],[357,397,721,1192],[728,397,1014,993],[728,997,1014,1357]],"19":[[14,374,356,643],[364,374,688,643],[695,374,1010,643],[14,645,356,914],[364,645,688,914],[695,645,1010,914],[14,917,356,1192],[364,917,688,1192],[695,917,1010,1192],[14,1207,688,1414],[695,1207,1010,1392]],"20":[[15,375,670,768],[680,375,1010,768],[15,775,350,1140],[355,775,672,1140],[680,775,1010,1140],[15,1145,365,1425],[372,1145,710,1425],[715,1145,1010,1425]],"21":[[14,368,383,1128],[14,1135,428,1407],[693,1135,1014,1407]],"22":[[17,400,510,678],[517,400,1003,678],[17,690,510,985],[517,690,1003,985],[17,997,510,1292],[517,997,1003,1292]]};
+/* ---- Navigation ---- */
+let cur=1;
+function go(n){
+  n=Math.max(1,Math.min(PAGES.length,n));
+  document.querySelectorAll(".pg.cur").forEach(p=>p.classList.remove("cur"));
+  const el=document.getElementById("p"+n);if(!el)return;
+  el.classList.add("cur");cur=n;setCur();window.scrollTo(0,0);$("#pdfEnd").style.display=(n===PAGES.length)?"block":"none";
+  try{localStorage.setItem(KEY+"-page",cur)}catch(_){}
+  try{history.replaceState(null,"","#p"+cur)}catch(_){}
+  [n+1,n-1].forEach(k=>{if(k>=1&&k<=PAGES.length&&k!==17){const i=new Image();i.src=`pages/p${pad(k)}.webp`}});
+}
+let tx=0,ty=0,tt=0;
+document.addEventListener("touchstart",e=>{if(e.touches.length!==1)return;tx=e.touches[0].clientX;ty=e.touches[0].clientY;tt=Date.now()},{passive:true});
+document.addEventListener("touchend",e=>{
+  if(document.body.classList.contains("locked")||document.querySelector("dialog[open]")||!e.changedTouches.length)return;
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Date.now()-tt<700&&Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.8)go(cur+(dx<0?1:-1));
+},{passive:true});
+$("#prev").addEventListener("click",()=>go(cur-1));
+$("#next").addEventListener("click",()=>go(cur+1));
+$("#btnHome").addEventListener("click",()=>go(1));
+$("#btnMeteo").addEventListener("click",()=>go(17));
+$("#btnResa").addEventListener("click",()=>go(22));
+$("#btnHub").addEventListener("click",()=>{location.href=new URL("../../",location.href).href});
+$("#pdfEnd").addEventListener("click",()=>$("#btnPrint").click());
+document.addEventListener("keydown",e=>{if(document.querySelector("dialog[open]")||document.body.classList.contains("locked"))return;if(e.key==="ArrowRight"||e.key==="PageDown")go(cur+1);if(e.key==="ArrowLeft"||e.key==="PageUp")go(cur-1)});
+
+/* ---- Sommaire / fenêtres / zoom ---- */
+/* Favoris */
+const FAVKEY="tm-mg-plages-fav";
+const favs=()=>{try{return JSON.parse(localStorage.getItem(FAVKEY)||"[]")}catch(e){return[]}};
+const saveFavs=a=>{try{localStorage.setItem(FAVKEY,JSON.stringify(a))}catch(e){}};
+function setCur(){
+  $("#cnt").textContent=PAGES[cur-1];
+  $("#progI").style.width=(cur/PAGES.length*100)+"%";
+  $("#prev").disabled=cur<=1;$("#next").disabled=cur>=PAGES.length;
+  const pn=$("#pnav");if(pn){const p=pn.children[0],n=pn.children[1];p.hidden=cur<=1;n.hidden=cur>=PAGES.length;if(cur>1)p.innerHTML="‹ Précédent<small>"+PAGES[cur-2]+"</small>";if(cur<PAGES.length)n.innerHTML="Suivant ›<small>"+PAGES[cur]+"</small>"}
+  const on=favs().includes(cur);$("#fav span").textContent=on?"★":"☆";$("#fav").setAttribute("aria-pressed",on);
+  $("#fav").setAttribute("aria-label",on?"Retirer cette page des favoris":"Ajouter cette page aux favoris");
+}
+$("#fav").addEventListener("click",()=>{let a=favs();a=a.includes(cur)?a.filter(x=>x!==cur):[...a,cur];saveFavs(a);setCur()});
+
+/* Sommaire par titres + favoris */
+const toc=$("#toc");
+function item(i,star){const li=document.createElement("li"),b=document.createElement("button");b.innerHTML=`<b></b><span></span>${star?'<i class="star" style="font-style:normal">★</i>':""}`;b.querySelector("span").textContent=PAGES[i];b.addEventListener("click",()=>{$("#dToc").close();go(i+1)});li.appendChild(b);return li}
+function buildToc(){
+  toc.innerHTML="";const f=favs().sort((a,b)=>a-b);
+  if(f.length){const h=document.createElement("li");h.className="sep";h.innerHTML="<h3>Mes favoris</h3>";toc.appendChild(h);f.forEach(n=>toc.appendChild(item(n-1,true)));const h2=document.createElement("li");h2.className="sep";h2.innerHTML="<h3>Toutes les pages</h3>";toc.appendChild(h2)}
+  PAGES.forEach((_,i)=>{toc.appendChild(item(i,f.includes(i+1)));});
+}
+
+/* petit conseil au premier affichage */
+(()=>{let seen=0;try{seen=localStorage.getItem("tm-plages-hint")}catch(e){}if(seen)return;
+ const t=document.createElement("div");t.id="hint";t.textContent="💡 Touche une case pour l'agrandir";document.body.appendChild(t);
+ setTimeout(()=>{t.classList.add("on")},1500);setTimeout(()=>{t.classList.remove("on");try{localStorage.setItem("tm-plages-hint","1")}catch(e){}},6500);
+})();
+/* ---- Impression / PDF ---- */
+$("#btnPrint").addEventListener("click",async()=>{
+  $("#dToc").close();
+  const imgs=[...document.querySelectorAll(".pg img")];
+  imgs.forEach(i=>{i.loading="eager"});
+  try{await Promise.race([loadMeteo(),new Promise(r=>setTimeout(r,8000))])}catch(e){}
+  await Promise.all(imgs.map(i=>i.complete?Promise.resolve():new Promise(r=>{i.addEventListener("load",r,{once:true});i.addEventListener("error",r,{once:true})})));
+  setTimeout(()=>window.print(),150);
+});
+$("#btnToc").addEventListener("click",()=>{buildToc();$("#dToc").showModal()});
+setCur();
+document.querySelectorAll("dialog").forEach(d=>{
+  d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-close]"))d.close()});
+});
+$("#cb").href=CR+"hotels-booking-thailande";$("#ca").href=CR+"hotels-agoda";
+function zoomOn(src,alt,fx=.5,fy=0){
+  const z=$("#zoom"),im=z.querySelector("img"),sc=z.querySelector(".scroller");
+  im.style.width="";im.src=src;im.alt=alt;z.showModal();
+  const go_=()=>{const w=im.offsetWidth,h=im.offsetHeight;sc.scrollTo(Math.max(0,fx*w-sc.clientWidth/2),Math.max(0,fy*h-sc.clientHeight/2))};
+  go_();im.complete?requestAnimationFrame(go_):im.addEventListener("load",go_,{once:true});
+}
+function zoneAt(n,x,y){
+  const zs=ZONES[n]||[];let best=null,ba=1e12;
+  zs.forEach(z=>{if(x>=z[0]&&x<=z[2]&&y>=z[1]&&y<=z[3]){const a=(z[2]-z[0])*(z[3]-z[1]);if(a<ba){ba=a;best=z}}});
+  return best;
+}
+function zoomZone(src,alt,z){
+  const d=$("#zoom"),im=d.querySelector("img"),sc=d.querySelector(".scroller");
+  const VW=sc.clientWidth||innerWidth,VH=sc.clientHeight||innerHeight;
+  const zw=z[2]-z[0],zh=z[3]-z[1];
+  const IW=Math.min(VW*0.94/(zw/1024),VW*4.5);
+  im.style.width=IW+"px";im.src=src;im.alt=alt;d.showModal();
+  const place=()=>{const IH=im.offsetHeight||IW*1.5;sc.scrollTo(Math.max(0,z[0]/1024*IW-VW*0.03),Math.max(0,z[1]/1536*IH-Math.max(40,(VH-zh/1536*IH)/2)))};
+  place();im.complete?requestAnimationFrame(place):im.addEventListener("load",place,{once:true});
+}
+
+
+/* ---- Météo en direct (Open-Meteo) ---- */
+const SPOTS=[
+ {n:"Phuket",r:"Andaman · Kata",lat:7.80,lon:98.28},
+ {n:"Krabi",r:"Andaman · Ao Nang",lat:7.98,lon:98.82},
+ {n:"Koh Lanta",r:"Andaman",lat:7.55,lon:99.00},
+ {n:"Koh Lipe",r:"Andaman",lat:6.47,lon:99.30},
+ {n:"Koh Samui",r:"Golfe · Chaweng",lat:9.53,lon:100.12},
+ {n:"Koh Phangan",r:"Golfe",lat:9.70,lon:100.10},
+ {n:"Koh Tao",r:"Golfe",lat:10.10,lon:99.80},
+ {n:"Koh Chang",r:"Est · White Sand",lat:12.05,lon:102.30}
+];
+const WMO={0:["☀️","Ensoleillé"],1:["🌤️","Plutôt dégagé"],2:["⛅","Éclaircies"],3:["☁️","Nuageux"],45:["🌫️","Brouillard"],48:["🌫️","Brouillard"],
+ 51:["🌦️","Bruine légère"],53:["🌦️","Bruine"],55:["🌦️","Bruine forte"],61:["🌧️","Pluie légère"],63:["🌧️","Pluie"],65:["🌧️","Forte pluie"],
+ 66:["🌧️","Pluie verglaçante"],67:["🌧️","Pluie verglaçante"],71:["❄️","Neige"],73:["❄️","Neige"],75:["❄️","Neige"],
+ 80:["🌦️","Averses"],81:["🌧️","Averses fortes"],82:["⛈️","Averses violentes"],95:["⛈️","Orage"],96:["⛈️","Orage et grêle"],99:["⛈️","Orage et grêle"]};
+const wmo=c=>WMO[c]||["🌡️","—"];
+const MKEY="tm-meteo-plages";
+const jours=["dim","lun","mar","mer","jeu","ven","sam"];
+function meteoPage(){
+  const s=document.createElement("section");s.className="pg mp";s.id="p17";s.dataset.n=17;s.setAttribute("aria-label","Page 17 : Météo en direct");
+  s.innerHTML=`<img class="dec top" src="pages/p17-haut.webp" alt="" onerror="this.remove();document.querySelector('.mp .fallback').hidden=false">
+  <header class="fallback" hidden><div class="brand">THAÏ <b>MALIN</b></div><div class="tag">Thaïlande · Les plus belles plages</div></header>
+  <div class="mbody"><div class="mhead"><h2 class="sr">Météo <span>en direct</span></h2><button class="btn" id="mref" type="button">↻ Actualiser</button></div>
+  <p class="msub" id="msub">Chargement…</p><div class="mgrid" id="mgrid" aria-live="polite"><div class="mstate">Chargement de la météo…</div></div>
+  <p class="mnote">Prévisions indicatives (Open-Meteo). Avant de te baigner, respecte toujours les drapeaux de la plage. Octobre et la saison des pluies peuvent changer vite les conditions de mer.</p></div>
+  <img class="dec bot" src="pages/p17-bas.webp" alt="" onerror="this.remove()">`;
+  return s;
+}
+function mood(c){
+  const t=(c.time||"").slice(11,16),h=t?+t.slice(0,2)+ +t.slice(3)/60:(new Date().getUTCHours()+7)%24;
+  const k=c.weather_code;
+  if(k>=95)return"orage";
+  if((k>=51&&k<=67)||(k>=80&&k<=82))return"pluie";
+  if(h<5.5||h>=19.5)return"nuit";
+  if(h<8)return"aube";
+  if(h>=17)return"couchant";
+  return k<=1?"clair":"nuageux";
+}
+function card(sp,w,m){
+  const c=w.current,d=w.daily,[ic,cond]=wmo(c.weather_code);
+  const li=[];
+  li.push(`<li>💨 Vent ${Math.round(c.wind_speed_10m)} km/h</li>`);
+  if(d&&d.precipitation_probability_max)li.push(`<li>🌧️ Pluie aujourd'hui : ${d.precipitation_probability_max[0]} %</li>`);
+  if(m&&m.current&&m.current.wave_height!=null)li.push(`<li>🌊 Vagues ${m.current.wave_height.toFixed(1)} m${m.current.sea_surface_temperature!=null?` · eau ${Math.round(m.current.sea_surface_temperature)}°`:""}</li>`);
+  let fc="";
+  if(d&&d.time)fc=`<div class="fc">${[1,2,3].map(i=>d.time[i]?`<div>${jours[new Date(d.time[i]+"T12:00").getDay()]}<b>${wmo(d.weather_code[i])[0]}</b><em>${Math.round(d.temperature_2m_max[i])}°</em></div>`:"").join("")}</div>`;
+  const mo=mood(c);const ic2=mo==="nuit"&&(c.weather_code<=1)?"🌙":mo==="nuit"&&c.weather_code===2?"☁️":ic;return `<article class="mc m-${mo}" style="--bg:url(bg/${mo}.webp)"><h3>${sp.n}</h3><div class="reg">${sp.r}</div><div class="now"><span class="ic" aria-hidden="true">${ic2}</span><span class="tp">${Math.round(c.temperature_2m)}°</span></div><div class="cond">${mo==="nuit"&&c.weather_code<=1?"Ciel dégagé":cond}</div><ul>${li.join("")}</ul>${fc}</article>`;
+}
+function paint(data,when,stale){
+  $("#mgrid").innerHTML=SPOTS.map((sp,i)=>data.w[i]&&data.w[i].current?card(sp,data.w[i],data.m&&data.m[i]):"").join("")||'<div class="mstate">Météo indisponible pour le moment.</div>';
+  const h=new Date(when).toLocaleString("fr-FR",{weekday:"short",hour:"2-digit",minute:"2-digit"});
+  $("#msub").textContent=stale?`Dernière mise à jour : ${h} (hors ligne ou indisponible)`:`Mise à jour : ${h}`;
+}
+async function getJSON(u){const c=new AbortController(),t=setTimeout(()=>c.abort(),10000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw new Error(r.status);return await r.json()}finally{clearTimeout(t)}}
+async function loadMeteo(){
+  let cached=null;try{cached=JSON.parse(localStorage.getItem(MKEY)||"null")}catch(e){}
+  if(cached)paint(cached.data,cached.t,true);
+  const la=SPOTS.map(s=>s.lat).join(","),lo=SPOTS.map(s=>s.lon).join(",");
+  try{
+    const wp=getJSON(`https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${lo}&current=temperature_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,precipitation_probability_max&forecast_days=4&timezone=Asia%2FBangkok`);
+    const mp=getJSON(`https://marine-api.open-meteo.com/v1/marine?latitude=${la}&longitude=${lo}&current=wave_height,sea_surface_temperature&timezone=Asia%2FBangkok`).catch(()=>null);
+    const [w,m]=await Promise.all([wp,mp]);
+    const data={w:Array.isArray(w)?w:[w],m:m?(Array.isArray(m)?m:[m]):null};
+    const now=Date.now();paint(data,now,false);
+    try{localStorage.setItem(MKEY,JSON.stringify({t:now,data}))}catch(e){}
+  }catch(e){
+    if(!cached)$("#mgrid").innerHTML='<div class="mstate">Météo indisponible pour le moment. Vérifie ta connexion puis appuie sur « Actualiser ».</div>',$("#msub").textContent="Connexion nécessaire";
+  }
+}
+function meteoInit(s){
+  $("#mref").addEventListener("click",loadMeteo);
+  let done=false;const io=new IntersectionObserver(es=>{if(!done&&es.some(e=>e.isIntersecting)){done=true;loadMeteo();io.disconnect()}},{rootMargin:"600px"});io.observe(s);
+}
+
+
+/* ---- Bandeau « Installer » ---- */
+(()=>{
+  const bn=$("#ibanner");if(!bn)return;
+  const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  let dp=null,hid=false;try{hid=localStorage.getItem("tm-plages-ib")==="1"}catch(e){}
+  const show=()=>{if(!standalone&&!hid&&!document.body.classList.contains("locked"))bn.classList.add("on")};
+  const hide=(perm)=>{bn.classList.remove("on");if(perm){try{localStorage.setItem("tm-plages-ib","1")}catch(e){}}};
+  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;setTimeout(show,2500)});
+  if(ios&&!standalone)setTimeout(show,3000);
+  $("#ibgo").addEventListener("click",async()=>{
+    if(dp){dp.prompt();try{await dp.userChoice}catch(e){}dp=null;hide(true)}
+    else if(ios){$("#ibtxt").innerHTML="Appuie sur <b style='display:inline'>Partager</b> puis <b style='display:inline'>Sur l’écran d’accueil</b>.";$("#ibgo").hidden=true}
+    else{$("#ibtxt").textContent="Dans le menu ⋮ de ton navigateur, choisis « Installer l’application » ou « Ajouter à l’écran d’accueil ».";$("#ibgo").hidden=true}
+  });
+  $("#ibx").addEventListener("click",()=>hide(true));
+  window.addEventListener("appinstalled",()=>hide(true));
+  if(!ios&&!standalone)setTimeout(()=>{if(!dp)show()},6000);
+})();
+/* ---- Appli installable (PWA) ---- */
+(()=>{
+  const inst=$("#inst"),b=$("#btnInstall"),help=$("#instHelp"),off=$("#offl");
+  let dp=null;
+  const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(standalone){off.textContent="✓ Appli installée · fonctionne hors ligne";}
+  else if(ios){inst.hidden=false;b.textContent="📲 Installer sur iPhone / iPad";b.addEventListener("click",()=>{help.hidden=false;help.innerHTML="Appuie sur <b>Partager</b> (le carré avec la flèche), puis <b>Sur l’écran d’accueil</b>."})}
+  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;if(!standalone)inst.hidden=false});
+  b.addEventListener("click",async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(e){}dp=null;inst.hidden=true});
+  window.addEventListener("appinstalled",()=>{inst.hidden=true;off.textContent="✓ Appli installée · fonctionne hors ligne"});
+  if("serviceWorker" in navigator&&!standalone)navigator.serviceWorker.ready.then(()=>{off.textContent="✓ Disponible hors ligne"}).catch(()=>{});
+  if(!b.hidden&&!ios&&!dp&&!standalone){/* bouton affiché seulement quand le navigateur propose l'installation */}
+  const upd=()=>{if(!navigator.onLine&&!standalone)off.textContent="📴 Tu es hors ligne : le guide reste disponible"};
+  addEventListener("offline",upd);
+})();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
+
+/* ---- Démarrage ---- */
+if(isUnlocked())open_();
+</script>
+</body>
+</html>

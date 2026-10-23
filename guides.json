@@ -1,11 +1,86 @@
 {
   "_aide": "Liste de tous les guides. Pour ajouter un guide : python tools/new_guide.py (il remplit ce fichier tout seul). 'sales' = page de vente du guide. 'prefix' = début du code d'accès (ex. LAOS donne LAOS-10-2026). 'key' = ne pas modifier.",
   "guides": [
-    {"slug": "thailande", "type": "destination", "emoji": "🌴", "title": "Mini-guide Thaïlande", "desc": "Bangkok, Chiang Mai, les îles", "color": "#1676d2", "prefix": "THAILANDE", "key": "tm-mg-unlocked", "sales": "https://thaimalin.fr"},
-    {"slug": "vietnam", "type": "destination", "emoji": "🌿", "title": "Mini-guide Vietnam", "desc": "Hanoï, Hội An, Saïgon", "color": "#1fa66b", "prefix": "VIETNAM", "key": "tm-mg-vn-unlocked", "sales": "https://thaimalin.fr"},
-    {"slug": "laos", "type": "destination", "emoji": "🐘", "title": "Mini-guide Laos", "desc": "Luang Prabang, Vientiane", "color": "#f07b22", "prefix": "LAOS", "key": "tm-mg-laos-unlocked", "sales": "https://thaimalin.fr"},
-    {"slug": "cambodge", "type": "destination", "emoji": "🛕", "title": "Mini-guide Cambodge", "desc": "Angkor, Siem Reap", "color": "#673ab7", "prefix": "CAMBODGE", "key": "tm-mg-cambodge-unlocked", "sales": "https://thaimalin.fr"},
-    {"slug": "bali", "type": "destination", "emoji": "🌺", "title": "Mini-guide Bali", "desc": "Ubud, plages, rizières", "color": "#ed4775", "soon": true, "sales": "https://thaimalin.fr"},
-    {"slug": "premium", "type": "premium", "emoji": "👑", "title": "Guide premium Thaï Malin", "desc": "Itinéraires complets et bons plans", "color": "#2a2f3a", "soon": true, "sales": "https://thaimalin.fr"}
+    {
+      "slug": "thailande",
+      "type": "destination",
+      "emoji": "🌴",
+      "title": "Mini-guide Thaïlande",
+      "desc": "Bangkok, Chiang Mai, les îles",
+      "color": "#1676d2",
+      "prefix": "THAILANDE",
+      "key": "tm-mg-unlocked",
+      "sales": "https://thaimalin.fr",
+      "country": "Thaïlande"
+    },
+    {
+      "slug": "vietnam",
+      "type": "destination",
+      "emoji": "🌿",
+      "title": "Mini-guide Vietnam",
+      "desc": "Hanoï, Hội An, Saïgon",
+      "color": "#1fa66b",
+      "prefix": "VIETNAM",
+      "key": "tm-mg-vn-unlocked",
+      "sales": "https://thaimalin.fr",
+      "country": "Vietnam"
+    },
+    {
+      "slug": "laos",
+      "type": "destination",
+      "emoji": "🐘",
+      "title": "Mini-guide Laos",
+      "desc": "Luang Prabang, Vientiane",
+      "color": "#f07b22",
+      "prefix": "LAOS",
+      "key": "tm-mg-laos-unlocked",
+      "sales": "https://thaimalin.fr",
+      "country": "Laos"
+    },
+    {
+      "slug": "cambodge",
+      "type": "destination",
+      "emoji": "🛕",
+      "title": "Mini-guide Cambodge",
+      "desc": "Angkor, Siem Reap",
+      "color": "#673ab7",
+      "prefix": "CAMBODGE",
+      "key": "tm-mg-cambodge-unlocked",
+      "sales": "https://thaimalin.fr",
+      "country": "Cambodge"
+    },
+    {
+      "slug": "plages-thailande",
+      "type": "theme",
+      "emoji": "🏝️",
+      "title": "Mini-guide Plages de Thaïlande",
+      "desc": "Phuket, Krabi, Koh Samui, Koh Lipe…",
+      "color": "#0b3550",
+      "prefix": "PLAGES",
+      "key": "tm-mg-plages-unlocked",
+      "sales": "https://www.thaimalin.fr/mini-guides",
+      "country": "Thaïlande"
+    },
+    {
+      "slug": "bali",
+      "type": "destination",
+      "emoji": "🌺",
+      "title": "Mini-guide Bali",
+      "desc": "Ubud, plages, rizières",
+      "color": "#ed4775",
+      "soon": true,
+      "sales": "https://thaimalin.fr"
+    },
+    {
+      "slug": "premium",
+      "type": "premium",
+      "emoji": "👑",
+      "title": "Guide premium Thaï Malin",
+      "desc": "Itinéraires complets et bons plans",
+      "color": "#8a6d1d",
+      "soon": false,
+      "sales": "https://thaimalin.fr",
+      "url": "https://thaimalin-guide-pwa.hidden-forest-5a66.workers.dev/"
+    }
   ]
 }

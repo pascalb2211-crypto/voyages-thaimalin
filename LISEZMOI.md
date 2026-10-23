@@ -36,3 +36,7 @@ Réglages de `guide.json` : `slug` (nom court sans espace), `title`, `short` (te
 - Code du hub seul : `VOYAGE-MM-AAAA`.
 - Un code reste valable le mois en cours et le suivant. Une fois saisi, l'accès reste ouvert 120 jours sur le téléphone.
 - Les codes se calculent tout seuls : rien à modifier chaque mois.
+
+## Guides au fonctionnement propre
+
+Les guides `thailande` et `plages-thailande` gardent leur propre code (une seule page, météo en direct pour les plages). Leur code d accès suit la même règle (PREFIX-MM-AAAA, mois en cours ou précédent, 120 jours) et ils sont reliés au hub.

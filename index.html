@@ -81,6 +81,48 @@ nav button{font-size:10px;padding:6px 1px}
 .leg{display:flex;align-items:center;gap:10px;background:#242a33;border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}.leg b{display:block}.leg small{opacity:.7}.leg button{margin-left:auto;border:1px solid #ffffff2a;background:#ffffff12;color:#fff;border-radius:10px;width:36px;height:36px;cursor:pointer}
 .sec{border-top:1px solid #ffffff1a;margin-top:16px;padding-top:14px}.sec h3{font-size:14px;margin-bottom:8px}
 .dng{background:#5a1f1f;color:#ffd6d6}
+
+/* ===== Refonte présentation ===== */
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:#0f1115;z-index:80}
+header{padding:calc(env(safe-area-inset-top) + 16px) 18px 8px}
+header h1{font-size:21px;letter-spacing:.2px}
+main{padding:10px 16px}
+.card{border-radius:20px;padding:18px;box-shadow:0 6px 22px #0004}
+h2{font-size:18px;margin-bottom:14px}
+label{font-size:13px;opacity:.8;margin-bottom:2px}
+input:not([type=checkbox]):not([type=file]):not([type=radio]),select{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;min-height:52px;border-radius:12px;padding:12px 14px;text-align:left}
+input[type=date],input[type=time],input[type=datetime-local]{display:block;line-height:1.2}
+input::-webkit-date-and-time-value{text-align:left;margin:0;min-height:1.3em}
+select{padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23cfd6dd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.row>*{min-width:0}
+.fld{margin-top:14px}.fld:first-child{margin-top:0}
+.btn{padding:14px 18px;border-radius:14px;font-size:16px}
+.btn.full{display:block;width:100%;text-align:center}
+/* Mes guides (accueil) */
+.mg{display:flex;flex-direction:column;gap:10px}
+.mg a{display:flex;align-items:center;gap:14px;padding:10px 14px 10px 10px;border-radius:16px;background:#242a33;border:1px solid #ffffff1a}
+.mg a::after{content:'›';font-size:30px;line-height:1;opacity:.45;margin-left:auto}
+.mg img{width:62px;height:93px;aspect-ratio:auto;border-radius:9px;flex:0 0 62px;box-shadow:0 4px 12px #0007}
+.mg span{padding:0;font-size:16px}.mg span small{font-size:13px;margin-top:5px}
+/* Programme */
+.pghead{padding:4px 2px 10px}.pghead h2{margin:0}
+.empty{text-align:center;padding:34px 16px;margin-bottom:12px;border:1.5px dashed #ffffff2a;border-radius:18px;opacity:.9;line-height:1.5}
+.empty b{display:block;font-size:34px;margin-bottom:6px}.empty small{display:block;opacity:.65;margin-top:4px;font-size:13px}
+.fab{display:block;width:100%;padding:16px;border:0;border-radius:16px;background:linear-gradient(135deg,#d35400,#f0955a);color:#fff;font:800 17px 'Segoe UI',Arial,sans-serif;cursor:pointer;margin:6px 0 14px;box-shadow:0 8px 20px #d3540040}
+details.opt{background:#1a1d24;border:1px solid #ffffff1a;border-radius:16px;padding:0 16px;margin-bottom:12px}
+details.opt summary{list-style:none;cursor:pointer;padding:15px 0;font-weight:800;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+details.opt summary::-webkit-details-marker{display:none}details.opt summary::after{content:'▾';opacity:.6}
+details.opt[open] summary::after{content:'▴'}details.opt .inner{padding:0 0 16px}
+.sheetbg{position:fixed;inset:0;z-index:70;background:#000b;display:none;align-items:flex-end;justify-content:center}.sheetbg.on{display:flex}
+.sheetbox{width:100%;max-width:640px;max-height:92vh;overflow:auto;-webkit-overflow-scrolling:touch;background:#1a1d24;border-radius:24px 24px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));border-top:1px solid #ffffff22}
+.sheetbox h3{font-size:19px;margin-bottom:4px}
+.sheetbox .grab{width:44px;height:5px;border-radius:3px;background:#ffffff33;margin:-8px auto 14px}
+.sheetbox .acts{display:flex;gap:10px;margin-top:20px}.sheetbox .acts .btn{flex:1;text-align:center}.sheetbox .acts .btn.alt{flex:0 0 auto}
+.findlk{display:inline-block;margin-top:8px;font-size:14px;font-weight:700;color:#f0955a;text-decoration:none}
+.pl{border-radius:16px;padding:14px}.pl .tm{flex:0 0 54px;font-size:16px}
+.chip{padding:10px 14px;border-radius:14px}
+/* Vol */
+.sec h3{font-size:15px}.sec{margin-top:20px;padding-top:18px}
 </style></head><body>
 <div id="gate"><div class="box"><div style="font-size:40px">🧭</div><h2>Mon voyage — Thaï Malin</h2>
 <p>Réservé aux acheteurs. Entre le mot de passe reçu par email après ton achat.</p>
@@ -89,7 +131,7 @@ nav button{font-size:10px;padding:6px 1px}
 <main>
 <section class="view on" id="v-home">
  <div class="inst" id="inst"><b>📲 Installer l’appli<small>Sur ton écran d’accueil, utilisable hors-ligne</small></b><button id="instBtn">Installer</button></div>
- <div class="card" id="myGuides"><h2>📚 Mes guides</h2><div class="mg" id="mgGrid"></div><div id="mgEmpty" class="sub" style="display:none">Aucun guide débloqué sur cet appareil pour le moment.</div><div style="margin-top:12px"><button class="btn alt" data-go="guides">Tous les guides / ajouter un code</button></div></div>
+ <div class="card" id="myGuides"><h2>📚 Mes guides</h2><div class="mg" id="mgGrid"></div><div id="mgEmpty" class="sub" style="display:none">Aucun guide débloqué sur cet appareil pour le moment.</div><div style="margin-top:12px"><button class="btn alt full" data-go="guides">Tous les guides / ajouter un code</button></div></div>
  <div class="card" id="status"></div>
  <div class="card" id="todayPlan" style="display:none"><h2>🗓️ Au programme aujourd’hui</h2><div id="todayPlanList"></div><div style="margin-top:12px"><button class="btn alt" data-go="plan">Voir mon programme</button></div></div>
  <div class="card" id="nextCard" style="display:none"><h2>🔔 Prochain rappel</h2><div id="nextTxt"></div><div style="margin-top:12px"><button class="btn alt" data-go="flight">Voir tous mes rappels</button></div></div>
@@ -98,18 +140,24 @@ nav button{font-size:10px;padding:6px 1px}
  <div class="sub" id="guideTxt" style="display:none"></div>
 </section>
 <section class="view" id="v-plan">
- <div class="card"><h2>🗓️ Mon programme</h2><div id="planHint" class="sub"></div>
-  <div class="chips" id="planDays" style="margin-top:12px"></div>
-  <div id="planList"></div>
-  <div id="planAdd" style="margin-top:14px;border-top:1px solid #ffffff1a;padding-top:14px">
-   <div class="row"><div style="flex:0 0 110px"><label for="pTime">Heure</label><input type="time" id="pTime"></div><div><label for="pTitle">Activité</label><input id="pTitle" placeholder="ex. Grand Palais"></div></div>
-   <div style="margin-top:10px"><label for="pPlace">Lieu (nom + ville, ou lien Google Maps collé)</label><input id="pPlace" placeholder="ex. Wat Phra Kaew, Bangkok"><a id="pFind" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:#f0955a;text-decoration:none">🔎 Chercher sur Google Maps</a><div class="note" style="margin:4px 0 0">Astuce : dans Maps, touche Partager, copie le lien et colle-le ici.</div></div>
-   <div style="margin-top:10px"><label for="pNote">Note (réservation, prix…)</label><input id="pNote" placeholder="optionnel"></div>
-   <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="pSave">➕ Ajouter à ce jour</button><button class="btn alt" id="pCancel" style="display:none">Annuler</button></div>
-  </div>
-  <div style="margin-top:14px;border-top:1px solid #ffffff1a;padding-top:14px"><label for="pNewDay">Ajouter une autre date</label><div class="row"><input type="date" id="pNewDay"><button class="btn alt" id="pNewDayBtn" style="flex:0 0 auto">Ajouter</button></div></div>
-  <div style="margin-top:14px"><button class="btn" id="planIcs">📅 Ajouter mon programme au calendrier</button></div>
-  <p class="note">Ton programme est enregistré sur ce téléphone, lisible sans internet.</p></div>
+ <div class="pghead"><h2>🗓️ Mon programme</h2><div id="planHint" class="sub"></div></div>
+ <div class="chips" id="planDays"></div>
+ <div id="planList"></div>
+ <button class="fab" id="planOpen">＋ Ajouter une activité</button>
+ <details class="opt"><summary>⋯ Plus d’options</summary><div class="inner">
+  <div class="fld"><label for="pNewDay">Ajouter une autre date</label><div class="row"><input type="date" id="pNewDay"><button class="btn alt" id="pNewDayBtn" style="flex:0 0 auto">Ajouter</button></div></div>
+  <div class="fld"><button class="btn full" id="planIcs">📅 Ajouter mon programme au calendrier</button></div>
+ </div></details>
+ <p class="note" style="text-align:center">Ton programme est enregistré sur ce téléphone, lisible sans internet.</p>
+ <div class="sheetbg" id="planSheet"><div class="sheetbox" id="planAdd">
+  <div class="grab"></div><h3 id="pHead">Nouvelle activité</h3>
+  <div class="fld"><label for="pTitle">Que veux-tu faire ?</label><input id="pTitle" placeholder="ex. Grand Palais" autocomplete="off"></div>
+  <div class="fld"><label for="pPlace">Où ? (nom + ville, ou lien Google Maps)</label><input id="pPlace" placeholder="ex. Wat Phra Kaew, Bangkok" autocomplete="off"><a id="pFind" class="findlk" href="#" target="_blank" rel="noopener">🔎 Chercher sur Google Maps</a><div class="note" style="margin:4px 0 0">Dans Maps : touche Partager, copie le lien, puis colle-le ici.</div></div>
+  <div class="fld"><label for="pTime">À quelle heure ? (optionnel)</label><input type="time" id="pTime"></div>
+  <div class="fld"><label for="pNote">Note (optionnel)</label><input id="pNote" placeholder="réservation, prix…" autocomplete="off"></div>
+  <p class="note" id="pMsg" style="font-weight:700;min-height:16px"></p>
+  <div class="acts"><button class="btn alt" id="pCancel">Annuler</button><button class="btn" id="pSave">Ajouter</button></div>
+ </div></div>
 </section>
 <section class="view" id="v-more"><button class="more" data-go="check">☑️ Checklist de départ</button><button class="more" data-go="conv">💱 Convertisseur de monnaie</button>
  <div class="card"><h2>💾 Sauvegarde</h2><p class="sub" style="margin:0 0 12px">Tes dates, ton vol, ton programme, ta checklist et (au choix) tes documents sont sur ce téléphone. Garde un fichier de sauvegarde pour les retrouver si tu changes de téléphone.</p>
@@ -120,7 +168,7 @@ nav button{font-size:10px;padding:6px 1px}
 <section class="view" id="v-docs">
  <div class="card"><h2>📄 Mes documents</h2>
   <p class="sub" style="margin:0 0 12px">Billets, réservations, assurance, visa… Ils restent <b>sur ce téléphone</b> et s’ouvrent sans internet.</p>
-  <div class="row"><div><label for="dCat">Catégorie</label><select id="dCat"></select></div><div><label for="dName">Nom (optionnel)</label><input id="dName" placeholder="ex. Billet Paris–Bangkok"></div></div>
+  <div class="fld"><label for="dCat">Catégorie</label><select id="dCat"></select></div><div class="fld"><label for="dName">Nom (optionnel)</label><input id="dName" placeholder="ex. Billet Paris–Bangkok" autocomplete="off"></div>
   <div style="margin-top:12px"><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Ajouter un document<input id="dFile" type="file" accept="application/pdf,image/*" multiple style="display:none"></label></div>
   <p class="warn" id="dWarn">🔒 Ces fichiers sont enregistrés uniquement sur cet appareil : ils ne sont envoyés nulle part et ne passent pas par Thaï Malin. Si tu changes de téléphone ou effaces les données du navigateur, ils sont perdus : garde aussi une copie ailleurs. Quiconque ouvre ton téléphone déverrouillé peut les voir : évite d’y mettre ton passeport si tu n’y tiens pas.</p>
   <div class="note" id="dInfo"></div></div>
@@ -129,15 +177,22 @@ nav button{font-size:10px;padding:6px 1px}
 <div id="viewer"><div class="vb"><span id="vName" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><span style="display:flex;gap:8px"><button id="vOpen">Ouvrir</button><button id="vClose">✕ Fermer</button></span></div><div class="vc" id="vBody"></div></div>
 <section class="view" id="v-flight">
  <div class="card"><h2>✈️ Mon vol</h2>
-  <label for="fAir">Compagnie</label><select id="fAir"></select>
-  <div class="row" style="margin-top:12px"><div><label for="fNum">N° de vol</label><input id="fNum" placeholder="UU 888"></div><div><label for="fDest">Pays de destination</label><select id="fDest"></select></div></div>
-  <div class="row" style="margin-top:12px"><div><label for="fDep">Départ (heure locale)</label><input type="datetime-local" id="fDep"></div><div><label for="fFrom">Aéroport de départ</label><input id="fFrom" placeholder="RUN"></div></div>
-  <div id="fCustom" style="display:none;margin-top:12px"><div class="row"><div><label for="fHours">Enregistrement ouvert (h avant)</label><input id="fHours" type="number" inputmode="numeric" placeholder="24"></div><div><label for="fUrl">Lien d’enregistrement</label><input id="fUrl" type="url" placeholder="https://…"></div></div></div>
-  <div class="row" style="margin-top:12px"><div><label for="fRet">Vol retour (optionnel)</label><input type="datetime-local" id="fRet"></div><div><label for="fRetNum">N° vol retour</label><input id="fRetNum" placeholder="UU 889"></div></div>
-  <div class="sec"><h3>➕ Autres vols (escale, vol intérieur…)</h3><div id="legList"></div>
-   <div class="row" style="margin-top:10px"><div><label for="lAir">Compagnie</label><select id="lAir"></select></div><div><label for="lNum">N° de vol</label><input id="lNum" placeholder="FD 3401"></div></div>
-   <div class="row" style="margin-top:10px"><div><label for="lDep">Départ (heure locale)</label><input type="datetime-local" id="lDep"></div><div><label for="lWhere">Trajet</label><input id="lWhere" placeholder="BKK → CNX"></div></div>
-   <div style="margin-top:10px"><button class="btn alt" id="lAdd">Ajouter ce vol</button></div></div>
+  <div class="fld"><label for="fAir">Compagnie</label><select id="fAir"></select></div>
+  <div class="fld"><label for="fNum">N° de vol</label><input id="fNum" placeholder="UU 888" autocomplete="off"></div>
+  <div class="fld"><label for="fDest">Pays de destination</label><select id="fDest"></select></div>
+  <div class="fld"><label for="fDep">Départ (heure locale)</label><input type="datetime-local" id="fDep"></div>
+  <div class="fld"><label for="fFrom">Aéroport de départ</label><input id="fFrom" placeholder="RUN" autocomplete="off"></div>
+  <div id="fCustom" style="display:none"><div class="fld"><label for="fHours">Enregistrement ouvert (heures avant)</label><input id="fHours" type="number" inputmode="numeric" placeholder="24"></div><div class="fld"><label for="fUrl">Lien d’enregistrement</label><input id="fUrl" type="url" placeholder="https://…"></div></div>
+  <div class="sec"><h3>↩️ Vol retour (optionnel)</h3>
+   <div class="fld"><label for="fRet">Départ du retour (heure locale)</label><input type="datetime-local" id="fRet"></div>
+   <div class="fld"><label for="fRetNum">N° vol retour</label><input id="fRetNum" placeholder="UU 889" autocomplete="off"></div></div>
+  <div class="sec"><h3>🔀 Autres vols (escale, vol intérieur…)</h3><div id="legList"></div>
+   <details class="opt" style="margin:10px 0 0;background:#242a33"><summary>＋ Ajouter un vol</summary><div class="inner">
+    <div class="fld"><label for="lAir">Compagnie</label><select id="lAir"></select></div>
+    <div class="fld"><label for="lNum">N° de vol</label><input id="lNum" placeholder="FD 3401" autocomplete="off"></div>
+    <div class="fld"><label for="lDep">Départ (heure locale)</label><input type="datetime-local" id="lDep"></div>
+    <div class="fld"><label for="lWhere">Trajet</label><input id="lWhere" placeholder="BKK → CNX" autocomplete="off"></div>
+    <div class="fld"><button class="btn full" id="lAdd">Ajouter ce vol</button></div></div></details></div>
   <p class="warn">Les délais d’enregistrement et les formalités sont indicatifs : ils varient selon la compagnie et changent. Vérifie toujours l’email de ta compagnie et les sites officiels.</p>
  </div>
  <div class="card" id="tlCard" style="display:none"><h2>🔔 Mes rappels</h2><div class="tl" id="tl"></div>
@@ -201,7 +256,7 @@ function renderGuides(){
  l.appendChild(add);
  add.querySelector('#newCodeGo').onclick=function(){var r=tryCode(add.querySelector('#newCode').value);if(r){renderGuides()}else add.querySelector('#newCodeMsg').textContent='Code incorrect ou expiré. Vérifie ton email.'};
  var p=document.createElement('p');p.className='note';p.textContent='Un guide dont tu as saisi le code s’ouvre directement.';l.appendChild(p);
- var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" alt="" loading="lazy"><span>'+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'grid':'none'}
+ var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" alt="" loading="lazy"><span>'+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
  document.getElementById('guideTxt').textContent=n?(n+' guide'+(n>1?'s':'')+' débloqué'+(n>1?'s':'')+' sur cet appareil.'):'Aucun guide débloqué sur cet appareil pour le moment.';
 }
 
@@ -395,25 +450,30 @@ function renderPlan(){
  var st=tripStart();
  days.forEach(function(dv){var b=document.createElement('button');b.className='chip'+(dv===planDay?' on':'')+(dv===td?' today':'');
   var n=st&&dv>=st?Math.round((new Date(dv+'T00:00:00')-new Date(st+'T00:00:00'))/86400000)+1:null;
-  b.innerHTML=(n?'Jour '+n:'Date')+'<small>'+dayLabel(dv)+(pl[dv]&&pl[dv].length?' · '+pl[dv].length:'')+'</small>';
+  b.innerHTML=(n?'Jour '+n:'Avant')+'<small>'+dayLabel(dv)+(pl[dv]&&pl[dv].length?' · '+pl[dv].length:'')+'</small>';
   b.onclick=function(){planDay=dv;planEdit=null;clearForm();renderPlan()};chips.appendChild(b)});
  var items=sortItems(pl[planDay]||[]);
- if(!items.length)list.innerHTML='<p class="sub" style="margin:6px 0 4px">Rien de prévu ce jour-là pour le moment.</p>';
+ if(!items.length)list.innerHTML='<div class="empty"><b>🗒️</b>Rien de prévu ce jour-là<small>Touche « Ajouter une activité » ci-dessous</small></div>';
  items.forEach(function(it){var d=document.createElement('div');d.className='pl';
   d.innerHTML='<div class="tm"></div><div class="bd"><b></b><span class="pn"></span><span class="nt"></span></div><div style="display:flex;align-items:flex-start"><button class="ac" data-a="e" aria-label="Modifier">✎</button><button class="ac" data-a="d" aria-label="Supprimer">🗑</button></div>';
   d.querySelector('.tm').textContent=it.time||'—';d.querySelector('b').textContent=it.title;d.querySelector('.pn').textContent=it.place||'';d.querySelector('.nt').textContent=it.note||'';
   if(!it.place)d.querySelector('.pn').remove();if(!it.note)d.querySelector('.nt').remove();
   if(it.place){var a=document.createElement('a');a.href=mapsUrl(it.place);a.target='_blank';a.rel='noopener';a.textContent='📍 Y aller';d.querySelector('.bd').appendChild(a)}
-  d.querySelector('[data-a=e]').onclick=function(){planEdit=it.id;document.getElementById('pTime').value=it.time||'';document.getElementById('pTitle').value=it.title;document.getElementById('pPlace').value=it.place||'';document.getElementById('pNote').value=it.note||'';document.getElementById('pSave').textContent='✔ Enregistrer';document.getElementById('pCancel').style.display='inline-block';document.getElementById('pTitle').focus()};
+  d.querySelector('[data-a=e]').onclick=function(){planEdit=it.id;document.getElementById('pTime').value=it.time||'';document.getElementById('pTitle').value=it.title;document.getElementById('pPlace').value=it.place||'';document.getElementById('pNote').value=it.note||'';document.getElementById('pSave').textContent='Enregistrer';document.getElementById('pHead').textContent='Modifier l’activité';openPlanSheet()};
   d.querySelector('[data-a=d]').onclick=function(){if(confirm('Supprimer « '+it.title+' » ?')){var o=PL();o[planDay]=(o[planDay]||[]).filter(function(x){return x.id!==it.id});savePL(o);renderPlan();renderTodayPlan()}};
   list.appendChild(d)});
 }
-function clearForm(){['pTime','pTitle','pPlace','pNote'].forEach(function(i){document.getElementById(i).value=''});planEdit=null;document.getElementById('pSave').textContent='➕ Ajouter à ce jour';document.getElementById('pCancel').style.display='none'}
+function openPlanSheet(){document.getElementById('pMsg').textContent='';document.getElementById('planSheet').classList.add('on')}
+function closePlanSheet(){document.getElementById('planSheet').classList.remove('on')}
+function clearForm(){['pTime','pTitle','pPlace','pNote'].forEach(function(i){document.getElementById(i).value=''});planEdit=null;document.getElementById('pSave').textContent='Ajouter';document.getElementById('pHead').textContent='Nouvelle activité';closePlanSheet()}
 document.getElementById('pCancel').onclick=function(){clearForm()};
+document.getElementById('planSheet').addEventListener('click',function(e){if(e.target===this)clearForm()});
+document.getElementById('planOpen').onclick=function(){clearForm();openPlanSheet();setTimeout(function(){document.getElementById('pTitle').focus()},60)};
 document.getElementById('pSave').onclick=function(){
- var t=document.getElementById('pTitle').value.trim();if(!t){document.getElementById('pTitle').focus();return}
+ var t=document.getElementById('pTitle').value.trim(),pl=document.getElementById('pPlace').value.trim();if(!t&&pl)t=/^https?:\/\//i.test(pl)?'Lieu sur Maps':pl;
+ var pm=document.getElementById('pMsg');if(!t){pm.textContent='Écris d’abord le nom de l’activité (ex. Grand Palais) ou un lieu.';pm.style.color='#ff8a80';document.getElementById('pTitle').focus();return}
  var o=PL(),arr=o[planDay]||[],rec={id:planEdit||Date.now()+''+Math.floor(Math.random()*1000),time:document.getElementById('pTime').value,title:t,place:document.getElementById('pPlace').value.trim(),note:document.getElementById('pNote').value.trim()};
- if(planEdit)arr=arr.map(function(x){return x.id===planEdit?rec:x});else arr.push(rec);o[planDay]=arr;savePL(o);clearForm();renderPlan();renderTodayPlan()};
+ if(planEdit)arr=arr.map(function(x){return x.id===planEdit?rec:x});else arr.push(rec);o[planDay]=arr;savePL(o);clearForm();renderPlan();renderTodayPlan();};
 document.getElementById('pNewDayBtn').onclick=function(){var v=document.getElementById('pNewDay').value;if(v){if(extraDays.indexOf(v)<0)extraDays.push(v);planDay=v;document.getElementById('pNewDay').value='';renderPlan()}};
 function renderTodayPlan(){var td=iso(new Date()),items=sortItems(PL()[td]||[]),c=document.getElementById('todayPlan'),l=document.getElementById('todayPlanList');
  if(!items.length){c.style.display='none';return}c.style.display='block';l.innerHTML='';

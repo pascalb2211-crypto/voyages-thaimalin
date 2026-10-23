@@ -98,12 +98,15 @@ select{padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns=
 .fld{margin-top:14px}.fld:first-child{margin-top:0}
 .btn{padding:14px 18px;border-radius:14px;font-size:16px}
 .btn.full{display:block;width:100%;text-align:center}
-/* Mes guides (accueil) */
-.mg{display:flex;flex-direction:column;gap:10px}
-.mg a{display:flex;align-items:center;gap:14px;padding:10px 14px 10px 10px;border-radius:16px;background:#242a33;border:1px solid #ffffff1a}
-.mg a::after{content:'›';font-size:30px;line-height:1;opacity:.45;margin-left:auto}
-.mg img{width:62px;height:93px;aspect-ratio:auto;border-radius:9px;flex:0 0 62px;box-shadow:0 4px 12px #0007}
-.mg span{padding:0;font-size:16px}.mg span small{font-size:13px;margin-top:5px}
+/* Mes guides (accueil) : carrousel */
+.mg{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -6px;padding:2px 6px 10px;scrollbar-width:none}
+.mg::-webkit-scrollbar{display:none}
+.mg a{flex:0 0 118px;scroll-snap-align:start;display:block;text-decoration:none;color:#fff;background:none;border:0;padding:0;border-radius:0}
+.mg a::after{content:none}
+.mg img{display:block;width:118px;height:177px;aspect-ratio:auto;object-fit:cover;border-radius:12px;box-shadow:0 6px 16px #0008;flex:none}
+.mg span{display:block;padding:8px 2px 0;font-size:13px;font-weight:800;line-height:1.25}
+.mg span small{display:block;font-size:12px;margin-top:3px;color:#7fd8a6}
+.mg .gtag,.mg em.gtag{font-size:10.5px;margin-bottom:2px}
 /* Programme */
 .pghead{padding:4px 2px 10px}.pghead h2{margin:0}
 .empty{text-align:center;padding:34px 16px;margin-bottom:12px;border:1.5px dashed #ffffff2a;border-radius:18px;opacity:.9;line-height:1.5}
@@ -141,6 +144,20 @@ label.btn{opacity:1;font-size:16px;margin:0}
 #status{text-align:center;padding:24px 18px}#status .big{font-size:34px}#status .sub{font-size:15px;margin-top:8px}
 .gsec{font-size:15px;margin:22px 2px 10px;opacity:.9}.gsec:first-child{margin-top:6px}
 .gtag{display:block;font-style:normal;font-size:11.5px;font-weight:800;letter-spacing:.3px;opacity:.9;margin-bottom:4px;text-transform:uppercase}
+
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gtile{display:flex;flex-direction:column;text-decoration:none;color:#fff;min-width:0}
+.gtile .gcov{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 6px 16px #0008}
+.gtile .gcov img{width:100%;height:100%;object-fit:cover;display:block}
+.gtile.locked .gcov img{filter:saturate(.6) brightness(.8)}
+.gtile .lk{position:absolute;right:6px;top:6px;background:#000a;border-radius:20px;padding:3px 7px;font-size:12px}
+.gtile b{font-size:12.5px;line-height:1.25;margin-top:7px}
+.gtile small{font-size:11px;opacity:.7;margin-top:2px}.gtile small.ok{opacity:1;color:#7fd8a6;font-weight:800}
+.gchips{margin:0 -2px 6px}
+
+input.dtp{position:relative}
+input.dtp.empty::before{content:attr(data-ph);color:#ffffff73;font-weight:600;position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none}
+input.dtp.empty::-webkit-datetime-edit{opacity:0}
 </style></head><body>
 <div id="gate"><div class="box"><div style="font-size:40px">🧭</div><h2>Mon voyage — Thaï Malin</h2>
 <p>Réservé aux acheteurs. Entre le mot de passe reçu par email après ton achat.</p>
@@ -264,22 +281,29 @@ var GUIDES=[];
 function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {slug:g.slug,ext:g.url||'',type:g.type||'destination',country:g.country||'',e:g.emoji,t:g.title,d:g.desc,c:g.color,u:g.url?g.url:(open?('guides/'+g.slug+'/'):(g.sales||SALES)),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
 function loadGuides(){return fetch('guides.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){GUIDES=mapGuides(d.guides);try{localStorage.setItem('tm-hub-guides-cache',JSON.stringify(d.guides))}catch(e){}}).catch(function(){try{GUIDES=mapGuides(JSON.parse(localStorage.getItem('tm-hub-guides-cache')||'[]'))}catch(e){GUIDES=[]}}).then(function(){renderGuides()})}
 function owned(g){return !!g.key&&(norm(ls(g.key))===norm(expected(g.pre))||recent(g.key))}
+var gFilter='';
 function guideCard(g){var o=owned(g);
-  var a=document.createElement('a');a.className='guide'+(o||g.ext?'':' locked');a.href=g.u;a.style.background=g.c;if(g.ext||!o&&g.key||!g.key){a.target='_blank';a.rel='noopener'}
-  var tag=g.type==='theme'&&g.country?'<span class="gtag">📍 '+g.country+' · thème</span>':'';
-  a.innerHTML=(g.key?'<img class="gthumb" src="covers/'+g.slug+'.webp" alt="" onerror="var b=document.createElement(\'b\');b.className=\'e\';b.textContent=this.dataset.e;this.replaceWith(b)" data-e="'+g.e+'">':'<b class="e">'+g.e+'</b>')+'<span class="t">'+tag+g.t+'<small>'+g.d+'</small></span><span class="st">'+(g.ext?'Ouvrir ↗':o?'✓ Ouvrir':g.key?'🔒 Ouvrir / acheter':g.soon?'Bientôt':'Découvrir')+'</span>';
+  var a=document.createElement('a');a.className='gtile'+(o||g.ext?'':' locked');a.href=g.u;if(g.ext||!o&&g.key||!g.key){a.target='_blank';a.rel='noopener'}
+  var cov=g.key?'<img src="covers/'+g.slug+'.webp" width="200" height="300" alt=""'+(GUIDES.length>12?' loading="lazy"':'')+' decoding="async" onerror="this.replaceWith(document.createTextNode(this.dataset.e))" data-e="'+g.e+'">':g.e;
+  var st=g.ext?'Ouvrir ↗':o?'✓ Ouvert':g.key?'Acheter / code':g.soon?'Bientôt':'Découvrir';
+  a.innerHTML='<div class="gcov" style="background:'+g.c+'">'+cov+(g.key&&!o?'<span class="lk">🔒</span>':'')+'</div><b>'+g.t.replace(/^Mini-guide /,'')+'</b><small'+(o?' class="ok"':'')+'>'+st+(g.type==='theme'&&g.country?' · '+g.country:'')+'</small>';
   return a}
 function renderGuides(){
  var l=document.getElementById('guideList');l.innerHTML='';var n=0;GUIDES.forEach(function(g){if(owned(g))n++});
+ var cs=[];GUIDES.forEach(function(g){if(g.country&&cs.indexOf(g.country)<0)cs.push(g.country)});
+ if(GUIDES.length>6&&cs.length>1){var ch=document.createElement('div');ch.className='chips gchips';
+  [''].concat(cs).forEach(function(c){var b=document.createElement('button');b.className='chip'+(gFilter===c?' on':'');b.textContent=c||'Tous';b.onclick=function(){gFilter=c;renderGuides()};ch.appendChild(b)});l.appendChild(ch)}
+ var vis=GUIDES.filter(function(g){return !gFilter||g.country===gFilter});
  [['🌏 Les guides pays',function(g){return !g.soon&&g.type!=='theme'&&!g.ext}],['🏝️ Les guides par thème',function(g){return !g.soon&&g.type==='theme'}],['👑 Le guide premium',function(g){return !g.soon&&!!g.ext}],['✨ Bientôt',function(g){return g.soon}]].forEach(function(sec){
-  var list=GUIDES.filter(sec[1]);if(!list.length)return;
+  var list=vis.filter(sec[1]);if(!list.length)return;
   var h=document.createElement('h3');h.className='gsec';h.textContent=sec[0];l.appendChild(h);
-  list.forEach(function(g){l.appendChild(guideCard(g))})});
+  var gr=document.createElement('div');gr.className='ggrid';l.appendChild(gr);
+  list.forEach(function(g){gr.appendChild(guideCard(g))})});
  var add=document.createElement('div');add.className='card';add.innerHTML='<h2>🔑 Ajouter un code d’accès</h2><p class="sub" style="margin:0 0 10px">Tu as acheté un autre guide ? Saisis son code ici : il s’ouvre directement, sans autre mot de passe.</p><div class="row"><input id="newCode" placeholder="Code reçu par email" autocomplete="off"><button class="btn" id="newCodeGo" style="flex:0 0 auto">Valider</button></div><p class="note" id="newCodeMsg"></p>';
  l.appendChild(add);
  add.querySelector('#newCodeGo').onclick=function(){var r=tryCode(add.querySelector('#newCode').value);if(r){renderGuides()}else add.querySelector('#newCodeMsg').textContent='Code incorrect ou expiré. Vérifie ton email.'};
  var p=document.createElement('p');p.className='note';p.textContent='Un guide dont tu as saisi le code s’ouvre directement.';l.appendChild(p);
- var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" alt="" loading="lazy"><span>'+(g.type==='theme'&&g.country?'<em class="gtag">📍 '+g.country+' · thème</em>':'')+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
+ var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" width="118" height="177" alt="" decoding="async" onerror="this.style.visibility=\'hidden\'"><span>'+(g.type==='theme'&&g.country?'<em class="gtag">📍 '+g.country+' · thème</em>':'')+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
  document.getElementById('guideTxt').textContent=n?(n+' guide'+(n>1?'s':'')+' débloqué'+(n>1?'s':'')+' sur cet appareil.'):'Aucun guide débloqué sur cet appareil pour le moment.';
 }
 
@@ -593,4 +617,17 @@ renderStatus();renderCheck();renderConv();loadGuides();
  document.getElementById('iosOk').onclick=function(){document.getElementById('iosHelp').classList.remove('on')};
 })();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('service-worker.js').catch(function(){});
+
+(function(){var PH={'date':'Choisir une date','time':'Choisir l’heure','datetime-local':'Choisir la date et l’heure'};
+ function ref(el){el.classList.toggle('empty',!el.value)}
+ function all(){[].forEach.call(document.querySelectorAll('input[type=date],input[type=time],input[type=datetime-local]'),function(el){if(!el.classList.contains('dtp')){el.classList.add('dtp');el.setAttribute('data-ph',PH[el.type]||'');['input','change'].forEach(function(e){el.addEventListener(e,function(){ref(el)})})}ref(el)})}
+ window.refDt=all;all();setInterval(all,800)})();
+
+/* Avertissement : appareil trop ancien pour les images WebP (iOS < 14, anciens navigateurs) */
+(function(){try{var c=document.createElement('canvas');c.width=c.height=1;if(c.toDataURL('image/webp').indexOf('data:image/webp')===0)return}catch(e){}
+ function show(){if(document.getElementById('tmOld'))return;var d=document.createElement('div');d.id='tmOld';
+  d.style.cssText='position:fixed;left:0;right:0;top:0;z-index:2147483000;background:#b3261e;color:#fff;font:700 14px/1.4 -apple-system,Segoe UI,Arial,sans-serif;padding:12px 16px;text-align:center;box-shadow:0 4px 16px #0008';
+  d.innerHTML='⚠️ Cet appareil est trop ancien pour afficher les images des guides. Mets à jour iOS (version 14 ou plus récente) ou ouvre le guide sur un autre téléphone ou ordinateur. <button type="button" style="margin-left:8px;border:0;border-radius:8px;padding:4px 10px;font:800 13px inherit;background:#fff;color:#b3261e" onclick="this.parentNode.remove()">OK</button>';
+  (document.body||document.documentElement).appendChild(d)}
+ if(document.body)show();else document.addEventListener('DOMContentLoaded',show)})();
 </script></body></html>

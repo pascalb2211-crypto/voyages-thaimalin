@@ -45,10 +45,20 @@
   /* ---------- service worker ---------- */
   var swReady = null;
   if('serviceWorker' in navigator){
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('service-worker.js').catch(function(e){ console.warn('Service worker non enregistré', e); });
+    /* On cible le service worker DU GUIDE (et non celui du hub, de portée plus large) */
+    var regP = new Promise(function(res){
+      var go = function(){ navigator.serviceWorker.register('service-worker.js').then(res, function(e){ console.warn('Service worker non enregistré', e); }); };
+      if(document.readyState === 'complete') go(); else window.addEventListener('load', go);
     });
-    swReady = navigator.serviceWorker.ready;
+    swReady = regP.then(function(reg){
+      if(reg.active) return reg;
+      var w = reg.installing || reg.waiting;
+      if(!w) return navigator.serviceWorker.ready;
+      return new Promise(function(res){
+        var chk = function(){ if(w.state === 'activated') res(reg); };
+        w.addEventListener('statechange', chk); chk();
+      });
+    });
   }
 
   /* ---------- installation ---------- */
@@ -315,3 +325,11 @@
     new MutationObserver(sync).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
   });
 })();
+
+/* Avertissement : appareil trop ancien pour les images WebP (iOS < 14, anciens navigateurs) */
+(function(){try{var c=document.createElement('canvas');c.width=c.height=1;if(c.toDataURL('image/webp').indexOf('data:image/webp')===0)return}catch(e){}
+ function show(){if(document.getElementById('tmOld'))return;var d=document.createElement('div');d.id='tmOld';
+  d.style.cssText='position:fixed;left:0;right:0;top:0;z-index:2147483000;background:#b3261e;color:#fff;font:700 14px/1.4 -apple-system,Segoe UI,Arial,sans-serif;padding:12px 16px;text-align:center;box-shadow:0 4px 16px #0008';
+  d.innerHTML='⚠️ Cet appareil est trop ancien pour afficher les images des guides. Mets à jour iOS (version 14 ou plus récente) ou ouvre le guide sur un autre téléphone ou ordinateur. <button type="button" style="margin-left:8px;border:0;border-radius:8px;padding:4px 10px;font:800 13px inherit;background:#fff;color:#b3261e" onclick="this.parentNode.remove()">OK</button>';
+  (document.body||document.documentElement).appendChild(d)}
+ if(document.body)show();else document.addEventListener('DOMContentLoaded',show)})();

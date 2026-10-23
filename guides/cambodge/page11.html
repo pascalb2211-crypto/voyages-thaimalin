@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tha&#xEF; Malin &#x2014; Mini-guide Cambodge &#x2014; Page 11</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1115;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .page {
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    aspect-ratio: 1024 / 1536;
+    margin: 0 auto;
+  }
+  .page img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .hotspot {
+    position: absolute;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+  }
+  .hotspot:active { transform: scale(0.97); }
+
+  .btn-prev {
+    border-radius: 50px;
+    font-size: clamp(13px, 2.1vw, 16px);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(2px);
+  }
+  .btn-prev:hover { background: rgba(255,255,255,0.22); }
+
+  .btn-next, .btn-restart {
+    border-radius: 50px;
+    font-size: clamp(13px, 2.1vw, 16px);
+    background: linear-gradient(135deg, #d35400, #f0955a);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(211, 84, 0, 0.45);
+  }
+  .btn-next:hover, .btn-restart:hover { box-shadow: 0 8px 22px rgba(211, 84, 0, 0.6); }
+
+  /* Barre de navigation sous l'image (hors illustration, jamais de superposition) */
+  .navbar{display:flex;gap:12px;width:100%;max-width:680px;margin:14px auto 0;padding:0 14px;}
+  .navbar .hotspot{position:static;width:auto;height:48px;flex:1;}
+  .navbar .btn-prev{flex:0 0 auto;min-width:140px;}
+
+  /* Encart infos pratiques complementaires */
+  .infobar{width:100%;max-width:680px;margin:14px auto 0;padding:0 14px;}
+  .infocard{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 16px;color:#fff;}
+  .infocard .infotitle{font-size:0.8rem;color:#f0955a;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:8px;}
+  .infocard ul{list-style:none;padding:0;margin:0;}
+  .infocard li{font-size:0.85rem;color:#dcd6d0;margin-bottom:6px;padding-left:18px;position:relative;}
+  .infocard li::before{content:"\2713";position:absolute;left:0;color:#f0955a;font-weight:700;}
+
+  /* Encart meteo en temps reel */
+  .weatherbar{display:flex;gap:12px;width:100%;max-width:680px;margin:14px auto 0;padding:0 14px;}
+  .weathercard{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px 14px;color:#fff;text-align:center;}
+  .weathercard .city{font-size:0.78rem;color:#c9c9c9;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+  .weathercard .temp{font-size:1.5rem;font-weight:800;color:#f0955a;}
+  .weathercard .desc{font-size:0.78rem;color:#dcd6d0;margin-top:2px;}
+
+  /* Liens affilies supplementaires */
+  .affiliatebar{width:100%;max-width:680px;margin:14px auto 0;padding:0 14px;display:flex;flex-direction:column;gap:10px;}
+  .affiliate-extra{display:block;text-align:center;padding:13px;border-radius:50px;background:linear-gradient(135deg,#d35400,#f0955a);color:#fff;font-weight:700;font-size:0.92rem;text-decoration:none;box-shadow:0 6px 18px rgba(211,84,0,0.45);}
+  .affiliate-extra:hover{box-shadow:0 8px 22px rgba(211,84,0,0.6);}
+
+  .btn-affiliate{background:rgba(255,255,255,0);}
+
+  /* Convertisseur de devises en temps reel */
+  .currencybar{display:flex;gap:12px;width:100%;max-width:680px;margin:14px auto 0;padding:0 14px;}
+  .currencycard{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px 14px;color:#fff;text-align:center;}
+  .currencycard .pair{font-size:0.78rem;color:#c9c9c9;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+  .currencycard .rate{font-size:1.25rem;font-weight:800;color:#f0955a;}
+  .currencybar-note{width:100%;max-width:680px;margin:6px auto 0;padding:0 14px;color:#8a8a8a;font-size:0.72rem;text-align:center;}
+</style>
+<!-- PWA Mini-guide -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1115">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mini-guide Cambodge">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<body>
+
+<div class="page">
+  <img src="images/page11.webp" alt="Mini-guide Tha&#xEF; Malin Cambodge - Kep et Kampot">
+</div>
+<div class="navbar">
+  <a href="page10.html" class="hotspot btn-prev">&#x2190; Pr&#xE9;c&#xE9;dent</a>
+  <a href="page12.html" class="hotspot btn-next">Suivant &#x2192;</a>
+</div>
+
+<script src="../../shared/gate.js" data-prefix="CAMBODGE" data-key="tm-mg-cambodge-unlocked"></script>
+<script src="../../shared/pwa.js" data-nav="pages" data-booking="kh" data-booking-page="24" data-toc="1|Couverture;2|Bienvenue au Cambodge;3|Carte du Cambodge;4|Visa et formalités;5|Comment aller au Cambodge;6|Depuis La Réunion;7|Se déplacer au Cambodge;8|Phnom Penh;9|Siem Reap et Angkor;10|Sihanoukville et les îles du sud;11|Kep et Kampot;12|Battambang;13|Kampong Thom;14|Ratanakiri et Mondulkiri;15|Koh Ker et Preah Vihear;16|Gastronomie et culture;17|Informations pratiques;18|Itinéraires conseillés;19|Bien-être et expériences insolites;20|Hébergements au Cambodge;21|Internet et eSIM;22|Que mettre dans son sac;23|Kit de survie en khmer;24|Mon centre de réservation;25|Merci et à très bientôt" data-weather="Phnom Penh:11.56,104.92;Siem Reap:13.36,103.86;Sihanoukville:10.63,103.50;Kampot:10.61,104.18;Battambang:13.10,103.20" data-first="1" data-total="25" data-name="Mini-guide Cambodge" data-slug="cambodge"></script>
+</body>
+</html>

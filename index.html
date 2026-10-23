@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mon voyage — Thaï Malin</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1115">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mon voyage"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#0f1115;color:#fff;font-family:'Segoe UI',Arial,sans-serif;padding:0 0 calc(86px + env(safe-area-inset-bottom))}
+header{padding:18px 16px 6px;max-width:640px;margin:auto}
+header h1{font-size:20px;font-weight:800}header h1 span{color:#f0955a}
+header p{opacity:.65;font-size:13px;margin-top:2px}
+main{max-width:640px;margin:auto;padding:10px 16px}
+.view{display:none}.view.on{display:block}
+.card{background:#1a1d24;border:1px solid #ffffff1a;border-radius:16px;padding:16px;margin-bottom:14px}
+.big{font-size:26px;font-weight:800;line-height:1.2}.sub{opacity:.72;font-size:14px;margin-top:5px}
+h2{font-size:17px;margin-bottom:12px}
+label{display:block;font-size:12px;font-weight:700;opacity:.85}
+input,select{display:block;width:100%;margin-top:5px;padding:12px 10px;border-radius:10px;border:1px solid #ffffff2a;background:#242a33;color:#fff;font:600 16px 'Segoe UI',Arial,sans-serif;color-scheme:dark}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.bar{height:10px;border-radius:6px;background:#ffffff1f;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#d35400,#f0955a);border-radius:6px;transition:width .3s}
+.chk{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid #ffffff12;font-weight:600;font-size:15px}
+.chk:last-child{border:0}.chk input{width:22px;height:22px;margin:0;flex:0 0 22px;accent-color:#f0955a}
+.chk.done span{opacity:.5;text-decoration:line-through}
+.grp{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#f0955a;margin:14px 0 2px}
+.guide{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
+.guide b.e{font-size:32px;font-weight:400}.guide .t{flex:1;font-weight:800;font-size:16px;line-height:1.25}.guide small{display:block;font-weight:600;opacity:.88;font-size:12.5px;margin-top:3px}
+.guide .st{font-size:12px;font-weight:800;background:#00000040;border-radius:20px;padding:6px 10px;white-space:nowrap}
+.guide.locked{opacity:.88}
+.btn{display:inline-block;padding:12px 16px;border-radius:12px;border:0;background:linear-gradient(135deg,#d35400,#f0955a);color:#fff;font:800 15px 'Segoe UI',Arial,sans-serif;text-decoration:none;cursor:pointer}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;background:#0d1117f2;border-top:1px solid #ffffff1f;padding:6px 4px max(8px,env(safe-area-inset-bottom));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+nav button{flex:1;border:0;background:none;color:#cfd6dd;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;font:600 11px/1.1 'Segoe UI',Arial,sans-serif;cursor:pointer}
+nav button b{font-size:21px;font-weight:400;line-height:1}nav button.on{color:#f0955a}
+#gate{position:fixed;inset:0;z-index:99;background:#0f1115;display:flex;align-items:center;justify-content:center;padding:24px}#gate.hidden{display:none}
+#gate .box{background:#1a1d24;border:1px solid #d3540059;border-radius:18px;padding:30px 26px;max-width:360px;width:100%;text-align:center}
+#gate h2{margin-bottom:10px;font-size:20px}#gate p{opacity:.7;font-size:14px;line-height:1.5;margin-bottom:18px}#gate input{text-align:center;margin-bottom:12px}#gate .btn{width:100%}#gate .err{color:#ff8a8a;font-size:13px;margin-top:10px;display:none}
+.note{opacity:.6;font-size:12px;margin-top:8px}
+.tl{position:relative;padding-left:26px;margin-top:6px}.tl:before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:#ffffff22}
+.ev{position:relative;padding:10px 0 14px}.ev:before{content:'';position:absolute;left:-23px;top:14px;width:12px;height:12px;border-radius:50%;background:#3a4150;border:2px solid #0f1115}
+.ev.next:before{background:#f0955a}.ev.past{opacity:.45}.ev.past:before{background:#1fa66b}
+.ev .w{font-size:12px;font-weight:800;color:#f0955a;letter-spacing:.3px}.ev .tt{font-weight:800;font-size:15px;margin-top:2px}.ev .dd{opacity:.72;font-size:13.5px;margin-top:3px;line-height:1.45}
+.ev a.lk{display:inline-block;margin-top:8px;padding:9px 12px;border-radius:10px;background:#ffffff1a;border:1px solid #ffffff2a;color:#fff;text-decoration:none;font-weight:700;font-size:13.5px}
+.ev a.lk.pr{background:linear-gradient(135deg,#d35400,#f0955a);border:0}
+.btn.alt{background:#ffffff1a;border:1px solid #ffffff2a}
+.warn{background:#f0955a1f;border:1px solid #f0955a55;border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;margin-top:12px}
+nav button{font-size:10.5px}
+.dcat{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#f0955a;margin:16px 0 8px}
+.doc{display:flex;align-items:center;gap:12px;background:#1a1d24;border:1px solid #ffffff1a;border-radius:14px;padding:12px;margin-bottom:8px}
+.doc .ic{font-size:28px;flex:0 0 34px;text-align:center}.doc .nm{flex:1;min-width:0;background:none;border:0;color:#fff;text-align:left;cursor:pointer;padding:0}
+.doc .nm b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.doc .nm small{opacity:.6;font-size:12px}
+.doc .ac{border:1px solid #ffffff2a;background:#ffffff12;color:#fff;border-radius:10px;width:38px;height:38px;font-size:16px;cursor:pointer}
+#viewer{position:fixed;inset:0;z-index:90;background:#000e;display:none;flex-direction:column}#viewer.on{display:flex}
+#viewer .vb{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;gap:10px;color:#fff;font-weight:700}
+#viewer .vb button{border:0;border-radius:10px;padding:10px 14px;font:800 14px 'Segoe UI',Arial,sans-serif;cursor:pointer;background:#fff;color:#0f1115}
+#viewer .vc{flex:1;overflow:auto;text-align:center;-webkit-overflow-scrolling:touch}#viewer img{max-width:100%;display:inline-block}#viewer iframe{width:100%;height:100%;border:0;background:#fff}
+nav button{font-size:10px;padding:6px 1px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;border:1px solid #ffffff2a;background:#ffffff0d;color:#fff;border-radius:12px;padding:8px 12px;font:700 13px 'Segoe UI',Arial,sans-serif;cursor:pointer;text-align:center;line-height:1.25}
+.chip small{display:block;opacity:.65;font-weight:600;font-size:11px}.chip.on{background:linear-gradient(135deg,#d35400,#f0955a);border-color:transparent}.chip.today small{color:#f0955a}.chip.on.today small{color:#fff}
+.pl{display:flex;gap:12px;background:#1a1d24;border:1px solid #ffffff1a;border-radius:14px;padding:12px;margin-bottom:8px}
+.pl .tm{flex:0 0 52px;font-weight:800;color:#f0955a;font-size:15px}.pl .bd{flex:1;min-width:0;text-align:left}.pl .bd b{display:block;font-size:15px}.pl .bd span{display:block;opacity:.7;font-size:13px;margin-top:3px;line-height:1.4}
+.pl .bd a{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:#f0955a;text-decoration:none}
+.pl .ac{border:1px solid #ffffff2a;background:#ffffff12;color:#fff;border-radius:10px;width:36px;height:36px;cursor:pointer;margin-left:4px}
+.more{display:block;width:100%;text-align:left;margin-bottom:10px;padding:16px;border-radius:14px;border:1px solid #ffffff1a;background:#1a1d24;color:#fff;font:800 16px 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.inst{display:none;background:linear-gradient(135deg,#d35400,#f0955a);border-radius:16px;padding:14px 16px;margin-bottom:14px;align-items:center;gap:12px}
+.inst.on{display:flex}.inst b{flex:1;font-size:15px;line-height:1.3}.inst b small{display:block;font-weight:600;opacity:.92;font-size:12.5px;margin-top:2px}
+.inst button{border:0;border-radius:10px;background:#fff;color:#0f1115;padding:11px 14px;font:800 14px 'Segoe UI',Arial,sans-serif;cursor:pointer}
+#iosHelp{position:fixed;inset:0;z-index:95;background:#000a;display:none;align-items:flex-end;justify-content:center}#iosHelp.on{display:flex}
+#iosHelp .box{width:100%;max-width:560px;background:#1a1d24;border-radius:20px 20px 0 0;padding:20px 18px max(22px,env(safe-area-inset-bottom));line-height:1.6;font-size:15px}
+#iosHelp h3{margin-bottom:10px}#iosHelp ol{padding-left:20px;margin-bottom:14px}
+.leg{display:flex;align-items:center;gap:10px;background:#242a33;border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}.leg b{display:block}.leg small{opacity:.7}.leg button{margin-left:auto;border:1px solid #ffffff2a;background:#ffffff12;color:#fff;border-radius:10px;width:36px;height:36px;cursor:pointer}
+.sec{border-top:1px solid #ffffff1a;margin-top:16px;padding-top:14px}.sec h3{font-size:14px;margin-bottom:8px}
+.dng{background:#5a1f1f;color:#ffd6d6}
+</style></head><body>
+<div id="gate"><div class="box"><div style="font-size:40px">🧭</div><h2>Mon voyage — Thaï Malin</h2>
+<p>Réservé aux acheteurs. Entre le mot de passe reçu par email après ton achat.</p>
+<input id="pw" type="password" placeholder="Mot de passe" autocomplete="off"><button class="btn" id="pwGo">Accéder</button><div class="err" id="pwErr">Mot de passe incorrect, réessaie.</div></div></div>
+<header><h1>🌺 THAÏ <span>MALIN</span> · Mon voyage</h1><p>Prépare ton départ et retrouve tous tes guides</p></header>
+<main>
+<section class="view on" id="v-home">
+ <div class="inst" id="inst"><b>📲 Installer l’appli<small>Sur ton écran d’accueil, utilisable hors-ligne</small></b><button id="instBtn">Installer</button></div>
+ <div class="card" id="status"></div>
+ <div class="card" id="todayPlan" style="display:none"><h2>🗓️ Au programme aujourd’hui</h2><div id="todayPlanList"></div><div style="margin-top:12px"><button class="btn alt" data-go="plan">Voir mon programme</button></div></div>
+ <div class="card" id="nextCard" style="display:none"><h2>🔔 Prochain rappel</h2><div id="nextTxt"></div><div style="margin-top:12px"><button class="btn alt" data-go="flight">Voir tous mes rappels</button></div></div>
+ <div class="card"><h2>📆 Mon séjour</h2><div class="row"><div><label for="dep">Départ</label><input type="date" id="dep"></div><div><label for="ret">Retour</label><input type="date" id="ret"></div></div></div>
+ <div class="card"><h2>☑️ Ma préparation</h2><div class="sub" id="chkTxt"></div><div class="bar"><i id="chkBar" style="width:0"></i></div><div style="margin-top:12px"><button class="btn" data-go="check">Ouvrir la checklist</button></div></div>
+ <div class="card"><h2>📚 Mes guides</h2><div class="sub" id="guideTxt"></div><div style="margin-top:12px"><button class="btn" data-go="guides">Voir mes guides</button></div></div>
+</section>
+<section class="view" id="v-plan">
+ <div class="card"><h2>🗓️ Mon programme</h2><div id="planHint" class="sub"></div>
+  <div class="chips" id="planDays" style="margin-top:12px"></div>
+  <div id="planList"></div>
+  <div id="planAdd" style="margin-top:14px;border-top:1px solid #ffffff1a;padding-top:14px">
+   <div class="row"><div style="flex:0 0 110px"><label for="pTime">Heure</label><input type="time" id="pTime"></div><div><label for="pTitle">Activité</label><input id="pTitle" placeholder="ex. Grand Palais"></div></div>
+   <div style="margin-top:10px"><label for="pPlace">Lieu / adresse (pour Maps)</label><input id="pPlace" placeholder="ex. Wat Phra Kaew, Bangkok"></div>
+   <div style="margin-top:10px"><label for="pNote">Note (réservation, prix…)</label><input id="pNote" placeholder="optionnel"></div>
+   <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="pSave">➕ Ajouter à ce jour</button><button class="btn alt" id="pCancel" style="display:none">Annuler</button></div>
+  </div>
+  <div style="margin-top:14px;border-top:1px solid #ffffff1a;padding-top:14px"><label for="pNewDay">Ajouter une autre date</label><div class="row"><input type="date" id="pNewDay"><button class="btn alt" id="pNewDayBtn" style="flex:0 0 auto">Ajouter</button></div></div>
+  <div style="margin-top:14px"><button class="btn" id="planIcs">📅 Ajouter mon programme au calendrier</button></div>
+  <p class="note">Ton programme est enregistré sur ce téléphone, lisible sans internet.</p></div>
+</section>
+<section class="view" id="v-more"><button class="more" data-go="check">☑️ Checklist de départ</button><button class="more" data-go="conv">💱 Convertisseur de monnaie</button>
+ <div class="card"><h2>💾 Sauvegarde</h2><p class="sub" style="margin:0 0 12px">Tes dates, ton vol, ton programme, ta checklist et (au choix) tes documents sont sur ce téléphone. Garde un fichier de sauvegarde pour les retrouver si tu changes de téléphone.</p>
+  <label class="chk" style="border:0;padding:4px 0"><input type="checkbox" id="bkDocs" checked><span>Inclure mes documents (fichier plus lourd)</span></label>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" id="bkExport">💾 Exporter</button><label class="btn alt" style="cursor:pointer">📂 Restaurer<input type="file" id="bkImport" accept="application/json,.json" style="display:none"></label></div>
+  <p class="note" id="bkMsg"></p></div>
+ <div class="card"><h2>🧳 Nouveau voyage</h2><p class="sub" style="margin:0 0 12px">Efface les dates, le vol, le programme et la checklist pour préparer un autre voyage. Une sauvegarde est téléchargée avant.</p><button class="btn dng" id="newTrip">Commencer un nouveau voyage</button></div></section>
+<section class="view" id="v-docs">
+ <div class="card"><h2>📄 Mes documents</h2>
+  <p class="sub" style="margin:0 0 12px">Billets, réservations, assurance, visa… Ils restent <b>sur ce téléphone</b> et s’ouvrent sans internet.</p>
+  <div class="row"><div><label for="dCat">Catégorie</label><select id="dCat"></select></div><div><label for="dName">Nom (optionnel)</label><input id="dName" placeholder="ex. Billet Paris–Bangkok"></div></div>
+  <div style="margin-top:12px"><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Ajouter un document<input id="dFile" type="file" accept="application/pdf,image/*" multiple style="display:none"></label></div>
+  <p class="warn" id="dWarn">🔒 Ces fichiers sont enregistrés uniquement sur cet appareil : ils ne sont envoyés nulle part et ne passent pas par Thaï Malin. Si tu changes de téléphone ou effaces les données du navigateur, ils sont perdus : garde aussi une copie ailleurs. Quiconque ouvre ton téléphone déverrouillé peut les voir : évite d’y mettre ton passeport si tu n’y tiens pas.</p>
+  <div class="note" id="dInfo"></div></div>
+ <div id="dList"></div>
+</section>
+<div id="viewer"><div class="vb"><span id="vName" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><span style="display:flex;gap:8px"><button id="vOpen">Ouvrir</button><button id="vClose">✕ Fermer</button></span></div><div class="vc" id="vBody"></div></div>
+<section class="view" id="v-flight">
+ <div class="card"><h2>✈️ Mon vol</h2>
+  <label for="fAir">Compagnie</label><select id="fAir"></select>
+  <div class="row" style="margin-top:12px"><div><label for="fNum">N° de vol</label><input id="fNum" placeholder="UU 888"></div><div><label for="fDest">Pays de destination</label><select id="fDest"></select></div></div>
+  <div class="row" style="margin-top:12px"><div><label for="fDep">Départ (heure locale)</label><input type="datetime-local" id="fDep"></div><div><label for="fFrom">Aéroport de départ</label><input id="fFrom" placeholder="RUN"></div></div>
+  <div id="fCustom" style="display:none;margin-top:12px"><div class="row"><div><label for="fHours">Enregistrement ouvert (h avant)</label><input id="fHours" type="number" inputmode="numeric" placeholder="24"></div><div><label for="fUrl">Lien d’enregistrement</label><input id="fUrl" type="url" placeholder="https://…"></div></div></div>
+  <div class="row" style="margin-top:12px"><div><label for="fRet">Vol retour (optionnel)</label><input type="datetime-local" id="fRet"></div><div><label for="fRetNum">N° vol retour</label><input id="fRetNum" placeholder="UU 889"></div></div>
+  <div class="sec"><h3>➕ Autres vols (escale, vol intérieur…)</h3><div id="legList"></div>
+   <div class="row" style="margin-top:10px"><div><label for="lAir">Compagnie</label><select id="lAir"></select></div><div><label for="lNum">N° de vol</label><input id="lNum" placeholder="FD 3401"></div></div>
+   <div class="row" style="margin-top:10px"><div><label for="lDep">Départ (heure locale)</label><input type="datetime-local" id="lDep"></div><div><label for="lWhere">Trajet</label><input id="lWhere" placeholder="BKK → CNX"></div></div>
+   <div style="margin-top:10px"><button class="btn alt" id="lAdd">Ajouter ce vol</button></div></div>
+  <p class="warn">Les délais d’enregistrement et les formalités sont indicatifs : ils varient selon la compagnie et changent. Vérifie toujours l’email de ta compagnie et les sites officiels.</p>
+ </div>
+ <div class="card" id="tlCard" style="display:none"><h2>🔔 Mes rappels</h2><div class="tl" id="tl"></div>
+  <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="icsBtn">📅 Ajouter à mon calendrier</button></div>
+  <p class="note">Le calendrier de ton téléphone sonnera aux bons moments, même sans internet. Les rappels sont enregistrés avec une alarme.</p></div>
+</section>
+<section class="view" id="v-check"><div class="card"><h2>☑️ Checklist de départ</h2><div id="chkList"></div></div></section>
+<section class="view" id="v-conv"><div class="card"><h2>💱 Convertisseur</h2>
+ <label for="cur">Monnaie du pays</label><select id="cur"></select>
+ <div class="row" style="margin-top:12px"><div><label for="eur">Euros (€)</label><input id="eur" type="number" inputmode="decimal" placeholder="0"></div><div><label id="curLbl" for="loc">Monnaie locale</label><input id="loc" type="number" inputmode="decimal" placeholder="0"></div></div>
+ <div style="margin-top:12px"><label for="rate">Taux (1 € =) — modifiable</label><input id="rate" type="number" inputmode="decimal"></div>
+ <p class="note">Taux indicatifs à vérifier avant le départ. Ils restent enregistrés sur ton téléphone.</p></div></section>
+<section class="view" id="v-guides"><div id="guideList"></div></section>
+</main>
+<nav>
+ <button data-go="home" class="on"><b>🧭</b>Voyage</button>
+ <button data-go="plan"><b>🗓️</b>Programme</button>
+ <button data-go="flight"><b>✈️</b>Vol</button>
+ <button data-go="docs"><b>📄</b>Documents</button>
+ <button data-go="guides"><b>📚</b>Guides</button>
+ <button data-go="more"><b>⋯</b>Plus</button>
+</nav>
+<div id="iosHelp"><div class="box"><h3>📲 Installer sur iPhone / iPad</h3><ol><li>Ouvre cette page dans <b>Safari</b>.</li><li>Appuie sur le bouton <b>Partager</b> (le carré avec une flèche vers le haut).</li><li>Choisis <b>« Sur l’écran d’accueil »</b>, puis <b>Ajouter</b>.</li></ol><button class="btn" id="iosOk" style="width:100%">J’ai compris</button></div></div>
+<script>
+/* ===== Mot de passe : HUB commun, calculé chaque mois → VOYAGE-MM-AAAA (ex. VOYAGE-10-2026) ===== */
+function norm(s){return String(s).toLowerCase().replace(/[\s-]/g,'')}
+function expected(prefix,back){var d0=new Date(),d=new Date(d0.getFullYear(),d0.getMonth()-(back||0),1);return prefix+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear()}
+var VALID_DAYS=120;
+function recent(key){var ts=parseInt(ls(key+'-ts')||'0',10);return !!ts&&Date.now()-ts<VALID_DAYS*86400000}
+function ls(k){try{return localStorage.getItem(k)||''}catch(e){return ''}}
+function lset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function unlocked(){return norm(ls('tm-hub-unlocked'))===norm(expected('VOYAGE'))||recent('tm-hub-unlocked')}
+function applyGate(){document.getElementById('gate').classList.toggle('hidden',unlocked())}
+function tryCode(raw){
+ var v=norm(raw);if(!v)return false;
+ var hub=(v===norm(expected('VOYAGE'))||v===norm(expected('VOYAGE',1)));
+ var hit=null;GUIDES.forEach(function(g){if(g.pre&&(v===norm(expected(g.pre))||v===norm(expected(g.pre,1))))hit=g});
+ if(!hub&&!hit)return false;
+ lset('tm-hub-unlocked',expected('VOYAGE'));lset('tm-hub-unlocked-ts',String(Date.now()));
+ if(hit){lset(hit.key,expected(hit.pre));lset(hit.key+'-ts',String(Date.now()))}   /* le guide s'ouvre sans redemander de code */
+ return hit||true}
+document.getElementById('pwGo').onclick=function(){
+ if(tryCode(document.getElementById('pw').value)){applyGate();renderGuides()}
+ else document.getElementById('pwErr').style.display='block'};
+document.getElementById('pw').onkeydown=function(e){if(e.key==='Enter')document.getElementById('pwGo').click()};
+applyGate();
+
+/* ===== Guides (adresse = dépôt GitHub Pages ; clé = mémoire du déverrouillage de chaque guide, partagée car même compte GitHub) ===== */
+var SALES='https://thaimalin.fr';   /* page de vente par défaut */
+var GUIDES=[];
+function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {e:g.emoji,t:g.title,d:g.desc,c:g.color,u:open?('guides/'+g.slug+'/'):(g.sales||SALES),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
+function loadGuides(){return fetch('guides.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){GUIDES=mapGuides(d.guides);try{localStorage.setItem('tm-hub-guides-cache',JSON.stringify(d.guides))}catch(e){}}).catch(function(){try{GUIDES=mapGuides(JSON.parse(localStorage.getItem('tm-hub-guides-cache')||'[]'))}catch(e){GUIDES=[]}}).then(function(){renderGuides()})}
+function owned(g){return !!g.key&&(norm(ls(g.key))===norm(expected(g.pre))||recent(g.key))}
+function renderGuides(){
+ var l=document.getElementById('guideList');l.innerHTML='';var n=0;
+ GUIDES.forEach(function(g){var o=owned(g);if(o)n++;
+  var a=document.createElement('a');a.className='guide'+(o?'':' locked');a.href=g.u;a.style.background=g.c;if(!o&&g.key||!g.key){a.target='_blank';a.rel='noopener'}
+  a.innerHTML='<b class="e">'+g.e+'</b><span class="t">'+g.t+'<small>'+g.d+'</small></span><span class="st">'+(o?'✓ Ouvrir':g.key?'🔒 Ouvrir / acheter':g.soon?'Bientôt':'Découvrir')+'</span>';
+  l.appendChild(a)});
+ var add=document.createElement('div');add.className='card';add.innerHTML='<h2>🔑 Ajouter un code d’accès</h2><p class="sub" style="margin:0 0 10px">Tu as acheté un autre guide ? Saisis son code ici : il s’ouvre directement, sans autre mot de passe.</p><div class="row"><input id="newCode" placeholder="Code reçu par email" autocomplete="off"><button class="btn" id="newCodeGo" style="flex:0 0 auto">Valider</button></div><p class="note" id="newCodeMsg"></p>';
+ l.appendChild(add);
+ add.querySelector('#newCodeGo').onclick=function(){var r=tryCode(add.querySelector('#newCode').value);if(r){renderGuides()}else add.querySelector('#newCodeMsg').textContent='Code incorrect ou expiré. Vérifie ton email.'};
+ var p=document.createElement('p');p.className='note';p.textContent='Un guide dont tu as saisi le code s’ouvre directement.';l.appendChild(p);
+ document.getElementById('guideTxt').textContent=n?(n+' guide'+(n>1?'s':'')+' débloqué'+(n>1?'s':'')+' sur cet appareil.'):'Aucun guide débloqué sur cet appareil pour le moment.';
+}
+
+/* ===== Statut du voyage ===== */
+function diff(v){if(!v)return null;var t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(v+'T00:00:00')-t)/86400000)}
+function renderStatus(){
+ var dep=ls('tm-departure'),ret=ls('tm-return');document.getElementById('dep').value=dep;document.getElementById('ret').value=ret;
+ var dd=diff(dep),dr=diff(ret),big='Bienvenue ! 🌺',sub='Entre tes dates pour suivre ton voyage jour après jour.';
+ if(dd!==null){
+  if(dd>1){big='🌴 J-'+dd;sub='Plus que '+dd+' jours avant le départ. Pense à ta checklist !'}
+  else if(dd===1){big='🌴 C’est demain !';sub='Dernières vérifications : passeport, visa, assurance, eSIM.'}
+  else if(dr!==null&&dr<0){big='Bon retour ! 🌺';sub='J’espère que ce voyage était magnifique. La suite ? Regarde tes autres guides.'}
+  else{var n=1-dd;big='✈️ Jour '+n+(dr!==null?' sur '+(n+dr):'');sub=dr===null?'Bon voyage !':dr===0?'Dernier jour, profites-en !':'Encore '+dr+' jour'+(dr>1?'s':'')+' sur place.'}
+ }
+ document.getElementById('status').innerHTML='<div class="big">'+big+'</div><div class="sub">'+sub+'</div>';
+}
+['dep','ret'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){lset(id==='dep'?'tm-departure':'tm-return',this.value);renderStatus()})});
+
+/* ===== Checklist ===== */
+var CHECK=[
+ ['Avant de partir',[['passport','Passeport valide (6 mois après le retour)'],['visa','Visa / autorisation d’entrée vérifiés'],['tdac','TDAC (Thaïlande) ou e-visa du pays'],['tickets','Billets d’avion'],['hotel','Hébergements réservés'],['insurance','Assurance voyage'],['vaccins','Vaccins et santé vérifiés']]],
+ ['Argent et connexion',[['money','Carte bancaire sans frais + un peu de liquide'],['esim','eSIM ou carte SIM'],['apps','Applis utiles téléchargées (Maps, Grab…)']]],
+ ['Avant le départ',[['copies','Copies numériques des documents'],['adapter','Adaptateur de prise'],['guides','Guides installés et ouverts une fois (hors-ligne)']]]
+];
+function checked(){try{return JSON.parse(ls('tm-hub-check')||'{}')}catch(e){return {}}}
+function renderCheck(){
+ var c=checked(),l=document.getElementById('chkList');l.innerHTML='';var tot=0,done=0;
+ CHECK.forEach(function(g){var h=document.createElement('div');h.className='grp';h.textContent=g[0];l.appendChild(h);
+  g[1].forEach(function(it){tot++;if(c[it[0]])done++;var lb=document.createElement('label');lb.className='chk'+(c[it[0]]?' done':'');
+   lb.innerHTML='<input type="checkbox" '+(c[it[0]]?'checked':'')+'><span>'+it[1]+'</span>';
+   lb.querySelector('input').onchange=function(){var x=checked();x[it[0]]=this.checked;lset('tm-hub-check',JSON.stringify(x));renderCheck();renderProgress()};l.appendChild(lb)})});
+ renderProgress();
+}
+function renderProgress(){var c=checked(),tot=0,done=0;CHECK.forEach(function(g){g[1].forEach(function(it){tot++;if(c[it[0]])done++})});
+ document.getElementById('chkTxt').textContent=done+' / '+tot+' étapes cochées';document.getElementById('chkBar').style.width=Math.round(done/tot*100)+'%'}
+
+/* ===== Convertisseur ===== */
+var CUR=[['THB','Baht thaïlandais (฿)',39],['VND','Dong vietnamien (₫)',29000],['LAK','Kip laotien (₭)',24000],['KHR','Riel cambodgien (៛)',4700],['IDR','Roupie indonésienne (Rp)',18500],['USD','Dollar américain ($)',1.1]];
+var cur=ls('tm-hub-cur')||'THB';
+function rateKey(c){return 'tm-hub-rate-'+c}
+function getRate(c){var v=parseFloat(ls(rateKey(c)));return v>0?v:CUR.filter(function(x){return x[0]===c})[0][2]}
+function renderConv(){var s=document.getElementById('cur');if(!s.options.length)CUR.forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];s.appendChild(o)});
+ s.value=cur;document.getElementById('rate').value=getRate(cur);document.getElementById('curLbl').textContent=cur;fromEur()}
+function fromEur(){var e=parseFloat(document.getElementById('eur').value);document.getElementById('loc').value=isNaN(e)?'':Math.round(e*getRate(cur)*100)/100}
+function fromLoc(){var t=parseFloat(document.getElementById('loc').value);document.getElementById('eur').value=isNaN(t)?'':Math.round(t/getRate(cur)*100)/100}
+document.getElementById('eur').oninput=fromEur;document.getElementById('loc').oninput=fromLoc;
+document.getElementById('cur').onchange=function(){cur=this.value;lset('tm-hub-cur',cur);renderConv()};
+document.getElementById('rate').oninput=function(){var v=parseFloat(this.value);if(v>0){lset(rateKey(cur),String(v));fromEur()}};
+
+/* ===== Mon vol : rappels + export calendrier ===== */
+var AIRLINES=[
+ ['Air Austral',24,'https://www.air-austral.com','rubrique « Enregistrement en ligne »'],
+ ['Air France',30,'https://wwws.airfrance.fr/check-in','page d’enregistrement'],
+ ['Corsair',24,'https://www.flycorsair.com','rubrique « Enregistrement »'],
+ ['Emirates',48,'https://www.emirates.com/fr/french/manage-booking/online-check-in/','page d’enregistrement'],
+ ['Qatar Airways',48,'https://www.qatarairways.com/fr-fr/online-check-in.html','page d’enregistrement'],
+ ['Turkish Airlines',24,'https://www.turkishairlines.com/fr-fr/flights/manage-booking/web-check-in/','page d’enregistrement'],
+ ['Thai Airways',24,'https://www.thaiairways.com','rubrique « Enregistrement en ligne »'],
+ ['Singapore Airlines',48,'https://www.singaporeair.com','rubrique « Enregistrement »'],
+ ['Vietnam Airlines',24,'https://www.vietnamairlines.com','rubrique « Enregistrement en ligne »'],
+ ['Autre compagnie',24,'','']
+];
+var DESTS=[
+ ['Thaïlande','tdac'],['Vietnam','evisa','https://evisa.gov.vn'],['Laos','evisa','https://laoevisa.gov.la'],['Cambodge','evisa','https://www.evisa.gov.kh']
+];
+function F(){try{return JSON.parse(ls('tm-hub-flight')||'{}')}catch(e){return {}}}
+function saveF(o){lset('tm-hub-flight',JSON.stringify(o))}
+var FID=['fAir','fNum','fDest','fDep','fFrom','fRet','fRetNum','fHours','fUrl'];
+function initFlight(){
+ var a=document.getElementById('fAir'),d=document.getElementById('fDest');
+ AIRLINES.forEach(function(x,i){var o=document.createElement('option');o.value=i;o.textContent=x[0];a.appendChild(o)});
+ DESTS.forEach(function(x,i){var o=document.createElement('option');o.value=i;o.textContent=x[0];d.appendChild(o)});
+ var f=F();FID.forEach(function(id){var el=document.getElementById(id);if(f[id]!=null&&f[id]!=='')el.value=f[id];
+  el.addEventListener('input',function(){var o=F();o[id]=el.value;saveF(o);if(id==='fAir')toggleCustom();renderFlight()});
+  el.addEventListener('change',function(){var o=F();o[id]=el.value;saveF(o);if(id==='fAir')toggleCustom();renderFlight()})});
+ toggleCustom();
+}
+function toggleCustom(){var i=+document.getElementById('fAir').value||0;document.getElementById('fCustom').style.display=AIRLINES[i][0]==='Autre compagnie'?'block':'none'}
+function pad(n){return String(n).padStart(2,'0')}
+function fmt(dt){var m=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],j=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
+ return j[dt.getDay()]+' '+dt.getDate()+' '+m[dt.getMonth()]+' à '+pad(dt.getHours())+'h'+pad(dt.getMinutes())}
+function events(){
+ var f=F();if(!f.fDep)return [];var dep=new Date(f.fDep);if(isNaN(dep))return [];
+ var ai=+f.fAir||0,A=AIRLINES[ai],D=DESTS[+f.fDest||0],ev=[];
+ var hrs=A[0]==='Autre compagnie'?(+f.fHours||24):A[1],url=A[0]==='Autre compagnie'?(f.fUrl||''):A[2];
+ function at(h){return new Date(dep.getTime()-h*3600000)}
+ var vol=(f.fNum?f.fNum+' · ':'')+A[0];
+ ev.push({t:at(30*24),ti:'Vérifier passeport et visa',d:'Passeport valable au moins 6 mois après ton retour, avec des pages libres. Vérifie les conditions d’entrée pour '+D[0]+'.',l:[['Conseils aux voyageurs (France Diplomatie)','https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/']]});
+ if(D[1]==='evisa')ev.push({t:at(14*24),ti:'e-visa '+D[0]+' : à demander',d:'Si ton séjour demande un e-visa, fais la demande sur le site officiel, avec une marge de quelques jours pour le traitement. Vérifie d’abord si tu en as besoin.',l:[['Site officiel e-visa '+D[0],D[2],1]]});
+ ev.push({t:at(7*24),ti:'Assurance voyage et eSIM',d:'Souscris ton assurance et prépare ta connexion internet avant de partir.',l:[['Ouvrir Mon voyage › Checklist',null,0,'check']]});
+ if(D[1]==='tdac')ev.push({t:at(72),ti:'TDAC (carte d’arrivée Thaïlande)',d:'À remplir en ligne avant d’entrer en Thaïlande, dans les 3 jours avant l’arrivée. Gratuit sur le site officiel : ne passe pas par un site payant.',l:[['Site officiel TDAC','https://tdac.immigration.go.th',1]]});
+ ev.push({t:at(hrs),ti:'Enregistrement en ligne ouvert',d:'Ouvre généralement environ '+hrs+' h avant le décollage ('+A[0]+'). Confirme le délai dans l’email de la compagnie.'+(A[3]?' Sur son site : '+A[3]+'.':''),l:url?[['Enregistrement '+A[0],url,1]]:[]});
+ ev.push({t:at(3),ti:'Direction l’aéroport',d:'Arrive environ 3 h avant un vol international. Passeport, visa ou TDAC, carte d’embarquement et assurance sur toi.',l:[]});
+ ev.push({t:dep,ti:'Décollage — '+vol,d:(f.fFrom?'Départ de '+f.fFrom+'. ':'')+'Bon voyage !',l:[]});
+ if(f.fRet){var r=new Date(f.fRet);if(!isNaN(r)){
+  ev.push({t:new Date(r.getTime()-24*3600000),ti:'Enregistrement du vol retour',d:'Vérifie l’ouverture de l’enregistrement'+(f.fRetNum?' pour le '+f.fRetNum:'')+' (environ 24 h avant).',l:url?[['Enregistrement '+A[0],url,1]]:[]});
+  ev.push({t:r,ti:'Vol retour'+(f.fRetNum?' — '+f.fRetNum:''),d:'Pense à arriver 3 h avant et à relire tes bagages.',l:[]})}}
+ LG().forEach(function(g){var gd=new Date(g.dep);if(isNaN(gd))return;var GA=AIRLINES[g.air],gh=GA[0]==='Autre compagnie'?24:GA[1],gl=GA[2],lab=(g.num?g.num+' · ':'')+GA[0]+(g.where?' ('+g.where+')':'');
+  ev.push({t:new Date(gd.getTime()-gh*3600000),ti:'Enregistrement en ligne : '+lab,d:'Ouvre généralement environ '+gh+' h avant le décollage. Confirme le délai dans l’email de la compagnie.',l:gl?[['Enregistrement '+GA[0],gl,1]]:[]});
+  ev.push({t:gd,ti:'Vol : '+lab,d:'Arrive à l’aéroport environ 2 h avant un vol intérieur (3 h si international).',l:[]})});
+ ev.sort(function(a,b){return a.t-b.t});return ev;
+}
+function renderFlight(){
+ var ev=events(),card=document.getElementById('tlCard'),tl=document.getElementById('tl');
+ card.style.display=ev.length?'block':'none';tl.innerHTML='';
+ var now=new Date(),nxt=ev.filter(function(e){return e.t>=now})[0];
+ ev.forEach(function(e){var past=e.t<now,div=document.createElement('div');div.className='ev'+(past?' past':'')+(e===nxt?' next':'');
+  var h='<div class="w">'+fmt(e.t)+(past?' · ✓ passé':'')+'</div><div class="tt">'+e.ti+'</div><div class="dd">'+e.d+'</div>';
+  e.l.forEach(function(k){if(k[3])h+='<a class="lk" href="#" data-go="'+k[3]+'">'+k[0]+'</a>';else h+='<a class="lk'+(k[2]?' pr':'')+'" target="_blank" rel="noopener" href="'+k[1]+'">'+k[0]+' ↗</a>'});
+  div.innerHTML=h;tl.appendChild(div)});
+ var nc=document.getElementById('nextCard');
+ if(nxt){nc.style.display='block';document.getElementById('nextTxt').innerHTML='<div class="w" style="color:#f0955a;font-size:12px;font-weight:800">'+fmt(nxt.t)+'</div><div class="big" style="font-size:19px;margin-top:2px">'+nxt.ti+'</div><div class="sub">'+nxt.d+'</div>'}else nc.style.display='none';
+}
+function icsEsc(t){return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
+function icsDate(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00'}
+function exportIcs(){
+ var ev=events().filter(function(e){return e.t>new Date()});if(!ev.length){alert('Aucun rappel à venir à ajouter.');return}
+ var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Thai Malin//Mon voyage//FR','CALSCALE:GREGORIAN'],stamp=icsDate(new Date());
+ ev.forEach(function(e,i){var end=new Date(e.t.getTime()+30*60000);
+  L.push('BEGIN:VEVENT','UID:thaimalin-'+icsDate(e.t)+'-'+i+'@thaimalin.fr','DTSTAMP:'+stamp,'DTSTART:'+icsDate(e.t),'DTEND:'+icsDate(end),
+   'SUMMARY:'+icsEsc('✈️ '+e.ti),'DESCRIPTION:'+icsEsc(e.d+(e.l.length&&e.l[0][1]?'\n'+e.l[0][1]:'')),
+   'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(e.ti),'TRIGGER:PT0M','END:VALARM','END:VEVENT')});
+ L.push('END:VCALENDAR');
+ var txt=L.join('\r\n'),blob=new Blob([txt],{type:'text/calendar;charset=utf-8'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='mon-voyage-thaimalin.ics';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000);
+}
+document.getElementById('icsBtn').onclick=exportIcs;
+initFlight();renderFlight();
+
+/* ===== Documents : stockés dans le téléphone (IndexedDB), lisibles hors-ligne ===== */
+var DCATS=[['vol','✈️ Billets d’avion'],['hotel','🏨 Hébergements'],['assur','🛡️ Assurance'],['visa','🛂 Visa / TDAC'],['id','🪪 Identité'],['autre','📁 Autres']];
+var dbp=null;
+function db(){if(dbp)return dbp;dbp=new Promise(function(res,rej){var r=indexedDB.open('tm-hub-docs',1);
+ r.onupgradeneeded=function(){r.result.createObjectStore('docs',{keyPath:'id',autoIncrement:true})};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}});return dbp}
+function tx(mode,fn){return db().then(function(d){return new Promise(function(res,rej){var t=d.transaction('docs',mode),st=t.objectStore('docs'),rq=fn(st);t.oncomplete=function(){res(rq&&rq.result)};t.onerror=function(){rej(t.error)};t.onabort=function(){rej(t.error)}})})}
+function allDocs(){return tx('readonly',function(s){return s.getAll()})}
+function sizeTxt(n){return n>1048576?(n/1048576).toFixed(1)+' Mo':Math.max(1,Math.round(n/1024))+' Ko'}
+function initDocs(){var s=document.getElementById('dCat');DCATS.forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];s.appendChild(o)});
+ document.getElementById('dFile').onchange=function(){var fs=[].slice.call(this.files),inp=this,nm=document.getElementById('dName').value.trim(),cat=s.value,jobs=[];
+  fs.forEach(function(f,i){if(f.size>25*1048576){alert('« '+f.name+' » dépasse 25 Mo : fichier non ajouté.');return}
+   jobs.push(tx('readwrite',function(st){return st.add({name:(nm&&fs.length===1?nm:(nm?nm+' '+(i+1):f.name.replace(/\.[^.]+$/,''))),cat:cat,type:f.type,size:f.size,added:Date.now(),blob:f})}))});
+  Promise.all(jobs).then(function(){inp.value='';document.getElementById('dName').value='';renderDocs();
+   if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){})}).catch(function(){alert('Impossible d’enregistrer ce document (espace insuffisant ou stockage bloqué par le navigateur).')})};
+ document.getElementById('vClose').onclick=closeViewer;renderDocs()}
+function renderDocs(){
+ allDocs().then(function(ds){var l=document.getElementById('dList');l.innerHTML='';
+  if(!ds.length){l.innerHTML='<p class="sub" style="text-align:center;margin:20px 0">Aucun document pour le moment.</p>'}
+  DCATS.forEach(function(c){var items=ds.filter(function(d){return d.cat===c[0]}).sort(function(a,b){return b.added-a.added});if(!items.length)return;
+   var h=document.createElement('div');h.className='dcat';h.textContent=c[1];l.appendChild(h);
+   items.forEach(function(d){var div=document.createElement('div');div.className='doc';
+    div.innerHTML='<span class="ic">'+(d.type==='application/pdf'?'📕':'🖼️')+'</span><button class="nm"><b></b><small></small></button><button class="ac" data-a="ren" aria-label="Renommer">✎</button><button class="ac" data-a="del" aria-label="Supprimer">🗑</button>';
+    div.querySelector('b').textContent=d.name;div.querySelector('small').textContent=sizeTxt(d.size)+' · '+new Date(d.added).toLocaleDateString('fr-FR');
+    div.querySelector('.nm').onclick=function(){openDoc(d)};
+    div.querySelector('[data-a=ren]').onclick=function(){var n=prompt('Nouveau nom',d.name);if(n&&n.trim()){d.name=n.trim();tx('readwrite',function(st){return st.put(d)}).then(renderDocs)}};
+    div.querySelector('[data-a=del]').onclick=function(){if(confirm('Supprimer « '+d.name+' » de ce téléphone ?'))tx('readwrite',function(st){return st.delete(d.id)}).then(renderDocs)};
+    l.appendChild(div)})});
+  var tot=ds.reduce(function(a,d){return a+d.size},0);document.getElementById('dInfo').textContent=ds.length?(ds.length+' document'+(ds.length>1?'s':'')+' · '+sizeTxt(tot)+' sur cet appareil'):'';
+ }).catch(function(){document.getElementById('dList').innerHTML='<p class="warn">Le stockage des documents n’est pas disponible dans ce navigateur (navigation privée ?).</p>'})}
+var curUrl=null;
+function openDoc(d){closeViewer();curUrl=URL.createObjectURL(d.blob);var b=document.getElementById('vBody');b.innerHTML='';document.getElementById('vName').textContent=d.name;
+ var o=document.getElementById('vOpen');o.onclick=function(){window.open(curUrl,'_blank')};
+ if(d.type==='application/pdf'){var f=document.createElement('iframe');f.src=curUrl;b.appendChild(f)}else{var i=document.createElement('img');i.src=curUrl;b.appendChild(i)}
+ document.getElementById('viewer').classList.add('on')}
+function closeViewer(){document.getElementById('viewer').classList.remove('on');document.getElementById('vBody').innerHTML='';if(curUrl){URL.revokeObjectURL(curUrl);curUrl=null}}
+initDocs();
+
+/* ===== Programme jour par jour ===== */
+function PL(){try{return JSON.parse(ls('tm-hub-plan')||'{}')}catch(e){return {}}}
+function savePL(o){lset('tm-hub-plan',JSON.stringify(o))}
+function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function addDays(v,n){var d=new Date(v+'T00:00:00');d.setDate(d.getDate()+n);return iso(d)}
+function dayLabel(v){var d=new Date(v+'T00:00:00'),j=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'],m=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];return j[d.getDay()]+' '+d.getDate()+' '+m[d.getMonth()]}
+var planDay=null,planEdit=null,extraDays=[];
+function tripStart(){var f=F();return ls('tm-departure')||(f.fDep?f.fDep.slice(0,10):'')}
+function planDays(){
+ var pl=PL(),set={},st=tripStart(),en=ls('tm-return')||(F().fRet?F().fRet.slice(0,10):'');
+ if(st){var e=en&&en>=st?en:addDays(st,6),n=0;for(var d=st;d<=e&&n<60;d=addDays(d,1),n++)set[d]=1}
+ Object.keys(pl).forEach(function(k){if(pl[k]&&pl[k].length)set[k]=1});extraDays.forEach(function(k){set[k]=1});
+ return Object.keys(set).sort();
+}
+function sortItems(a){return a.slice().sort(function(x,y){return (x.time||'99:99')<(y.time||'99:99')?-1:(x.time||'99:99')>(y.time||'99:99')?1:0})}
+function mapsUrl(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+function renderPlan(){
+ var days=planDays(),pl=PL(),td=iso(new Date()),hint=document.getElementById('planHint'),chips=document.getElementById('planDays'),list=document.getElementById('planList');
+ chips.innerHTML='';list.innerHTML='';
+ if(!days.length){hint.textContent='Entre d’abord tes dates de départ et de retour dans « Voyage », ou ajoute une date ci-dessous.';document.getElementById('planAdd').style.display='none';return}
+ document.getElementById('planAdd').style.display='block';
+ hint.textContent='Prépare tes journées : activités, adresses, réservations.';
+ if(!planDay||days.indexOf(planDay)<0)planDay=days.indexOf(td)>=0?td:days[0];
+ var st=tripStart();
+ days.forEach(function(dv){var b=document.createElement('button');b.className='chip'+(dv===planDay?' on':'')+(dv===td?' today':'');
+  var n=st&&dv>=st?Math.round((new Date(dv+'T00:00:00')-new Date(st+'T00:00:00'))/86400000)+1:null;
+  b.innerHTML=(n?'Jour '+n:'Date')+'<small>'+dayLabel(dv)+(pl[dv]&&pl[dv].length?' · '+pl[dv].length:'')+'</small>';
+  b.onclick=function(){planDay=dv;planEdit=null;clearForm();renderPlan()};chips.appendChild(b)});
+ var items=sortItems(pl[planDay]||[]);
+ if(!items.length)list.innerHTML='<p class="sub" style="margin:6px 0 4px">Rien de prévu ce jour-là pour le moment.</p>';
+ items.forEach(function(it){var d=document.createElement('div');d.className='pl';
+  d.innerHTML='<div class="tm"></div><div class="bd"><b></b><span class="pn"></span><span class="nt"></span></div><div style="display:flex;align-items:flex-start"><button class="ac" data-a="e" aria-label="Modifier">✎</button><button class="ac" data-a="d" aria-label="Supprimer">🗑</button></div>';
+  d.querySelector('.tm').textContent=it.time||'—';d.querySelector('b').textContent=it.title;d.querySelector('.pn').textContent=it.place||'';d.querySelector('.nt').textContent=it.note||'';
+  if(!it.place)d.querySelector('.pn').remove();if(!it.note)d.querySelector('.nt').remove();
+  if(it.place){var a=document.createElement('a');a.href=mapsUrl(it.place);a.target='_blank';a.rel='noopener';a.textContent='📍 Y aller';d.querySelector('.bd').appendChild(a)}
+  d.querySelector('[data-a=e]').onclick=function(){planEdit=it.id;document.getElementById('pTime').value=it.time||'';document.getElementById('pTitle').value=it.title;document.getElementById('pPlace').value=it.place||'';document.getElementById('pNote').value=it.note||'';document.getElementById('pSave').textContent='✔ Enregistrer';document.getElementById('pCancel').style.display='inline-block';document.getElementById('pTitle').focus()};
+  d.querySelector('[data-a=d]').onclick=function(){if(confirm('Supprimer « '+it.title+' » ?')){var o=PL();o[planDay]=(o[planDay]||[]).filter(function(x){return x.id!==it.id});savePL(o);renderPlan();renderTodayPlan()}};
+  list.appendChild(d)});
+}
+function clearForm(){['pTime','pTitle','pPlace','pNote'].forEach(function(i){document.getElementById(i).value=''});planEdit=null;document.getElementById('pSave').textContent='➕ Ajouter à ce jour';document.getElementById('pCancel').style.display='none'}
+document.getElementById('pCancel').onclick=function(){clearForm()};
+document.getElementById('pSave').onclick=function(){
+ var t=document.getElementById('pTitle').value.trim();if(!t){document.getElementById('pTitle').focus();return}
+ var o=PL(),arr=o[planDay]||[],rec={id:planEdit||Date.now()+''+Math.floor(Math.random()*1000),time:document.getElementById('pTime').value,title:t,place:document.getElementById('pPlace').value.trim(),note:document.getElementById('pNote').value.trim()};
+ if(planEdit)arr=arr.map(function(x){return x.id===planEdit?rec:x});else arr.push(rec);o[planDay]=arr;savePL(o);clearForm();renderPlan();renderTodayPlan()};
+document.getElementById('pNewDayBtn').onclick=function(){var v=document.getElementById('pNewDay').value;if(v){if(extraDays.indexOf(v)<0)extraDays.push(v);planDay=v;document.getElementById('pNewDay').value='';renderPlan()}};
+function renderTodayPlan(){var td=iso(new Date()),items=sortItems(PL()[td]||[]),c=document.getElementById('todayPlan'),l=document.getElementById('todayPlanList');
+ if(!items.length){c.style.display='none';return}c.style.display='block';l.innerHTML='';
+ items.forEach(function(it){var d=document.createElement('div');d.className='pl';d.innerHTML='<div class="tm"></div><div class="bd"><b></b><span></span></div>';d.querySelector('.tm').textContent=it.time||'—';d.querySelector('b').textContent=it.title;
+  if(it.place){var a=document.createElement('a');a.href=mapsUrl(it.place);a.target='_blank';a.rel='noopener';a.textContent='📍 Y aller';d.querySelector('.bd').appendChild(a)}d.querySelector('span').remove();l.appendChild(d)})}
+document.getElementById('planIcs').onclick=function(){
+ var pl=PL(),L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Thai Malin//Mon voyage//FR','CALSCALE:GREGORIAN'],stamp=icsDate(new Date()),n=0;
+ Object.keys(pl).sort().forEach(function(dv){sortItems(pl[dv]||[]).forEach(function(it,i){n++;
+  var dtS,dtE;if(it.time){var s0=new Date(dv+'T'+it.time+':00'),e0=new Date(s0.getTime()+3600000);dtS='DTSTART:'+icsDate(s0);dtE='DTEND:'+icsDate(e0)}else{dtS='DTSTART;VALUE=DATE:'+dv.replace(/-/g,'');dtE='DTEND;VALUE=DATE:'+addDays(dv,1).replace(/-/g,'')}
+  L.push('BEGIN:VEVENT','UID:thaimalin-plan-'+it.id+'@thaimalin.fr','DTSTAMP:'+stamp,dtS,dtE,'SUMMARY:'+icsEsc(it.title),
+   'DESCRIPTION:'+icsEsc((it.note||'')+(it.place?'\n'+mapsUrl(it.place):'')),(it.place?'LOCATION:'+icsEsc(it.place):'X-TM:1'),
+   'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(it.title),'TRIGGER:'+(it.time?'-PT30M':'PT9H'),'END:VALARM','END:VEVENT')})});
+ if(!n){alert('Ton programme est vide : ajoute d’abord des activités.');return}
+ L.push('END:VCALENDAR');var blob=new Blob([L.join('\r\n')],{type:'text/calendar;charset=utf-8'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='programme-thaimalin.ics';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000)};
+renderPlan();renderTodayPlan();
+
+/* ===== Autres vols (escales, vols intérieurs) ===== */
+function LG(){try{return JSON.parse(ls('tm-hub-legs')||'[]')}catch(e){return []}}
+function saveLG(a){lset('tm-hub-legs',JSON.stringify(a))}
+function renderLegs(){var l=document.getElementById('legList');l.innerHTML='';
+ LG().sort(function(a,b){return a.dep<b.dep?-1:1}).forEach(function(g){var d=document.createElement('div');d.className='leg';var dt=new Date(g.dep);
+  d.innerHTML='<div><b></b><small></small></div><button aria-label="Supprimer">🗑</button>';
+  d.querySelector('b').textContent=(g.num?g.num+' · ':'')+AIRLINES[g.air][0];d.querySelector('small').textContent=fmt(dt)+(g.where?' · '+g.where:'');
+  d.querySelector('button').onclick=function(){saveLG(LG().filter(function(x){return x.id!==g.id}));renderLegs();renderFlight()};l.appendChild(d)})}
+(function(){var a=document.getElementById('lAir');AIRLINES.forEach(function(x,i){var o=document.createElement('option');o.value=i;o.textContent=x[0];a.appendChild(o)});
+ document.getElementById('lAdd').onclick=function(){var dep=document.getElementById('lDep').value;if(!dep){document.getElementById('lDep').focus();return}
+  var g=LG();g.push({id:Date.now()+'',air:+a.value||0,num:document.getElementById('lNum').value.trim(),dep:dep,where:document.getElementById('lWhere').value.trim()});saveLG(g);
+  ['lNum','lDep','lWhere'].forEach(function(i){document.getElementById(i).value=''});renderLegs();renderFlight()};renderLegs()})();
+
+/* ===== Sauvegarde / restauration / nouveau voyage ===== */
+var BKKEYS=['tm-departure','tm-return','tm-city'];
+function bkKeys(){var k=[];for(var i=0;i<localStorage.length;i++){var n=localStorage.key(i);if((n.indexOf('tm-hub-')===0&&n!=='tm-hub-unlocked')||BKKEYS.indexOf(n)>=0)k.push(n)}return k}
+function toDataUrl(b){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=rej;r.readAsDataURL(b)})}
+function buildBackup(withDocs){var data={app:'thaimalin-hub',v:1,date:new Date().toISOString(),ls:{},docs:[]};try{bkKeys().forEach(function(k){data.ls[k]=localStorage.getItem(k)})}catch(e){}
+ if(!withDocs)return Promise.resolve(data);
+ return allDocs().then(function(ds){return Promise.all(ds.map(function(d){return toDataUrl(d.blob).then(function(u){return {name:d.name,cat:d.cat,type:d.type,size:d.size,added:d.added,data:u}})}))}).then(function(x){data.docs=x;return data}).catch(function(){return data})}
+function downloadJson(data,name){var blob=new Blob([JSON.stringify(data)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000)}
+document.getElementById('bkExport').onclick=function(){var m=document.getElementById('bkMsg');m.textContent='Préparation…';
+ buildBackup(document.getElementById('bkDocs').checked).then(function(d){downloadJson(d,'sauvegarde-mon-voyage-'+iso(new Date())+'.json');m.textContent='Sauvegarde téléchargée ('+d.docs.length+' document'+(d.docs.length>1?'s':'')+'). Garde-la dans un endroit sûr (cloud, email…).'})};
+document.getElementById('bkImport').onchange=function(){var f=this.files[0],m=document.getElementById('bkMsg'),inp=this;if(!f)return;
+ f.text().then(function(t){var d=JSON.parse(t);if(d.app!=='thaimalin-hub'||!d.ls)throw new Error('format');
+  if(!confirm('Restaurer cette sauvegarde ? Elle remplacera tes données actuelles (dates, vol, programme, checklist'+(d.docs&&d.docs.length?' et ajoutera ses documents':'')+').'))return;
+  Object.keys(d.ls).forEach(function(k){lset(k,d.ls[k])});
+  return Promise.all((d.docs||[]).map(function(x){return fetch(x.data).then(function(r){return r.blob()}).then(function(bl){return tx('readwrite',function(st){return st.add({name:x.name,cat:x.cat,type:x.type,size:x.size,added:x.added,blob:bl})})})})).then(function(){m.textContent='Sauvegarde restaurée.';setTimeout(function(){location.reload()},700)})
+ }).catch(function(){m.textContent='Ce fichier n’est pas une sauvegarde valide de Mon voyage.'});inp.value=''};
+document.getElementById('newTrip').onclick=function(){
+ if(!confirm('Commencer un nouveau voyage ? Une sauvegarde va d’abord être téléchargée, puis tes dates, ton vol, ton programme et ta checklist seront effacés.'))return;
+ buildBackup(true).then(function(d){downloadJson(d,'sauvegarde-avant-nouveau-voyage-'+iso(new Date())+'.json');
+  ['tm-departure','tm-return','tm-hub-flight','tm-hub-legs','tm-hub-plan','tm-hub-check'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});
+  var delDocs=confirm('Supprimer aussi tes documents de ce téléphone ? (OK = les supprimer, Annuler = les garder)');
+  var done=function(){location.reload()};
+  if(delDocs)allDocs().then(function(ds){return Promise.all(ds.map(function(x){return tx('readwrite',function(st){return st.delete(x.id)})}))}).then(done,done);else setTimeout(done,500)})};
+
+/* ===== Navigation ===== */
+function go(id){document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('on',v.id==='v-'+id)});
+ var nid=(id==='check'||id==='conv')?'more':id;document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===nid)});window.scrollTo(0,0);
+ if(id==='guides')renderGuides();if(id==='flight')renderFlight();if(id==='plan'){renderPlan()}if(id==='docs')renderDocs();if(id==='home'){renderStatus();renderProgress();renderGuides();renderFlight();renderTodayPlan()}}
+document.addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b){e.preventDefault();go(b.dataset.go)}});
+renderStatus();renderCheck();renderConv();loadGuides();
+
+/* ===== Installation (bouton « Installer ») ===== */
+(function(){
+ var box=document.getElementById('inst'),btn=document.getElementById('instBtn'),ev=null;
+ var standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+ var ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ if(standalone)return;
+ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();ev=e;box.classList.add('on')});
+ window.addEventListener('appinstalled',function(){box.classList.remove('on')});
+ if(ios)box.classList.add('on');
+ btn.onclick=function(){if(ev){ev.prompt();ev.userChoice.then(function(){ev=null;box.classList.remove('on')})}else document.getElementById('iosHelp').classList.add('on')};
+ document.getElementById('iosOk').onclick=function(){document.getElementById('iosHelp').classList.remove('on')};
+})();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('service-worker.js').catch(function(){});
+</script></body></html>

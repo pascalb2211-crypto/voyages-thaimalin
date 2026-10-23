@@ -1,0 +1,19 @@
+{
+  "slug": "plages-thailande",
+  "title": "Mini-guide Plages Thaïlande",
+  "short": "PLAGES THAÏLANDE",
+  "country": "Thaïlande",
+  "emoji": "🏖️",
+  "desc": "Phuket, Krabi, les îles",
+  "color": "#0e7490",
+  "prefix": "PLAGES-THAILANDE",
+  "weather": "Phuket:7.88,98.39;Krabi:8.09,98.91;Koh Samui:9.51,100.01",
+  "booking": "th",
+  "sales": "https://thaimalin.fr",
+  "pages": [
+    {"title": "Couverture"},
+    {"title": "Les plus belles plages", "links": [{"x": 5, "y": 20, "w": 90, "h": 12, "page": 3, "label": "Voir Phuket"}]},
+    {"title": "Phuket"},
+    {"title": "Merci et à bientôt"}
+  ]
+}

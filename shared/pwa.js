@@ -485,9 +485,9 @@
 })();
 
 /* Avertissement : appareil trop ancien pour les images WebP (iOS < 14, anciens navigateurs) */
-(function(){try{var c=document.createElement('canvas');c.width=c.height=1;if(c.toDataURL('image/webp').indexOf('data:image/webp')===0)return}catch(e){}
+(function(){var im=new Image();im.onload=function(){if(im.width===1)return;go()};im.onerror=go;im.src='data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';function go(){
  function show(){if(document.getElementById('tmOld'))return;var d=document.createElement('div');d.id='tmOld';
   d.style.cssText='position:fixed;left:0;right:0;top:0;z-index:2147483000;background:#b3261e;color:#fff;font:700 14px/1.4 -apple-system,Segoe UI,Arial,sans-serif;padding:12px 16px;text-align:center;box-shadow:0 4px 16px #0008';
   d.innerHTML='⚠️ Cet appareil est trop ancien pour afficher les images des guides. Mets à jour iOS (version 14 ou plus récente) ou ouvre le guide sur un autre téléphone ou ordinateur. <button type="button" style="margin-left:8px;border:0;border-radius:8px;padding:4px 10px;font:800 13px inherit;background:#fff;color:#b3261e" onclick="this.parentNode.remove()">OK</button>';
   (document.body||document.documentElement).appendChild(d)}
- if(document.body)show();else document.addEventListener('DOMContentLoaded',show)})();
+ if(document.body)show();else document.addEventListener('DOMContentLoaded',show)}})();

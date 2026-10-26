@@ -106,6 +106,8 @@
 
   function showBanner(){
     if(isStandalone || !isMobile || document.querySelector('.tmpwa-banner')) return;
+    /* Si le hub « Mon voyage » est déjà débloqué sur cet appareil, c'est lui qu'on installe : pas de bandeau par guide. */
+    if(store('tm-hub-unlocked')) return;
     var off = parseInt(store('tmpwa_banner_off_' + SLUG) || '0', 10);
     if(off && Date.now() - off < 14 * 24 * 3600 * 1000) return;
     var bar = document.createElement('div'); bar.className = 'tmpwa-banner';

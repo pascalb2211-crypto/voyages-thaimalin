@@ -6,7 +6,7 @@
    Si vous ajoutez une page ou une image NOUVELLE, ajoutez-la aux listes ci-dessous
    (ou relancez l'outil de conversion) pour qu'elle soit aussi téléchargée d'avance.
 ================================================================================ */
-const CACHE = 'tm-mg-thailande';
+const CACHE = 'tm-mg-thailande-v2';
 const CORE = [
   "./",
   "index.html",
@@ -42,6 +42,7 @@ const IMAGES = [
   "assets/page-21.webp",
   "assets/page-22.webp",
   "assets/page-23.webp",
+  "assets/page-24.webp",
   "assets/thumbs/thumb-01.webp",
   "assets/thumbs/thumb-02.webp",
   "assets/thumbs/thumb-03.webp",
@@ -65,6 +66,7 @@ const IMAGES = [
   "assets/thumbs/thumb-21.webp",
   "assets/thumbs/thumb-22.webp",
   "assets/thumbs/thumb-23.webp",
+  "assets/thumbs/thumb-24.webp",
   "assets/qr/qr22-1.png",
   "assets/qr/qr22-2.png",
   "assets/qr/qr22-3.png",

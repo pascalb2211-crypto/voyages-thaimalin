@@ -6,7 +6,7 @@
    Si vous ajoutez une page ou une image NOUVELLE, ajoutez-la aux listes ci-dessous
    (ou relancez l'outil de conversion) pour qu'elle soit aussi téléchargée d'avance.
 ================================================================================ */
-const CACHE = 'tm-mg-laos';
+const CACHE = 'tm-mg-laos-v2';
 const CORE = [
   "./",
   "index.html",
@@ -40,6 +40,7 @@ const CORE = [
   "page24.html",
   "page25.html",
   "page26.html",
+  "page27.html",
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/apple-touch-icon.png",
@@ -65,6 +66,7 @@ const IMAGES = [
   "images/page24.webp",
   "images/page25.webp",
   "images/page26.webp",
+  "images/page27.webp",
   "images/page3.webp",
   "images/page4.webp",
   "images/page5.webp",

@@ -108,7 +108,7 @@ main{padding:12px}.viewer{position:relative;max-width:1400px;margin:auto;backgro
 .inspCard b{display:block;font-size:30px;margin-bottom:6px;font-weight:400}.inspCard small{display:block;font-weight:700;opacity:.9;margin-top:4px;font-size:12px}
 </style>
 </head><body>
-<div id="tmCover"><div id="tmCoverBox"><img id="tmCoverImg" src="assets/cover.webp" alt="Couverture du mini-guide Thaïlande Thaï Malin"><button class="cz" style="left:3.42%" onclick="tmCoverGo(6)" aria-label="Destinations"></button><button class="cz" style="left:22.07%" onclick="tmCoverGo(7)" aria-label="Itinéraires"></button><button class="cz" style="left:40.92%" onclick="tmCoverGo(16)" aria-label="Gastronomie"></button><button class="cz" style="left:59.67%" onclick="tmCoverGo(11)" aria-label="Où dormir"></button><button class="cz" style="left:78.52%" onclick="tmCoverGo(8)" aria-label="Budget et conseils"></button><button class="go" onclick="tmCoverHide()">Commencer &rarr;</button></div></div>
+<div id="tmCover"><div id="tmCoverBox"><img id="tmCoverImg" src="assets/cover.webp" alt="Couverture du mini-guide Thaïlande Thaï Malin"><button class="cz" style="left:3.42%" onclick="tmCoverGo(7)" aria-label="Destinations"></button><button class="cz" style="left:22.07%" onclick="tmCoverGo(8)" aria-label="Itinéraires"></button><button class="cz" style="left:40.92%" onclick="tmCoverGo(17)" aria-label="Gastronomie"></button><button class="cz" style="left:59.67%" onclick="tmCoverGo(12)" aria-label="Où dormir"></button><button class="cz" style="left:78.52%" onclick="tmCoverGo(9)" aria-label="Budget et conseils"></button><button class="go" onclick="tmCoverHide()">Commencer &rarr;</button></div></div>
 <div id="pwGate">
  <div class="pwBox">
   <div class="pwEmoji">🌺</div>
@@ -122,12 +122,12 @@ main{padding:12px}.viewer{position:relative;max-width:1400px;margin:auto;backgro
 </div>
 <header><div class="top">
 <div class="brand">🌺 THAÏ <span>MALIN</span></div><div class="title">Mini-guide Réunionnais</div>
-<button class="nav" onclick="go(page-1)">←</button><div class="counter" id="counter">1 / 23</div><button class="nav" onclick="go(page+1)">→</button>
+<button class="nav" onclick="go(page-1)">←</button><div class="counter" id="counter">1 / 24</div><button class="nav" onclick="go(page+1)">→</button>
 <button class="tool" id="tmCoverBtn" onclick="tmCoverShow()" title="Couverture">&#128213;</button><button class="tool" onclick="show('summary')">☷ Sommaire</button><button class="tool" onclick="window.print()">↓ PDF</button>
 <button class="tool" onclick="show('favorites')">♡ Favoris</button><button class="tool" onclick="document.documentElement.requestFullscreen?.()">⛶</button>
 </div></header>
 <div class="layout"><aside class="side" id="side"></aside><main>
-<div class="viewer" id="viewer"><img id="pageImage" alt="" onclick="if(!editMode)openZoom(event)"><button class="zoomBtn" onclick="openZoom()">🔍 Agrandir</button></div>
+<div class="viewer" id="viewer"><img id="pageImage" alt="" onclick="if(!editMode)openZoom(event)"><button class="zoomBtn" onclick="openZoom()">🔍 Agrandir</button><a id="euBtn" href="#" onclick="go(4);return false" style="display:none;position:absolute;left:10px;bottom:10px;z-index:5;background:#d35400;color:#fff;border-radius:10px;padding:9px 12px;font:900 14px Arial,sans-serif;text-decoration:none;box-shadow:0 4px 14px #0005">🇪🇺 Je pars de France / d’Europe →</a></div>
 <div class="lightbox" id="lightbox" onclick="if(event.target===this)closeZoom()">
  <div class="lbHint" id="lbHint">Pincez ou faites défiler pour lire — touchez ✕ pour fermer</div>
  <button class="lbClose" onclick="closeZoom()">✕</button>
@@ -241,119 +241,119 @@ function checkPw(){
   document.getElementById('pwGate').classList.add('hidden');
  }
 })();
-const titles=["Bienvenue en Thaïlande", "Avant de partir", "Comment aller en Thaïlande ?", "Parler Thaï au quotidien", "À l’arrivée en Thaïlande", "Où aller en Thaïlande ?", "Itinéraires conseillés", "Conseils pratiques pour un séjour réussi", "À ne pas manquer en Thaïlande", "Se déplacer en Thaïlande", "Se loger en Thaïlande", "En résumé — Tout pour un séjour réussi", "Les erreurs à éviter", "Shopping & Souvenirs en Thaïlande", "Itinéraires recommandés", "Manger en Thaïlande", "Culture & Traditions", "Formalités & Entrée en Thaïlande", "Idées d’excursions et activités", "Prêt pour l’aventure ?", "Numéros utiles & SOS en Thaïlande", "Mon Centre de Réservation", "Fin — Merci !"];
+const titles=["Bienvenue en Thaïlande", "Avant de partir", "Comment aller en Thaïlande ?", "Comment aller en Thaïlande depuis la France et l’Europe ?", "Parler Thaï au quotidien", "À l’arrivée en Thaïlande", "Où aller en Thaïlande ?", "Itinéraires conseillés", "Conseils pratiques pour un séjour réussi", "À ne pas manquer en Thaïlande", "Se déplacer en Thaïlande", "Se loger en Thaïlande", "En résumé — Tout pour un séjour réussi", "Les erreurs à éviter", "Shopping & Souvenirs en Thaïlande", "Itinéraires recommandés", "Manger en Thaïlande", "Culture & Traditions", "Formalités & Entrée en Thaïlande", "Idées d’excursions et activités", "Prêt pour l’aventure ?", "Numéros utiles & SOS en Thaïlande", "Mon Centre de Réservation", "Fin — Merci !"];
 let page=1;
 const HOTSPOTS={
  // x,y,w,h en % de l'image (restent alignés à toutes les tailles). Cible : href (lien externe) | page (n° de page) | panel (id du panneau)
  1:[
-  {"x": 2.93, "y": 22.46, "w": 32.23, "h": 4.88, "label": "Plages", "page": 19},
-  {"x": 2.93, "y": 29.3, "w": 32.23, "h": 4.23, "label": "Culture", "page": 17},
-  {"x": 2.93, "y": 34.83, "w": 32.23, "h": 4.23, "label": "Gastronomie", "page": 16},
-  {"x": 2.93, "y": 39.71, "w": 32.23, "h": 4.56, "label": "Bons plans", "page": 8},
-  {"x": 2.93, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Plages de rêve", "page": 19},
-  {"x": 16.8, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Temples majestueux", "page": 17},
-  {"x": 30.66, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Cuisine délicieuse", "page": 16},
-  {"x": 44.53, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Îles paradisiaques", "page": 19},
-  {"x": 58.4, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Shopping et marchés", "page": 14},
-  {"x": 72.27, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Rencontres et sourires", "page": 17},
-  {"x": 86.13, "y": 85.94, "w": 10.94, "h": 11.72, "label": "Astuces et bons plans", "page": 8}
+  {"x": 2.93, "y": 22.46, "w": 32.23, "h": 4.88, "label": "Plages", "page": 20},
+  {"x": 2.93, "y": 29.3, "w": 32.23, "h": 4.23, "label": "Culture", "page": 18},
+  {"x": 2.93, "y": 34.83, "w": 32.23, "h": 4.23, "label": "Gastronomie", "page": 17},
+  {"x": 2.93, "y": 39.71, "w": 32.23, "h": 4.56, "label": "Bons plans", "page": 9},
+  {"x": 2.93, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Plages de rêve", "page": 20},
+  {"x": 16.8, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Temples majestueux", "page": 18},
+  {"x": 30.66, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Cuisine délicieuse", "page": 17},
+  {"x": 44.53, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Îles paradisiaques", "page": 20},
+  {"x": 58.4, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Shopping et marchés", "page": 15},
+  {"x": 72.27, "y": 85.94, "w": 13.87, "h": 11.72, "label": "Rencontres et sourires", "page": 18},
+  {"x": 86.13, "y": 85.94, "w": 10.94, "h": 11.72, "label": "Astuces et bons plans", "page": 9}
  ],
  2:[
-  {"x": 1.95, "y": 17.9, "w": 27.83, "h": 3.58, "label": "Planifier", "page": 15},
-  {"x": 1.95, "y": 22.01, "w": 27.83, "h": 3.58, "label": "Comparer", "page": 5},
-  {"x": 1.95, "y": 25.91, "w": 27.83, "h": 3.58, "label": "Budgéter", "page": 8},
+  {"x": 1.95, "y": 17.9, "w": 27.83, "h": 3.58, "label": "Planifier", "page": 16},
+  {"x": 1.95, "y": 22.01, "w": 27.83, "h": 3.58, "label": "Comparer", "page": 6},
+  {"x": 1.95, "y": 25.91, "w": 27.83, "h": 3.58, "label": "Budgéter", "page": 9},
   {"x": 1.95, "y": 29.82, "w": 27.83, "h": 3.58, "label": "Réserver", "panel": "links"},
-  {"x": 1.95, "y": 33.72, "w": 27.83, "h": 4.17, "label": "Profiter", "page": 9}
+  {"x": 1.95, "y": 33.72, "w": 27.83, "h": 4.17, "label": "Profiter", "page": 10}
  ],
  3:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Vol direct Air Austral", "href": "https://www.air-austral.com"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Routes avec escale", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Durée du trajet", "panel": "links"},
   {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Quand réserver", "panel": "links"},
-  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Budget indicatif", "page": 8},
+  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Budget indicatif", "page": 9},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Astuces malines", "href": "https://www.skyscanner.fr"}
  ],
- 4:[
+ 5:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Politesse de base", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Se faire comprendre", "panel": "links"},
-  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Marchander", "page": 14},
-  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Se déplacer", "page": 10},
-  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Au restaurant", "page": 16},
-  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Urgences", "page": 21}
- ],
- 5:[
-  {"x": 1.46, "y": 25.91, "w": 47.36, "h": 20.7, "label": "Contrôle d’immigration", "page": 18},
-  {"x": 50.78, "y": 25.91, "w": 47.36, "h": 20.7, "label": "Récupération des bagages", "panel": "checklist"},
-  {"x": 1.46, "y": 47.4, "w": 47.36, "h": 20.31, "label": "Douane", "href": "https://www.diplomatie.gouv.fr/fr/information-par-pays/thailande/conseils-aux-voyageurs-entree-sejour"},
-  {"x": 50.78, "y": 47.4, "w": 47.36, "h": 20.31, "label": "Moyens de transport", "page": 10},
-  {"x": 1.46, "y": 68.36, "w": 47.36, "h": 20.18, "label": "Argent et paiements", "page": 8},
-  {"x": 50.78, "y": 68.36, "w": 47.36, "h": 20.18, "label": "Carte SIM / Internet", "panel": "links"}
+  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Marchander", "page": 15},
+  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Se déplacer", "page": 11},
+  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Au restaurant", "page": 17},
+  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Urgences", "page": 22}
  ],
  6:[
-  {"x": 1.46, "y": 19.86, "w": 47.36, "h": 21.48, "label": "Bangkok et ses environs", "page": 15},
-  {"x": 51.27, "y": 19.86, "w": 47.36, "h": 21.48, "label": "Le Nord", "page": 15},
-  {"x": 1.46, "y": 42.19, "w": 47.36, "h": 14.58, "label": "Le Centre", "page": 15},
-  {"x": 51.27, "y": 42.19, "w": 47.36, "h": 14.58, "label": "Le Sud", "page": 15},
-  {"x": 1.46, "y": 66.08, "w": 47.36, "h": 21.48, "label": "Les Îles", "page": 15},
-  {"x": 51.27, "y": 66.08, "w": 47.36, "h": 21.48, "label": "L’Est", "page": 15}
+  {"x": 1.46, "y": 25.91, "w": 47.36, "h": 20.7, "label": "Contrôle d’immigration", "page": 19},
+  {"x": 50.78, "y": 25.91, "w": 47.36, "h": 20.7, "label": "Récupération des bagages", "panel": "checklist"},
+  {"x": 1.46, "y": 47.4, "w": 47.36, "h": 20.31, "label": "Douane", "href": "https://www.diplomatie.gouv.fr/fr/information-par-pays/thailande/conseils-aux-voyageurs-entree-sejour"},
+  {"x": 50.78, "y": 47.4, "w": 47.36, "h": 20.31, "label": "Moyens de transport", "page": 11},
+  {"x": 1.46, "y": 68.36, "w": 47.36, "h": 20.18, "label": "Argent et paiements", "page": 9},
+  {"x": 50.78, "y": 68.36, "w": 47.36, "h": 20.18, "label": "Carte SIM / Internet", "panel": "links"}
  ],
  7:[
-  {"x": 1.46, "y": 20.51, "w": 31.25, "h": 28.97, "label": "7 jours", "page": 6},
-  {"x": 33.69, "y": 20.51, "w": 31.25, "h": 28.97, "label": "10 jours", "page": 6},
-  {"x": 66.41, "y": 20.51, "w": 31.25, "h": 28.97, "label": "15 jours", "page": 6},
-  {"x": 1.46, "y": 51.76, "w": 31.25, "h": 29.62, "label": "21 jours", "page": 6},
-  {"x": 33.69, "y": 51.76, "w": 31.25, "h": 29.62, "label": "30 jours", "page": 6},
-  {"x": 66.41, "y": 51.76, "w": 31.25, "h": 29.62, "label": "Thématiques", "page": 19}
+  {"x": 1.46, "y": 19.86, "w": 47.36, "h": 21.48, "label": "Bangkok et ses environs", "page": 16},
+  {"x": 51.27, "y": 19.86, "w": 47.36, "h": 21.48, "label": "Le Nord", "page": 16},
+  {"x": 1.46, "y": 42.19, "w": 47.36, "h": 14.58, "label": "Le Centre", "page": 16},
+  {"x": 51.27, "y": 42.19, "w": 47.36, "h": 14.58, "label": "Le Sud", "page": 16},
+  {"x": 1.46, "y": 66.08, "w": 47.36, "h": 21.48, "label": "Les Îles", "page": 16},
+  {"x": 51.27, "y": 66.08, "w": 47.36, "h": 21.48, "label": "L’Est", "page": 16}
  ],
  8:[
-  {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Meilleure période", "panel": "links"},
-  {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Budget", "panel": "links"},
-  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Transports", "page": 10},
-  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Hébergement", "panel": "links"},
-  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Santé et sécurité", "href": "https://safetywing.com/nomad-insurance?referenceID=26576610&campaign=thai-malin&utm_campaign=thai-malin&utm_source=26576610&utm_medium=Ambassador"},
-  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Étiquette et culture", "page": 17}
+  {"x": 1.46, "y": 20.51, "w": 31.25, "h": 28.97, "label": "7 jours", "page": 7},
+  {"x": 33.69, "y": 20.51, "w": 31.25, "h": 28.97, "label": "10 jours", "page": 7},
+  {"x": 66.41, "y": 20.51, "w": 31.25, "h": 28.97, "label": "15 jours", "page": 7},
+  {"x": 1.46, "y": 51.76, "w": 31.25, "h": 29.62, "label": "21 jours", "page": 7},
+  {"x": 33.69, "y": 51.76, "w": 31.25, "h": 29.62, "label": "30 jours", "page": 7},
+  {"x": 66.41, "y": 51.76, "w": 31.25, "h": 29.62, "label": "Thématiques", "page": 20}
  ],
  9:[
-  {"x": 0.78, "y": 19.92, "w": 48.44, "h": 21.5, "label": "Les temples et la culture", "page": 17},
-  {"x": 50.78, "y": 19.92, "w": 48.44, "h": 21.5, "label": "Les plages et les îles", "page": 6},
-  {"x": 0.78, "y": 45.05, "w": 48.44, "h": 18.9, "label": "La gastronomie thaïlandaise", "page": 16},
-  {"x": 50.78, "y": 45.05, "w": 48.44, "h": 18.9, "label": "La nature et l’aventure", "page": 19},
-  {"x": 0.78, "y": 67.71, "w": 48.44, "h": 17.7, "label": "Les marchés et le shopping", "page": 14},
-  {"x": 50.78, "y": 67.71, "w": 48.44, "h": 17.7, "label": "Le bien-être et la détente", "panel": "links"}
+  {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Meilleure période", "panel": "links"},
+  {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Budget", "panel": "links"},
+  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Transports", "page": 11},
+  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Hébergement", "panel": "links"},
+  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Santé et sécurité", "href": "https://safetywing.com/nomad-insurance?referenceID=26576610&campaign=thai-malin&utm_campaign=thai-malin&utm_source=26576610&utm_medium=Ambassador"},
+  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Étiquette et culture", "page": 18}
  ],
  10:[
+  {"x": 0.78, "y": 19.92, "w": 48.44, "h": 21.5, "label": "Les temples et la culture", "page": 18},
+  {"x": 50.78, "y": 19.92, "w": 48.44, "h": 21.5, "label": "Les plages et les îles", "page": 7},
+  {"x": 0.78, "y": 45.05, "w": 48.44, "h": 18.9, "label": "La gastronomie thaïlandaise", "page": 17},
+  {"x": 50.78, "y": 45.05, "w": 48.44, "h": 18.9, "label": "La nature et l’aventure", "page": 20},
+  {"x": 0.78, "y": 67.71, "w": 48.44, "h": 17.7, "label": "Les marchés et le shopping", "page": 15},
+  {"x": 50.78, "y": 67.71, "w": 48.44, "h": 17.7, "label": "Le bien-être et la détente", "panel": "links"}
+ ],
+ 11:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Vols intérieurs", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Trains en Thaïlande", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Bus et vans", "panel": "links"},
-  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Bangkok au quotidien", "page": 6},
-  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Îles et ferries", "page": 6},
+  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Bangkok au quotidien", "page": 7},
+  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Îles et ferries", "page": 7},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Location scooter ou voiture", "panel": "links"}
  ],
- 11:[
+ 12:[
   {"x": 0.78, "y": 19.79, "w": 48.44, "h": 23.24, "label": "Types d’hébergement", "panel": "links"},
   {"x": 50.78, "y": 19.79, "w": 48.44, "h": 23.24, "label": "Où réserver", "panel": "links"},
-  {"x": 0.78, "y": 44.21, "w": 48.44, "h": 21.88, "label": "Bangkok", "page": 6},
-  {"x": 50.78, "y": 44.21, "w": 48.44, "h": 21.88, "label": "Îles et plages", "page": 6},
-  {"x": 0.78, "y": 67.06, "w": 48.44, "h": 21.74, "label": "Nord (Chiang Mai…)", "page": 6},
+  {"x": 0.78, "y": 44.21, "w": 48.44, "h": 21.88, "label": "Bangkok", "page": 7},
+  {"x": 50.78, "y": 44.21, "w": 48.44, "h": 21.88, "label": "Îles et plages", "page": 7},
+  {"x": 0.78, "y": 67.06, "w": 48.44, "h": 21.74, "label": "Nord (Chiang Mai…)", "page": 7},
   {"x": 50.78, "y": 67.06, "w": 48.44, "h": 21.74, "label": "Astuces réservation", "panel": "links"}
  ],
- 12:[
+ 13:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Les indispensables", "panel": "checklist"},
-  {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Le budget", "page": 8},
-  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Se déplacer facilement", "page": 10},
-  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Où dormir ?", "page": 8},
-  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Santé et sécurité", "page": 8},
+  {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Le budget", "page": 9},
+  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Se déplacer facilement", "page": 11},
+  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Où dormir ?", "page": 9},
+  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Santé et sécurité", "page": 9},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Profiter pleinement !", "panel": "links"}
  ],
- 13:[
-  {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Les arnaques courantes", "panel": "links"},
-  {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "La nourriture et l’eau", "page": 16},
-  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Le climat et la saison", "page": 8},
-  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Les règles et la culture", "page": 17},
-  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "La santé et la sécurité", "page": 8},
-  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Les déplacements", "page": 10}
- ],
  14:[
+  {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Les arnaques courantes", "panel": "links"},
+  {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "La nourriture et l’eau", "page": 17},
+  {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Le climat et la saison", "page": 9},
+  {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Les règles et la culture", "page": 18},
+  {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "La santé et la sécurité", "page": 9},
+  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Les déplacements", "page": 11}
+ ],
+ 15:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Marchés locaux", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Souvenirs typiques", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Vêtements & artisanat", "panel": "links"},
@@ -361,15 +361,15 @@ const HOTSPOTS={
   {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Centres commerciaux", "panel": "links"},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Bon à savoir", "panel": "links"}
  ],
- 20:[
+ 21:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Faites votre check-list", "panel": "checklist"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Adoptez le bon état d’esprit", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Voyagez responsable", "panel": "links"},
   {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Immortalisez vos souvenirs", "panel": "links"},
   {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Rejoignez la communauté", "href": "https://thaimalin.fr"},
-  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Et maintenant… à vous !", "page": 21}
+  {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Et maintenant… à vous !", "page": 22}
  ],
- 21:[
+ 22:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Urgences vitales", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Tourist Police", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Ambassade de France", "panel": "links"},
@@ -377,7 +377,7 @@ const HOTSPOTS={
   {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Assurance voyage", "href": "https://safetywing.com/nomad-insurance?referenceID=26576610&campaign=thai-malin&utm_campaign=thai-malin&utm_source=26576610&utm_medium=Ambassador"},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Numéros pratiques", "panel": "links"}
  ],
- 22:[
+ 23:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Vols et séjours (Trip.com)", "href": "https://www.trip.com/?Allianceid=9852508&SID=327644129&trip_sub1=&trip_sub3=D19106369"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Hébergements (Agoda)", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Excursions & Activités (GetYourGuide)", "href": "https://gyg.me/qSQwVEug"},
@@ -391,7 +391,7 @@ const HOTSPOTS={
   {"x": 37.5, "y": 71.29, "w": 11.52, "h": 8.27, "label": "QR code Airalo / Holafly — agrandir / télécharger", "qr": "assets/qr/qr22-5.png"},
   {"x": 87.5, "y": 70.96, "w": 12.5, "h": 8.98, "label": "QR code SafetyWing — agrandir / télécharger", "qr": "assets/qr/qr22-6.png"}
  ],
- 23:[
+ 24:[
   {"x": 1.46, "y": 36.98, "w": 31.54, "h": 29.82, "label": "Mini-guide Thaïlande", "page": 1},
   {"x": 34.96, "y": 36.98, "w": 31.54, "h": 29.82, "label": "Mini-guide Vietnam", "panel": "links"},
   {"x": 67.97, "y": 36.98, "w": 30.96, "h": 29.82, "label": "Mini-guide Bali", "panel": "links"},
@@ -404,14 +404,14 @@ const HOTSPOTS={
   {"x": 20.9, "y": 73.44, "w": 10.74, "h": 7.16, "label": "QR code newsletter — agrandir / télécharger", "qr": "assets/qr/qr23-4.png"},
   {"x": 54.39, "y": 73.44, "w": 10.74, "h": 7.16, "label": "QR code Facebook — agrandir / télécharger", "qr": "assets/qr/qr23-5.png"}
  ],
- 15:[
+ 16:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Bangkok et environs — 7 jours", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Nord de la Thaïlande — 10 jours", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Sud — Plages et îles — 15 jours", "panel": "links"},
   {"x": 50.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Thaïlande complète — 21 jours", "panel": "links"},
   {"x": 0.78, "y": 67.64, "w": 98.44, "h": 21.6, "label": "Thaïlande hors des sentiers battus — 30 jours", "panel": "links"}
  ],
- 17:[
+ 18:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "La religion bouddhiste", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Les temples (wat)", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Fêtes et festivals", "panel": "links"},
@@ -419,7 +419,7 @@ const HOTSPOTS={
   {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Art, artisanat et traditions", "panel": "links"},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Un peuple accueillant", "panel": "links"}
  ],
- 18:[
+ 19:[
   {"x": 0.78, "y": 19.79, "w": 48.44, "h": 23.7, "label": "Exemption de visa touristique", "href": "https://www.diplomatie.gouv.fr/fr/information-par-pays/thailande/conseils-aux-voyageurs-entree-sejour"},
   {"x": 50.78, "y": 19.79, "w": 48.44, "h": 23.7, "label": "Passeport et documents", "panel": "checklist"},
   {"x": 0.78, "y": 45.18, "w": 48.44, "h": 21.9, "label": "TDAC obligatoire", "href": "https://tdac.immigration.go.th"},
@@ -427,7 +427,7 @@ const HOTSPOTS={
   {"x": 0.78, "y": 68.62, "w": 48.44, "h": 19.75, "label": "Assurance voyage", "href": "https://safetywing.com/nomad-insurance?referenceID=26576610&campaign=thai-malin&utm_campaign=thai-malin&utm_source=26576610&utm_medium=Ambassador"},
   {"x": 50.78, "y": 68.62, "w": 48.44, "h": 19.75, "label": "Séjour de plus de 30 jours", "panel": "links"}
  ],
- 16:[
+ 17:[
   {"x": 0.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Street food thaïlandaise", "panel": "links"},
   {"x": 50.78, "y": 19.27, "w": 48.44, "h": 22.44, "label": "Les plats incontournables", "panel": "links"},
   {"x": 0.78, "y": 43.49, "w": 48.44, "h": 22.37, "label": "Où manger ?", "panel": "links"},
@@ -435,10 +435,10 @@ const HOTSPOTS={
   {"x": 0.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Régimes spéciaux", "panel": "links"},
   {"x": 50.78, "y": 67.64, "w": 48.44, "h": 21.07, "label": "Bon à savoir", "panel": "links"}
  ],
- 19:[
+ 20:[
   {"x": 0.78, "y": 19.73, "w": 48.44, "h": 21.18, "label": "Îles et plages paradisiaques", "panel": "links"},
   {"x": 50.78, "y": 19.73, "w": 48.44, "h": 21.18, "label": "Nature et aventure", "panel": "links"},
-  {"x": 0.78, "y": 42.71, "w": 48.44, "h": 21.9, "label": "Culture et découverte locale", "page": 17},
+  {"x": 0.78, "y": 42.71, "w": 48.44, "h": 21.9, "label": "Culture et découverte locale", "page": 18},
   {"x": 50.78, "y": 42.71, "w": 48.44, "h": 21.9, "label": "Activités insolites", "panel": "links"},
   {"x": 0.78, "y": 66.21, "w": 48.44, "h": 22.3, "label": "Plongée et fonds marins", "panel": "links"},
   {"x": 50.78, "y": 66.21, "w": 48.44, "h": 22.3, "label": "Excursions depuis les grandes villes", "panel": "links"}
@@ -494,10 +494,11 @@ function openQrZoom(src,label){
 function closeZoom(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';document.getElementById('lbAction').style.display='none';document.getElementById('lbImage').style.width='';}
 window.addEventListener('keydown',e=>{if(e.key==='Escape')closeZoom();});
 const state=JSON.parse(localStorage.getItem('tm-state')||'{}');
-function go(n){page=Math.max(1,Math.min(23,n));render();window.scrollTo({top:0,behavior:'smooth'});}
+function go(n){page=Math.max(1,Math.min(24,n));render();window.scrollTo({top:0,behavior:'smooth'});}
 function render(){
- document.getElementById('counter').textContent=page+' / 23';
- document.getElementById('pdfEnd').style.display=(page===23)?'block':'none';
+ document.getElementById('counter').textContent=page+' / 24';
+ document.getElementById('pdfEnd').style.display=(page===24)?'block':'none';
+ document.getElementById('euBtn').style.display=(page===3)?'block':'none';
  document.getElementById('pageImage').src='assets/page-'+String(page).padStart(2,'0')+'.webp';
  document.getElementById('pageImage').alt=titles[page-1];
  drawHotspots();
@@ -626,11 +627,11 @@ function todayRender(){
 })();
 document.addEventListener('change',e=>{if(e.target.matches('#checklist input[data-k]')&&document.getElementById('today').classList.contains('show'))todayRender();});
 const SUMMARY_GROUPS=[
- {emoji:'🧳',label:'Avant de partir',pages:[1,2,3,4,5,18]},
- {emoji:'🗺️',label:'Destinations & itinéraires',pages:[6,7,9,15,19]},
- {emoji:'🎒',label:'Infos pratiques au quotidien',pages:[8,10,11,12,13,14,16,21]},
- {emoji:'🏮',label:'Culture & traditions',pages:[17]},
- {emoji:'🎉',label:'Prêt à partir',pages:[20,22,23]}
+ {emoji:'🧳',label:'Avant de partir',pages:[1,2,3,4,5,6,19]},
+ {emoji:'🗺️',label:'Destinations & itinéraires',pages:[7,8,10,16,20]},
+ {emoji:'🎒',label:'Infos pratiques au quotidien',pages:[9,11,12,13,14,15,17,22]},
+ {emoji:'🏮',label:'Culture & traditions',pages:[18]},
+ {emoji:'🎉',label:'Prêt à partir',pages:[21,23,24]}
 ];
 function buildSummary(){
  let s=document.getElementById('summaryLinks');s.innerHTML='';
@@ -694,7 +695,7 @@ function initEdit(){
   if(!st)return;const p=pos(e);box.remove();
   const h={x:+Math.min(st.x,p.x).toFixed(2),y:+Math.min(st.y,p.y).toFixed(2),w:+Math.abs(p.x-st.x).toFixed(2),h:+Math.abs(p.y-st.y).toFixed(2)};st=null;
   if(h.w<1||h.h<1)return;
-  const t=(prompt('Où doit mener cette zone ?\nColle un lien (https://…), ou tape un numéro de page (1 à 23), ou panel:checklist / panel:convert / panel:countdown / panel:links')||'').trim();
+  const t=(prompt('Où doit mener cette zone ?\nColle un lien (https://…), ou tape un numéro de page (1 à 24), ou panel:checklist / panel:convert / panel:countdown / panel:links')||'').trim();
   if(!t)return;
   h.label=prompt('Nom de la zone (ex. Booking) :','')||'Lien';
   if(/^\d+$/.test(t))h.page=+t;else if(t.startsWith('panel:'))h.panel=t.slice(6);else h.href=/^https?:/.test(t)?t:'https://'+t;
@@ -736,7 +737,7 @@ function initEdit(){
   box.innerHTML='<h3>Outils</h3>';
   [['\uD83D\uDD17 Liens utiles','links'],['\u2611\uFE0F Ma checklist','checklist'],['\uD83D\uDCB1 Euro \u2194 Baht','convert'],['\u23F1\uFE0F Compte \u00E0 rebours','countdown'],['\u2728 Inspirations','inspire']].forEach(function(x){
    var b=document.createElement('button');b.type='button';b.textContent=x[0];b.onclick=function(){sheet.classList.remove('open');show(x[1]);};box.appendChild(b);});
-  var r=document.createElement('button');r.type='button';r.textContent='\uD83E\uDDF3 Mon centre de r\u00E9servation';r.onclick=function(){sheet.classList.remove('open');go(22);};box.appendChild(r);
+  var r=document.createElement('button');r.type='button';r.textContent='\uD83E\uDDF3 Mon centre de r\u00E9servation';r.onclick=function(){sheet.classList.remove('open');go(23);};box.appendChild(r);
   var hb=document.createElement('button');hb.type='button';hb.textContent='\uD83E\uDDED Mon voyage (vol, documents, programme)';hb.onclick=function(){location.href='../../';};box.appendChild(hb);
   var w=document.createElement('button');w.type='button';w.textContent='\uD83C\uDF24\uFE0F M\u00E9t\u00E9o en direct';w.onclick=weather;box.appendChild(w);
   var f=document.createElement('button');f.type='button';f.textContent='\u2661 Ajouter cette page aux favoris';f.onclick=function(){sheet.classList.remove('open');toggleFavorite();};box.appendChild(f);

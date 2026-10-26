@@ -109,14 +109,49 @@
 <body>
 
 <div class="page">
-  <img src="images/page18.webp" alt="Mini-guide Tha&#xEF; Malin Cambodge - Itineraires conseilles">
+  <img src="images/page18.webp" alt="Mini-guide Tha&#xEF; Malin Cambodge - Informations pratiques">
 </div>
 <div class="navbar">
   <a href="page17.html" class="hotspot btn-prev">&#x2190; Pr&#xE9;c&#xE9;dent</a>
   <a href="page19.html" class="hotspot btn-next">Suivant &#x2192;</a>
 </div>
+<div class="currencybar" id="currencyBar">
+  <div class="currencycard" id="cCardUsd">
+    <div class="pair">1 USD =</div>
+    <div class="rate">&#x2014;</div>
+  </div>
+  <div class="currencycard" id="cCardEur">
+    <div class="pair">1 EUR =</div>
+    <div class="rate">&#x2014;</div>
+  </div>
+</div>
+<div class="currencybar-note">Taux en temps r&#xE9;el (Riel cambodgien, KHR)</div>
+<script>
+(function () {
+  fetch('https://api.exchangerate-api.com/v4/latest/USD')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data || !data.rates) return;
+      var khrPerUsd = data.rates.KHR;
+      var eurPerUsd = data.rates.EUR;
+      if (khrPerUsd) {
+        var usdCard = document.getElementById('cCardUsd');
+        if (usdCard) usdCard.querySelector('.rate').textContent = Math.round(khrPerUsd).toLocaleString('fr-FR') + ' KHR';
+      }
+      if (khrPerUsd && eurPerUsd) {
+        var khrPerEur = khrPerUsd / eurPerUsd;
+        var eurCard = document.getElementById('cCardEur');
+        if (eurCard) eurCard.querySelector('.rate').textContent = Math.round(khrPerEur).toLocaleString('fr-FR') + ' KHR';
+      }
+    })
+    .catch(function () {
+      var bar = document.getElementById('currencyBar');
+      if (bar) bar.querySelectorAll('.rate').forEach(function (el) { el.textContent = 'Indisponible'; });
+    });
+})();
+</script>
 
 <script src="../../shared/gate.js" data-prefix="CAMBODGE" data-key="tm-mg-cambodge-unlocked"></script>
-<script src="../../shared/pwa.js" data-nav="pages" data-booking="kh" data-booking-page="24" data-toc="1|Couverture;2|Bienvenue au Cambodge;3|Carte du Cambodge;4|Visa et formalités;5|Comment aller au Cambodge;6|Depuis La Réunion;7|Se déplacer au Cambodge;8|Phnom Penh;9|Siem Reap et Angkor;10|Sihanoukville et les îles du sud;11|Kep et Kampot;12|Battambang;13|Kampong Thom;14|Ratanakiri et Mondulkiri;15|Koh Ker et Preah Vihear;16|Gastronomie et culture;17|Informations pratiques;18|Itinéraires conseillés;19|Bien-être et expériences insolites;20|Hébergements au Cambodge;21|Internet et eSIM;22|Que mettre dans son sac;23|Kit de survie en khmer;24|Mon centre de réservation;25|Merci et à très bientôt" data-weather="Phnom Penh:11.56,104.92;Siem Reap:13.36,103.86;Sihanoukville:10.63,103.50;Kampot:10.61,104.18;Battambang:13.10,103.20" data-first="1" data-total="25" data-name="Mini-guide Cambodge" data-slug="cambodge"></script>
+<script src="../../shared/pwa.js" data-nav="pages" data-booking="kh" data-booking-page="25" data-toc="1|Couverture;2|Bienvenue au Cambodge;3|Carte du Cambodge;4|Visa et formalités;5|Comment aller au Cambodge;6|Depuis La Réunion;7|Depuis la France et l’Europe;8|Se déplacer au Cambodge;9|Phnom Penh;10|Siem Reap et Angkor;11|Sihanoukville et les îles du sud;12|Kep et Kampot;13|Battambang;14|Kampong Thom;15|Ratanakiri et Mondulkiri;16|Koh Ker et Preah Vihear;17|Gastronomie et culture;18|Informations pratiques;19|Itinéraires conseillés;20|Bien-être et expériences insolites;21|Hébergements au Cambodge;22|Internet et eSIM;23|Que mettre dans son sac;24|Kit de survie en khmer;25|Mon centre de réservation;26|Merci et à très bientôt" data-weather="Phnom Penh:11.56,104.92;Siem Reap:13.36,103.86;Sihanoukville:10.63,103.50;Kampot:10.61,104.18;Battambang:13.10,103.20" data-first="1" data-total="26" data-name="Mini-guide Cambodge" data-slug="cambodge"></script>
 </body>
 </html>

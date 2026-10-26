@@ -34,7 +34,7 @@ Réglages de `guide.json` : `slug` (nom court sans espace), `title`, `short` (te
 ## Les codes d'accès
 - Code d'un guide : `PREFIXE-MM-AAAA` (ex. `LAOS-10-2026`). Il ouvre le hub ET ce guide.
 - Code du hub seul : `VOYAGE-MM-AAAA`.
-- Un code reste valable le mois en cours et le suivant. Une fois saisi, l'accès reste ouvert 120 jours sur le téléphone.
+- Un code reste valable le mois en cours et le suivant. Une fois saisi, l'accès reste ouvert 12 mois sur le téléphone.
 - Les codes se calculent tout seuls : rien à modifier chaque mois.
 
 ## Guides au fonctionnement propre

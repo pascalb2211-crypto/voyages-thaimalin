@@ -43,13 +43,23 @@
   }
   .hotspot:active { transform: scale(0.97); }
 
-  .btn-prev {
-    left: 3%;
+  .btn-next, .btn-prev {
     bottom: 1.6%;
     height: 5.2%;
-    width: 30%;
     border-radius: 50px;
     font-size: clamp(13px, 2.1vw, 16px);
+  }
+  .btn-next {
+    right: 3%;
+    width: 42%;
+    background: linear-gradient(135deg, #d35400, #f0955a);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(211, 84, 0, 0.45);
+  }
+  .btn-next:hover { box-shadow: 0 8px 22px rgba(211, 84, 0, 0.6); }
+  .btn-prev {
+    left: 3%;
+    width: 30%;
     background: rgba(255,255,255,0.12);
     color: #fff;
     border: 1px solid rgba(255,255,255,0.5);
@@ -57,18 +67,21 @@
   }
   .btn-prev:hover { background: rgba(255,255,255,0.22); }
 
-  .btn-restart {
-    right: 3%;
-    bottom: 1.6%;
-    height: 5.2%;
-    width: 42%;
-    border-radius: 50px;
-    font-size: clamp(13px, 2.1vw, 16px);
-    background: linear-gradient(135deg, #d35400, #f0955a);
-    color: #fff;
-    box-shadow: 0 6px 18px rgba(211, 84, 0, 0.45);
+  /* Zones des logos partenaires : pas encore de lien affili&#xE9; (&#xE0; activer plus tard) */
+  .partner {
+    left: 2%;
+    width: 46%;
+    height: 4%;
+    background: rgba(255,255,255,0);
   }
-  .btn-restart:hover { box-shadow: 0 8px 22px rgba(211, 84, 0, 0.6); }
+  .p-trip     { top: 49.5%; }
+  .p-agoda    { top: 49.5%; left: 52%; }
+  .p-gyg      { top: 76.5%; width: 22%; }
+  .p-klook    { top: 76.5%; left: 28%; width: 22%; }
+  .p-12go     { top: 76.5%; left: 52%; width: 46%; }
+  .p-airalo   { top: 94.2%; width: 22%; }
+  .p-holafly  { top: 94.2%; left: 28%; width: 22%; }
+  .p-safety   { top: 94.2%; left: 52%; width: 46%; }
 
   /* Barre de navigation sous l'image (hors illustration, jamais de superposition) */
   .navbar{display:flex;gap:12px;width:100%;max-width:680px;margin:14px auto 0;padding:0 14px;}
@@ -88,15 +101,25 @@
 <body>
 
 <div class="page">
-  <img src="images/page24.webp" alt="Merci et &#xE0; tr&#xE8;s bient&#xF4;t - page finale du mini-guide Vietnam Tha&#xEF; Malin, contact, soutien, autres destinations &#xE0; venir, derniers conseils - Nou artrouv au Vietnam">
+  <img src="images/page24.webp" alt="Mon centre de r&#xE9;servation - tous vos liens utiles pour organiser votre voyage au Vietnam - vols, h&#xF4;tels, activit&#xE9;s, transferts, eSIM, assurance voyage - Nou artrouv au Vietnam">
+
+  <!-- Logos partenaires : liens affili&#xE9;s Vietnam &#xE0; ajouter d&#xE8;s qu'ils sont pr&#xEA;ts -->
+  <div class="hotspot partner p-trip" aria-label="Trip.com"></div>
+  <div class="hotspot partner p-agoda" aria-label="Agoda"></div>
+  <div class="hotspot partner p-gyg" aria-label="GetYourGuide"></div>
+  <div class="hotspot partner p-klook" aria-label="Klook"></div>
+  <div class="hotspot partner p-12go" aria-label="12Go"></div>
+  <div class="hotspot partner p-airalo" aria-label="Airalo"></div>
+  <div class="hotspot partner p-holafly" aria-label="Holafly"></div>
+  <div class="hotspot partner p-safety" aria-label="SafetyWing"></div>
 </div>
 <div class="navbar">
   <a href="page23.html" class="hotspot btn-prev">&#x2190; Pr&#xE9;c&#xE9;dent</a>
-  <a href="page0.html" class="hotspot btn-restart">Revenir au d&#xE9;but</a>
+  <a href="page25.html" class="hotspot btn-next">Suivant &#x2192;</a>
 </div>
 
 
 <script src="../../shared/gate.js" data-prefix="VIETNAM" data-key="tm-mg-vn-unlocked"></script>
-<script src="../../shared/pwa.js" data-nav="pages" data-booking="vn" data-booking-page="23" data-toc="0|Couverture;1|Bienvenue au Vietnam;2|Pourquoi le Vietnam ?;3|Comment y aller depuis La Réunion;4|Parler vietnamien;5|Nos incontournables;6|Préparer son voyage;7|Itinéraires selon la durée;8|Hanoï;9|Baie d’Ha Long;10|Ninh Binh;11|Sapa et Ha Giang;12|Huế;13|Hội An;14|Nha Trang;15|Da Nang;16|Hô Chi Minh-Ville;17|Delta du Mékong;18|Phú Quốc;19|Côn Đảo;20|Gastronomie vietnamienne;21|Shopping et souvenirs;22|Conseils pratiques;23|Réserver son voyage;24|Merci et à très bientôt" data-weather="Hanoï:21.03,105.85;Hoi An:15.88,108.34;Ho Chi Minh-Ville:10.82,106.63;Phu Quoc:10.22,103.96" data-first="0" data-total="24" data-name="Mini-guide Vietnam" data-slug="vietnam"></script>
+<script src="../../shared/pwa.js" data-nav="pages" data-booking="vn" data-booking-page="24" data-toc="0|Couverture;1|Bienvenue au Vietnam;2|Pourquoi le Vietnam ?;3|Comment y aller depuis La Réunion;4|Comment y aller depuis la France et l’Europe;5|Parler vietnamien;6|Nos incontournables;7|Préparer son voyage;8|Itinéraires selon la durée;9|Hanoï;10|Baie d’Ha Long;11|Ninh Binh;12|Sapa et Ha Giang;13|Huế;14|Hội An;15|Nha Trang;16|Da Nang;17|Hô Chi Minh-Ville;18|Delta du Mékong;19|Phú Quốc;20|Côn Đảo;21|Gastronomie vietnamienne;22|Shopping et souvenirs;23|Conseils pratiques;24|Réserver son voyage;25|Merci et à très bientôt" data-weather="Hanoï:21.03,105.85;Hoi An:15.88,108.34;Ho Chi Minh-Ville:10.82,106.63;Phu Quoc:10.22,103.96" data-first="0" data-total="25" data-name="Mini-guide Vietnam" data-slug="vietnam"></script>
 </body>
 </html>

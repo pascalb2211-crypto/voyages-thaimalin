@@ -1,5 +1,5 @@
 {
-  "_aide": "Liste de tous les guides. Pour ajouter un guide : python tools/new_guide.py (il remplit ce fichier tout seul). 'sales' = page de vente du guide. 'prefix' = début du code d'accès (ex. LAOS donne LAOS-10-2026). 'key' = ne pas modifier.",
+  "_aide": "Liste de tous les guides. Pour ajouter un guide : python tools/new_guide.py (il remplit ce fichier tout seul). 'sales' = page de vente du guide. 'prefix' = début du code d'accès (ex. LAOS donne LAOS-10-2026). 'key' = ne pas modifier. 'edition' = année de l'édition affichée (ex. 2026) ; pour une nouvelle édition, créer un nouveau guide avec son propre dossier.",
   "guides": [
     {
       "slug": "thailande",
@@ -11,7 +11,8 @@
       "prefix": "THAILANDE",
       "key": "tm-mg-unlocked",
       "sales": "https://thaimalin.fr",
-      "country": "Thaïlande"
+      "country": "Thaïlande",
+      "edition": "2026"
     },
     {
       "slug": "vietnam",
@@ -23,7 +24,8 @@
       "prefix": "VIETNAM",
       "key": "tm-mg-vn-unlocked",
       "sales": "https://thaimalin.fr",
-      "country": "Vietnam"
+      "country": "Vietnam",
+      "edition": "2026"
     },
     {
       "slug": "laos",
@@ -35,7 +37,8 @@
       "prefix": "LAOS",
       "key": "tm-mg-laos-unlocked",
       "sales": "https://thaimalin.fr",
-      "country": "Laos"
+      "country": "Laos",
+      "edition": "2026"
     },
     {
       "slug": "cambodge",
@@ -47,7 +50,8 @@
       "prefix": "CAMBODGE",
       "key": "tm-mg-cambodge-unlocked",
       "sales": "https://thaimalin.fr",
-      "country": "Cambodge"
+      "country": "Cambodge",
+      "edition": "2026"
     },
     {
       "slug": "plages-thailande",
@@ -59,7 +63,8 @@
       "prefix": "PLAGES",
       "key": "tm-mg-plages-unlocked",
       "sales": "https://www.thaimalin.fr/mini-guides",
-      "country": "Thaïlande"
+      "country": "Thaïlande",
+      "edition": "2026"
     },
     {
       "slug": "bali",

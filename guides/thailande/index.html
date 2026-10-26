@@ -113,6 +113,7 @@ main{padding:12px}.viewer{position:relative;max-width:1400px;margin:auto;backgro
  <div class="pwBox">
   <div class="pwEmoji">🌺</div>
   <h2>Thaï Malin — Mini-guide</h2>
+  <p style="color:#f0955a;font-weight:700;font-size:.8rem;letter-spacing:.4px;text-transform:uppercase;margin:-6px 0 10px">Édition 2026</p>
   <p>Ce guide est réservé aux acheteurs. Entrez le mot de passe reçu par email après votre achat.</p>
   <input type="password" id="pwInput" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkPw()">
   <button onclick="checkPw()">Accéder au guide</button>
@@ -212,11 +213,19 @@ function getExpectedPassword(back){
  const mm=String(d.getMonth()+1).padStart(2,'0');
  return "THAILANDE-"+mm+"-"+d.getFullYear();
 }
-// Un code reste valable le mois en cours et le mois suivant ; une fois saisi, l'accès reste ouvert 120 jours sur l'appareil.
-const VALID_DAYS=120;
+// Un code reste valable le mois en cours et le mois suivant ; une fois saisi, l'accès reste ouvert 12 mois sur l'appareil.
+const VALID_DAYS=365;
+const DEMO_CODE='AUSTRAL-DEMO',DEMO_UNTIL=new Date(2026,11,31,23,59,59).getTime(),DEMO_DAYS=30; // code partenaire : saisie possible jusqu'au 31/12/2026, accès 30 jours
 function normalizePw(s){ return String(s).toLowerCase().replace(/[\s-]/g,''); }
 function checkPw(){
  const v=document.getElementById('pwInput').value.trim();
+ if(normalizePw(v)===normalizePw(DEMO_CODE)&&Date.now()<DEMO_UNTIL&&!localStorage.getItem('tm-mg-unlocked-demo-used')){
+  localStorage.setItem('tm-mg-unlocked-demo-used','1'); // une seule démo par appareil
+  localStorage.setItem('tm-mg-unlocked', DEMO_CODE);
+  localStorage.setItem('tm-mg-unlocked-ts', String(Date.now()));
+  document.getElementById('pwGate').classList.add('hidden');
+  return;
+ }
  if(normalizePw(v)===normalizePw(getExpectedPassword())||normalizePw(v)===normalizePw(getExpectedPassword(1))){
   localStorage.setItem('tm-mg-unlocked', getExpectedPassword());
   localStorage.setItem('tm-mg-unlocked-ts', String(Date.now()));
@@ -228,7 +237,7 @@ function checkPw(){
 (function checkUnlock(){
  const saved = localStorage.getItem('tm-mg-unlocked');
  const ts = parseInt(localStorage.getItem('tm-mg-unlocked-ts')||'0',10);
- if(saved && (normalizePw(saved)===normalizePw(getExpectedPassword()) || (ts && Date.now()-ts < VALID_DAYS*86400000))){
+ if(saved && (normalizePw(saved)===normalizePw(getExpectedPassword()) || (ts && Date.now()-ts < (normalizePw(saved)===normalizePw(DEMO_CODE)?DEMO_DAYS:VALID_DAYS)*86400000))){
   document.getElementById('pwGate').classList.add('hidden');
  }
 })();

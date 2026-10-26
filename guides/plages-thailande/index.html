@@ -176,6 +176,7 @@
 <main id="gate">
   <form class="gcard" id="gform" autocomplete="off">
     <h1>Mini-guide Plages</h1>
+    <p style="color:#f0955a;font-weight:700;font-size:.8rem;letter-spacing:.4px;text-transform:uppercase;margin:-6px 0 10px">Édition 2026</p>
     <p>Entre le mot de passe reçu par email après ton achat pour ouvrir le guide.</p>
     <label for="pw" class="sr" style="position:absolute;left:-9999px">Mot de passe</label>
     <input id="pw" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="Mot de passe" aria-describedby="err">
@@ -308,7 +309,8 @@ const pad=n=>String(n).padStart(2,"0");
 const pct=(v,t)=>(v/t*100)+"%";
 
 /* ---- Accès ---- */
-const VALID_DAYS=120;
+const VALID_DAYS=365;
+const DEMO_CODE='AUSTRAL-DEMO',DEMO_UNTIL=new Date(2026,11,31,23,59,59).getTime(),DEMO_DAYS=30; // code partenaire : saisie possible jusqu'au 31/12/2026, accès 30 jours
 const norm=t=>String(t||"").toLowerCase().replace(/[\s-]/g,"");
 function expected(back){const d=new Date(),m=new Date(d.getFullYear(),d.getMonth()-(back||0),1);return `${PREFIX}-${pad(m.getMonth()+1)}-${m.getFullYear()}`}
 function tsGet(){try{return parseInt(localStorage.getItem(KEY+"-ts")||"0",10)}catch(e){return 0}}
@@ -316,12 +318,13 @@ function tsSet(){try{localStorage.setItem(KEY+"-ts",String(Date.now()))}catch(e)
 function isUnlocked(){const v=store.get();if(!v)return false;
   if(norm(v)===norm(expected(0))||norm(v)===norm(expected(1)))return true;
   if(v==="1"&&!tsGet())tsSet();
-  const ts=tsGet();return !!ts&&Date.now()-ts<VALID_DAYS*86400000}
+  const ts=tsGet();return !!ts&&Date.now()-ts<(norm(v)===norm(DEMO_CODE)?DEMO_DAYS:VALID_DAYS)*86400000}
 function open_(){document.body.classList.remove("locked");if(!built)build()}
 $("#gform").addEventListener("submit",e=>{
   e.preventDefault();
   const v=$("#pw").value.trim().toUpperCase();
-  if(norm(v)===norm(expected(0))||norm(v)===norm(expected(1))){store.set(v);tsSet();$("#err").textContent="";open_()}
+  if(norm(v)===norm(DEMO_CODE)&&Date.now()<DEMO_UNTIL&&!localStorage.getItem(KEY+"-demo-used")){try{localStorage.setItem(KEY+"-demo-used","1")}catch(e){}store.set(DEMO_CODE);tsSet();$("#err").textContent="";open_()}
+  else if(norm(v)===norm(expected(0))||norm(v)===norm(expected(1))){store.set(v);tsSet();$("#err").textContent="";open_()}
   else $("#err").textContent="Mot de passe incorrect. Vérifie l'email reçu après ton achat.";
 });
 

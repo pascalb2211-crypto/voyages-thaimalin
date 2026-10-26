@@ -7,6 +7,7 @@
   var me = document.currentScript;
   var PREFIX = (me && me.getAttribute('data-prefix')) || 'GUIDE';
   var KEY = (me && me.getAttribute('data-key')) || ('tm-mg-' + PREFIX.toLowerCase() + '-unlocked');
+  var EDITION = (me && me.getAttribute('data-edition')) || '2026';
   var TITLE = (me && me.getAttribute('data-title')) || 'Mini-guide Thaï Malin';
   function getExpectedPassword(back) {
     var d = new Date();
@@ -14,15 +15,17 @@
     var mm = String(d.getMonth() + 1).padStart(2, '0');
     return PREFIX + '-' + mm + '-' + d.getFullYear();
   }
-  // Un code reste valable le mois en cours et le mois suivant. Une fois saisi, l'accès reste ouvert 120 jours sur l'appareil.
-  var VALID_DAYS = 120;
+  // Un code reste valable le mois en cours et le mois suivant. Une fois saisi, l'accès reste ouvert 12 mois sur l'appareil.
+  var VALID_DAYS=365;
+  // Code de démonstration partenaire : utilisable jusqu'au 31/12/2026, accès de 30 jours à partir de la saisie.
+  var DEMO_CODE='AUSTRAL-DEMO',DEMO_UNTIL=new Date(2026,11,31,23,59,59).getTime(),DEMO_DAYS=30;
   function normalizePw(s) {
     return String(s).toLowerCase().replace(/[\s-]/g, '');
   }
 
   var saved = localStorage.getItem(KEY);
   var ts = parseInt(localStorage.getItem(KEY + '-ts') || '0', 10);
-  if (saved && (normalizePw(saved) === normalizePw(getExpectedPassword()) || (ts && Date.now() - ts < VALID_DAYS * 86400000))) {
+  if (saved && (normalizePw(saved) === normalizePw(getExpectedPassword()) || (ts && Date.now() - ts < (normalizePw(saved) === normalizePw(DEMO_CODE) ? DEMO_DAYS : VALID_DAYS) * 86400000))) {
     return; // accès encore valable, rien à faire
   }
 
@@ -46,6 +49,9 @@
 
     var h2 = document.createElement('h2');
     h2.textContent = 'Acces protege';
+    var ed = document.createElement('div');
+    ed.textContent = TITLE + ' · Édition ' + EDITION;
+    ed.style.cssText = 'color:#f0955a;font-size:0.8rem;font-weight:700;letter-spacing:.4px;margin:-2px 0 12px 0;text-transform:uppercase';
 
     var p = document.createElement('p');
     p.textContent = 'Entrez le mot de passe recu par email apres votre achat.';
@@ -63,6 +69,7 @@
     err.textContent = 'Mot de passe incorrect.';
 
     box.appendChild(h2);
+    box.appendChild(ed);
     box.appendChild(p);
     box.appendChild(input);
     box.appendChild(btn);
@@ -72,6 +79,13 @@
 
     function tryUnlock() {
       var v = normalizePw(input.value);
+      if (v === normalizePw(DEMO_CODE) && Date.now() < DEMO_UNTIL && !localStorage.getItem(KEY + '-demo-used')) {
+        localStorage.setItem(KEY + '-demo-used', '1'); // une seule démo par appareil
+        localStorage.setItem(KEY, DEMO_CODE);
+        localStorage.setItem(KEY + '-ts', String(Date.now()));
+        overlay.remove();
+        return;
+      }
       if (v === normalizePw(getExpectedPassword()) || v === normalizePw(getExpectedPassword(1))) {
         localStorage.setItem(KEY, getExpectedPassword());
         localStorage.setItem(KEY + '-ts', String(Date.now()));

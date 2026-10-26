@@ -255,14 +255,17 @@ input.dtp.empty::-webkit-datetime-edit{opacity:0}
 /* ===== Mot de passe : HUB commun, calculé chaque mois → VOYAGE-MM-AAAA (ex. VOYAGE-10-2026) ===== */
 function norm(s){return String(s).toLowerCase().replace(/[\s-]/g,'')}
 function expected(prefix,back){var d0=new Date(),d=new Date(d0.getFullYear(),d0.getMonth()-(back||0),1);return prefix+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear()}
-var VALID_DAYS=120;
-function recent(key){var ts=parseInt(ls(key+'-ts')||'0',10);return !!ts&&Date.now()-ts<VALID_DAYS*86400000}
+var VALID_DAYS=365;
+var DEMO_CODE='AUSTRAL-DEMO',DEMO_UNTIL=new Date(2026,11,31,23,59,59).getTime(),DEMO_DAYS=30; /* code partenaire : saisie possible jusqu'au 31/12/2026, accès 30 jours */
+function recent(key){var ts=parseInt(ls(key+'-ts')||'0',10);return !!ts&&Date.now()-ts<(norm(ls(key))===norm(DEMO_CODE)?DEMO_DAYS:VALID_DAYS)*86400000}
 function ls(k){try{return localStorage.getItem(k)||''}catch(e){return ''}}
 function lset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function unlocked(){return norm(ls('tm-hub-unlocked'))===norm(expected('VOYAGE'))||recent('tm-hub-unlocked')}
 function applyGate(){document.getElementById('gate').classList.toggle('hidden',unlocked())}
 function tryCode(raw){
  var v=norm(raw);if(!v)return false;
+ if(v===norm(DEMO_CODE)&&Date.now()<DEMO_UNTIL&&!ls('tm-hub-unlocked-demo-used')){var n=String(Date.now());lset('tm-hub-unlocked-demo-used','1');lset('tm-hub-unlocked',DEMO_CODE);lset('tm-hub-unlocked-ts',n);GUIDES.forEach(function(g){if(g.key&&!ls(g.key+'-demo-used')){lset(g.key+'-demo-used','1');lset(g.key,DEMO_CODE);lset(g.key+'-ts',n)}});return true}
+ if(v===norm(expected('TOUS'))||v===norm(expected('TOUS',1))){var n2=String(Date.now());lset('tm-hub-unlocked',expected('VOYAGE'));lset('tm-hub-unlocked-ts',n2);GUIDES.forEach(function(g){if(g.key&&g.pre){lset(g.key,expected(g.pre));lset(g.key+'-ts',n2)}});return true}   /* code maître TOUS-MM-AAAA : ouvre le hub et tous les mini-guides */
  var hub=(v===norm(expected('VOYAGE'))||v===norm(expected('VOYAGE',1)));
  var hit=null;GUIDES.forEach(function(g){if(g.pre&&(v===norm(expected(g.pre))||v===norm(expected(g.pre,1))))hit=g});
  if(!hub&&!hit)return false;
@@ -278,7 +281,7 @@ applyGate();
 /* ===== Guides (adresse = dépôt GitHub Pages ; clé = mémoire du déverrouillage de chaque guide, partagée car même compte GitHub) ===== */
 var SALES='https://thaimalin.fr';   /* page de vente par défaut */
 var GUIDES=[];
-function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {slug:g.slug,ext:g.url||'',type:g.type||'destination',country:g.country||'',e:g.emoji,t:g.title,d:g.desc,c:g.color,u:g.url?g.url:(open?('guides/'+g.slug+'/'):(g.sales||SALES)),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
+function mapGuides(list){return (list||[]).map(function(g){var open=!g.soon&&g.key;return {ed:g.edition||'',slug:g.slug,ext:g.url||'',type:g.type||'destination',country:g.country||'',e:g.emoji,t:g.title,d:g.desc,c:g.color,u:g.url?g.url:(open?('guides/'+g.slug+'/'):(g.sales||SALES)),key:open?g.key:'',pre:open?g.prefix:'',sales:g.sales||SALES,soon:!!g.soon}})}
 function loadGuides(){return fetch('guides.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){GUIDES=mapGuides(d.guides);try{localStorage.setItem('tm-hub-guides-cache',JSON.stringify(d.guides))}catch(e){}}).catch(function(){try{GUIDES=mapGuides(JSON.parse(localStorage.getItem('tm-hub-guides-cache')||'[]'))}catch(e){GUIDES=[]}}).then(function(){renderGuides()})}
 function owned(g){return !!g.key&&(norm(ls(g.key))===norm(expected(g.pre))||recent(g.key))}
 var gFilter='';
@@ -303,7 +306,7 @@ function renderGuides(){
  l.appendChild(add);
  add.querySelector('#newCodeGo').onclick=function(){var r=tryCode(add.querySelector('#newCode').value);if(r){renderGuides()}else add.querySelector('#newCodeMsg').textContent='Code incorrect ou expiré. Vérifie ton email.'};
  var p=document.createElement('p');p.className='note';p.textContent='Un guide dont tu as saisi le code s’ouvre directement.';l.appendChild(p);
- var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" width="118" height="177" alt="" decoding="async" onerror="this.style.visibility=\'hidden\'"><span>'+(g.type==='theme'&&g.country?'<em class="gtag">📍 '+g.country+' · thème</em>':'')+g.t+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
+ var grid=document.getElementById('mgGrid');if(grid){grid.innerHTML='';GUIDES.forEach(function(g){if(!owned(g))return;var x=document.createElement('a');x.href=g.u;x.innerHTML='<img src="covers/'+g.slug+'.webp" width="118" height="177" alt="" decoding="async" onerror="this.style.visibility=\'hidden\'"><span>'+(g.type==='theme'&&g.country?'<em class="gtag">📍 '+g.country+' · thème</em>':'')+g.t+(g.ed?'<em class="gtag ed">Édition '+g.ed+'</em>':'')+'<small>✓ Ouvrir</small></span>';grid.appendChild(x)});document.getElementById('mgEmpty').style.display=n?'none':'block';grid.style.display=n?'flex':'none'}
  document.getElementById('guideTxt').textContent=n?(n+' guide'+(n>1?'s':'')+' débloqué'+(n>1?'s':'')+' sur cet appareil.'):'Aucun guide débloqué sur cet appareil pour le moment.';
 }
 

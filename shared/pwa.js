@@ -251,6 +251,7 @@
       var cover = btn('📕', 'Couverture', function(){ location.href = url(FIRST); });
       var toc = btn('☷', 'Sommaire', function(){
         var l = el('div', { 'class': 'list toc' }); for(var n = FIRST; n <= last; n++) l.appendChild(row(n));
+        l.insertAdjacentHTML('beforeend', '<p class="tmlegal" style="margin:18px 0 6px;text-align:center;font-size:12.5px;opacity:.75;line-height:1.9">Thaï Malin · Pascal Blard (Passeport Malin, EI)<br><a href="https://www.thaimalin.fr/informations-legales/mentions-legales" target="_blank" rel="noopener" style="color:inherit">Mentions légales</a> · <a href="https://www.thaimalin.fr/informations-legales/cgv" target="_blank" rel="noopener" style="color:inherit">CGV</a> · <a href="https://www.thaimalin.fr/informations-legales/cgu" target="_blank" rel="noopener" style="color:inherit">CGU</a> · <a href="https://www.thaimalin.fr/informations-legales/politique-de-confidentialite" target="_blank" rel="noopener" style="color:inherit">Confidentialité</a></p>');
         openSheet('Sommaire', l);
         var c = l.querySelector('.cur'); if(c) setTimeout(function(){ c.scrollIntoView({ block: 'center' }); }, 30);
       });

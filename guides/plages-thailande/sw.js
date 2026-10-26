@@ -1,5 +1,5 @@
 /* Service worker : mini-guide Plages (Thaï Malin). Change VERSION à chaque mise à jour du guide. */
-const VERSION = "plages-v24";
+const VERSION = "plages-v25";
 const PAGES = Array.from({length: 23}, (_, i) => `pages/p${String(i + 1).padStart(2, "0")}.webp`).filter(u => u !== "pages/p17.webp").concat(["pages/p17-haut.webp", "pages/p17-bas.webp"].concat(["clair","nuageux","pluie","orage","aube","couchant","nuit"].map(m => `bg/${m}.webp`)));
 const CORE = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
